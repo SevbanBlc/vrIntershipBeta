@@ -22,7 +22,7 @@ const careerPaths = [
     color: 'from-green-500 to-teal-500'
   },
   {
-    id: 'security',
+    id: 'siber',
     title: 'Siber Güvenlik Uzmanı',
     description: 'Sistem güvenliği ve güvenlik testleri',
     icon: Shield,
