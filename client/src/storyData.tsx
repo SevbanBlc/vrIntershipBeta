@@ -41,7 +41,7 @@ export interface StoryPart {
   {
     title: "part2A",
     description: "Mimariyi analiz ettin, ancak performans sorunu devam ediyor. Şimdi bir hata fark ediyorsun: Ödeme kayıtları eksik. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1555066930-93e3f0e6e639?q=80&w=1000", // Kod analizi
+    image: "https://images.unsplash.com/photo-1631005551863-8168afd249e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Kod analizi
     choices: [
       {
         text: "Otomatik testler yazarak hatayı izole ederim.",
@@ -91,7 +91,7 @@ export interface StoryPart {
   {
     title: "part2C",
     description: "Endpoint testlerin yüzeysel sorunları gösterdi, ancak sistem hala kararsız. Loglama ile devam etmelisin. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1581094794329-c811c8c6c9f6?q=80&w=1000", // Teknik çalışma
+    image: "https://images.unsplash.com/photo-1568716353609-12ddc5c67f04?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Teknik çalışma
     choices: [
       {
         text: "Loglamayı genişletirim.",
@@ -116,7 +116,7 @@ export interface StoryPart {
   {
     title: "part3A1",
     description: "Testler sayesinde race condition’u buldun, ancak çözüm için ekiple çalışman gerekebilir. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Ekip çalışması
+    image: "https://images.unsplash.com/photo-1599143139449-3dc3c571d309?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Ekip çalışması
     choices: [
       {
         text: "Ekiple çözüm planlarım.",
@@ -445,7 +445,7 @@ export interface StoryPart {
   {
     title: "part6C",
     description: "Mentörlük veya derinleşme seçimi sunuyorlar. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Ekip eğitimi
+    image: "https://images.unsplash.com/photo-1539992190939-08f22d7ebaad?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Ekip eğitimi
     choices: [
       {
         text: "Mentörlük yaparım.",
@@ -490,7 +490,7 @@ export interface StoryPart {
   {
     title: "part7C",
     description: "Stajyerlere rehber oldun, notların rehber olarak kullanılıyor. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Mentörlük
+    image: "https://images.unsplash.com/photo-1623697899817-2e067e4a4036?q=80&w=1930&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Mentörlük
     choices: [
       {
         text: "Rehberliğimi genişletirim.",
@@ -529,7 +529,7 @@ export interface StoryPart {
   {
     title: "part8C",
     description: "Stajyerlerin rehberinle büyüyor, bir mimar oldun. Ne hissediyorsun?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Mentörlük mirası
+    image: "https://images.unsplash.com/photo-1610159661596-8e777a72f6af?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Mentörlük mirası
     choices: [
       {
         text: "Gurur duyuyorum, döngü tamamlandı.",
@@ -569,7 +569,7 @@ export const frontendStoryParts: StoryPart[] = [
   {
     title: "part2A",
     description: "Slack’te tanışma mesajı attın. Sophia seninle iletişime geçti ve görevi birlikte yapacağınızı söyledi. Sana Figma linkini gönderdi. Tasarım net ama detaylı. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1555066930-93e3f0e6e639?q=80&w=1000", // Tasarım inceleme
+    image: "https://images.unsplash.com/photo-1663249438992-0f1af469ce97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Tasarım inceleme
     choices: [
       {
         text: "Figma’yı dikkatlice incele.",
@@ -644,7 +644,7 @@ export const frontendStoryParts: StoryPart[] = [
   {
     title: "part3A",
     description: "Figma ve tasarım sistemini detaylı inceledin. Sophia seni övüyor, çünkü kodun hem işlevsel hem uyumlu. Ama testte bir sorun: responsive yapı bozuluyor. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Ekip çalışması
+    image: "https://images.unsplash.com/photo-1609921141835-710b7fa6e438?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Ekip çalışması
     choices: [
       {
         text: "Breakpoints sistemini araştır.",
@@ -819,7 +819,7 @@ export const frontendStoryParts: StoryPart[] = [
   {
     title: "part4D",
     description: "Diğer bir stajyer ya da ekipten yardım aldın. Kod tamamlandı, iş bitti. Ama bu seni düşündürüyor. Acaba kendi başına çözemez miydin? Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Ekip desteği
+    image: "https://images.unsplash.com/photo-1625313399448-162068dc7d28?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Ekip desteği
     choices: [
       {
         text: "Kodun her satırını tekrar analiz et.",
@@ -944,7 +944,7 @@ export const frontendStoryParts: StoryPart[] = [
   {
     title: "part5C",
     description: "Sophia’yla birlikte ilerledin, bazen onun uyarılarına kulak verdin, bazen kendin yol gösterdin. Stajyerliğin ‘tek başına başarı’ değil, ‘takımda denge’ olduğunu fark ettin. Ekibin sosyal Slack kanalına davet ediliyorsun. Bir kahve, bir maç ve biraz da muhabbet zamanı. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Ekip bağları
+    image: "https://images.unsplash.com/photo-1657118319726-9a0923b03ddf?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Ekip bağları
     choices: [
       {
         text: "Takımın birlikte gittiği kafeye sen de git.",
@@ -1088,7 +1088,7 @@ export const frontendStoryParts: StoryPart[] = [
   {
     title: "part6B",
     description: "Yazdığın kodu, nasıl tasarladığını ve neden böyle yaptığını paylaştın. Takım seni daha iyi tanıdı. Sophia: ‘Senin yazdıkların ekibe ışık tutuyor.’ Mentorun: ‘Staj sonunda senin gibi anlatan biriyle devam etmeyi isteriz.’ Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Paylaşım gücü
+    image: "https://images.unsplash.com/photo-1560439514-0fc9d2cd5e1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Paylaşım gücü
     choices: [
       {
         text: "Blog yazmak için içerik oluşturmaya başla.",
@@ -1107,7 +1107,7 @@ export const frontendStoryParts: StoryPart[] = [
   {
     title: "part6C",
     description: "Kahvehaneye giriyorsun. Duvarlarda eski futbol formaları. Televizyonda Inter–PSG maçı var. Gerçekte daha oynanmadı ama burada herkes sonucu biliyor gibi. ‘Sen Slate’ten miydin? Gel buraya.’ Birkaç ekip arkadaşı orada. Koddan uzak, tempodan uzak 90 dakika. Inter son dakikada 2–1 kazandı. Ama senin için galibiyet: dengede bir gelişim. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000", // Maç keyfi
+    image: "https://images.unsplash.com/photo-1571080096581-53aefc318ac3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Maç keyfi
     choices: [
       {
         text: "Sophia’ya maç hakkında mesaj at.",
@@ -1181,53 +1181,116 @@ export const frontendStoryParts: StoryPart[] = [
     ],
   },
   {
-    title: "part6G",
-    description: "Hiçbir şey yapmadın. Ne mesaj attın, ne paylaşım yaptın. Son günler, ofis trafiğinin uzağında geçti. Maalesef, bu güvensizlik hissi senin için herhangi bir geri bildirim ya da davet getirmedi. ‘Hani o stajyer çocuk?’ demeye bile gerek olmadı.",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000", // Sessizlik
-    choices: [],
+    "title": "part6G",
+    "description": "Hiçbir şey yapmadın. Ne mesaj attın, ne paylaşım yaptın. Son günler, ofis trafiğinin uzağında geçti. Maalesef, bu güvensizlik hissi senin için herhangi bir geri bildirim ya da davet getirmedi. ‘Hani o stajyer çocuk?’ demeye bile gerek olmadı.",
+    "image": "https://images.unsplash.com/photo-1501139083538-0139583c060f?q=80&w=1000&auto=format&fit=crop", // Yalnızlık ve sessizlik teması
+    "choices": [
+      {
+        "text": "Daha fazla çaba göster ve iletişime geç",
+        "nextDimension": "part7A"
+      },
+      {
+        "text": "Durumu kabul et ve stajı bitir",
+        "nextDimension": "part7D"
+      }
+    ]
   },
   {
-    title: "part7A",
-    description: "Artık sadece bir stajyer değilsin. Slate’in blogunda yazın yayınlanmış, dokümanlarında adın var. Senior geliştiriciler senin yaptıklarına atıfta bulunuyor. ‘Yazdıkların uzun süre takımda kalacak gibi.’",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000", // Teknik takdir
-    choices: [],
+    "title": "part7A",
+    "description": "Artık sadece bir stajyer değilsin. Slate’in blogunda yazın yayınlanmış, dokümanlarında adın var. Senior geliştiriciler senin yaptıklarına atıfta bulunuyor. ‘Yazdıkların uzun süre takımda kalacak gibi.’",
+    "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1000&auto=format&fit=crop", // Teknik başarı ve belgeler
+    "choices": [
+      {
+        "text": "Daha fazla içerik üretmeye devam et",
+        "nextDimension": "part7F"
+      },
+      {
+        "text": "Takım ile iş birliğine odaklan",
+        "nextDimension": "part7B"
+      }
+    ]
   },
   {
-    title: "part7B",
-    description: "Yazdıkların, konuşmaların, teknik sunumların sayesinde ekip seni ‘takım oyuncusu’ olarak tanımlıyor. Sophia son görevini sana atıyor: Slate Editor’ün ön izlemesini yeniden tasarlamak. ‘Bunu yaparsan stajdan fazlasını alırsın.’",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Bağlantı ustası
-    choices: [],
+    "title": "part7B",
+    "description": "Yazdıkların, konuşmaların, teknik sunumların sayesinde ekip seni ‘takım oyuncusu’ olarak tanımlıyor. Sophia son görevini sana atıyor: Slate Editor’ün ön izlemesini yeniden tasarlamak. ‘Bunu yaparsan stajdan fazlasını alırsın.’",
+    "image": "https://images.unsplash.com/photo-1591122943212-9e6f7e747e94?q=80&w=1000&auto=format&fit=crop", // Ekip çalışması ve tasarım
+    "choices": [
+      {
+        "text": "Görevi kabul et ve çalışmaya başla",
+        "nextDimension": "part8"
+      },
+      {
+        "text": "Görevi reddet ve mevcut rolüne devam et",
+        "nextDimension": "part7C"
+      }
+    ]
   },
   {
-    title: "part7C",
-    description: "Stajda yaşadıklarını okul kulübüne anlattın. Zoom ekranında 50 kişi, ‘remote staj nasıldı?’ diye soruyor. Sen cevap verirken fark ediyorsun: Yalnızca kod yazmadın, büyüdün.",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000", // İçten gelişim
-    choices: [],
+    "title": "part7C",
+    "description": "Stajda yaşadıklarını okul kulübüne anlattın. Zoom ekranında 50 kişi, ‘remote staj nasıldı?’ diye soruyor. Sen cevap verirken fark ediyorsun: Yalnızca kod yazmadın, büyüdün.",
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop", // Eğitim ve gelişim
+    "choices": [
+      {
+        "text": "Deneyimlerini yazıya dök ve paylaş",
+        "nextDimension": "part7A"
+      },
+      {
+        "text": "Kulüp ile daha fazla etkileşim kur",
+        "nextDimension": "part7D"
+      }
+    ]
   },
   {
-    title: "part7D",
-    description: "Bu bölümlerde farklı çıkışlar oldu. Kimi için teknik takdir, kimi için sosyal bağ, kimi için sessizlik. Ama artık son gün geldi.",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000", // Çeşitli çıkışlar
-    choices: [],
+    "title": "part7D",
+    "description": "Bu bölümlerde farklı çıkışlar oldu. Kimi için teknik takdir, kimi için sosyal bağ, kimi için sessizlik. Ama artık son gün geldi.",
+    "image": "https://images.unsplash.com/photo-1501139083538-0139583c060f?q=80&w=1000&auto=format&fit=crop", // Çeşitli yolların sonu
+    "choices": [
+      {
+        "text": "Son günü değerlendirme yapmadan bitir",
+        "nextDimension": "part8"
+      },
+      {
+        "text": "Takım ile vedalaş ve geri bildirim al",
+        "nextDimension": "part7B"
+      }
+    ]
   },
   {
-    title: "part7F",
-    description: "Slate blogunda yazın yayınlanıyor, adın teknik içerik tarafında geçiyor.",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000", // Blog başarısı
-    choices: [],
+    "title": "part7F",
+    "description": "Slate blogunda yazın yayınlanıyor, adın teknik içerik tarafında geçiyor.",
+    "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1000&auto=format&fit=crop", // Blog ve teknik başarı
+    "choices": [
+      {
+        "text": "Daha fazla blog yazısı yaz",
+        "nextDimension": "part7A"
+      },
+      {
+        "text": "Takım ile iş birliği yap",
+        "nextDimension": "part7B"
+      }
+    ]
   },
   {
-    title: "part7G",
-    description: "QA ile ortak çalışma beğeni topluyor.",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Ekip işbirliği
-    choices: [],
+    "title": "part7G",
+    "description": "QA ile ortak çalışma beğeni topluyor.",
+    "image": "https://images.unsplash.com/photo-1591122943212-9e6f7e747e94?q=80&w=1000&auto=format&fit=crop", // Ekip iş birliği
+    "choices": [
+      {
+        "text": "QA ile daha fazla çalış",
+        "nextDimension": "part7B"
+      },
+      {
+        "text": "Diğer ekiplere de katıl",
+        "nextDimension": "part7C"
+      }
+    ]
   },
   {
-    title: "part8",
-    description: "Zoom ekranında Sophia, Alex ve HR bağlı. Gülümseyerek bakıyorlar: ‘Seninle sadece kod değil, fikir, iletişim ve öğrenme tarzı konuştuk.’ ‘Slate olarak sana resmi bir iş teklifinde bulunmak istiyoruz.’ Senin çabasın, hata yapman, yardım istemen, sormaktan çekinmeden büyümen seni buraya getirdi. SON: ‘Stajdan Kariyere’",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000", // İş teklifi
-    choices: [],
-  },
+    "title": "part8",
+    "description": "Zoom ekranında Sophia, Alex ve HR bağlı. Gülümseyerek bakıyorlar: ‘Seninle sadece kod değil, fikir, iletişim ve öğrenme tarzı konuştuk.’ ‘Slate olarak sana resmi bir iş teklifinde bulunmak istiyoruz.’ Senin çabasın, hata yapman, yardım istemen, sormaktan çekinmeden büyümen seni buraya getirdi. SON: ‘Stajdan Kariyere’",
+    "image": "https://images.unsplash.com/photo-1605134909266-8e769e11a5ca?q=80&w=1000&auto=format&fit=crop", // İş teklifi ve başarı
+    "choices": []
+  }
 ];
 
 export const siberStoryParts: StoryPart[] = [
@@ -1259,7 +1322,7 @@ export const siberStoryParts: StoryPart[] = [
   {
     title: "part2A",
     description: "Otomatik araçlarla tespit ettiğin açıklar çözülmüş gibi görünüyor. Ancak daha derin bir sorun var. Sistem bazı anlarda hatalı tepki veriyor. Ekip lideri: 'Neden böyle bir durum oluyor?' Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1594126699788-1c2b5c62a7b2?q=80&w=1000", // Sistem analizi
+    image: "https://images.unsplash.com/photo-1592115616095-04fc65ccd41d?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Sistem analizi
     choices: [
       {
         text: "Logları detaylı incele.",
@@ -1284,7 +1347,7 @@ export const siberStoryParts: StoryPart[] = [
   {
     title: "part2B",
     description: "Manuel penetrasyon testin, bazı kritik güvenlik açıklarını gün yüzüne çıkarıyor. Ancak bazı açıklar sistemin içine daha derin yerleşmiş. Ekip lideri: 'Veritabanı şifrelerinin zayıf olduğu görülüyor. Bunun üzerine ne düşünüyorsun?' Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1581094794329-c811c8c6c9f6?q=80&w=1000", // Derin analiz
+    image: "https://images.unsplash.com/vector-1738926673916-0295c729aa90?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Derin analiz
     choices: [
       {
         text: "Şifre güvenliği için yeni bir algoritma öner.",
@@ -1616,7 +1679,7 @@ export const siberStoryParts: StoryPart[] = [
   {
     title: "part6A",
     description: "Geliştirdiğin eşleşme algoritması sisteme nefes aldırıyor. Ekip lideri bir seçim sunuyor: 'Yolun açık. İster bizim senior ekibe geç, ister teknik liderliğe hazırlan.' Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Kariyer seçimi
+    image: "https://images.unsplash.com/photo-1539992190939-08f22d7ebaad?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Kariyer seçimi
     choices: [
       {
         text: "Teknik liderliğe hazırlan.",
@@ -1691,7 +1754,7 @@ export const siberStoryParts: StoryPart[] = [
   {
     title: "part7C",
     description: "Yeni gelen stajyerler senin not defterini kullanıyor. Döngü tamamlanıyor. Artık rehbersin. Ne yaparsın?",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Mentörlük
+    image: "https://images.unsplash.com/photo-1571573750055-39cfc5545c23?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Mentörlük
     choices: [
       {
         text: "Yeni bir eğitim programı oluştur ve diğer stajyerlerin yeteneklerini geliştir.",
@@ -1742,7 +1805,7 @@ export const siberStoryParts: StoryPart[] = [
   {
     title: "part8C",
     description: "Yeni gelenler artık senin dökümanlarınla başlıyor. Bir stajyer olarak başladığın yerin mimarlarından biri oldun. Bugün, yeni nesil stajyerlerin gelişimine rehberlik ediyorsun. Onlara sadece teknik bilgiyi değil, aynı zamanda başarısızlıkların ve hataların üstesinden nasıl gelebileceklerini de öğretiyorsun.",
-    image: "https://images.unsplash.com/photo-1506784928027-7e2a8a9ec503?q=80&w=1000", // Yol gösterici
+    image: "https://images.unsplash.com/photo-1506324587841-69c8c9aaa05c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Yol gösterici
     choices: [
       {
         text: "Rehberlik yapmayı sürdür ve yeni nesil için eğitim materyalleri geliştir.",
