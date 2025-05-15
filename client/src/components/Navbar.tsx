@@ -10,7 +10,7 @@ export function Navbar() {
 
   return (
     <div className="w-full bg-white shadow-sm py-3 px-5 flex justify-between items-center">
-      <div className="font-bold text-lg text-gray-800">VRIntership <sub>Beta<sub/></div>
+      <div className="font-bold text-lg text-gray-800">VRIntership <sub>Beta</sub></div>
       <div className="flex items-center space-x-4">
         <div className="text-sm text-gray-600">
           {user.name || user.username}
