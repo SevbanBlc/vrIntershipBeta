@@ -117,7 +117,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input type="email" placeholder="ornek@email.com" {...field} />
+                              <Input type="email" placeholder="ornek@email.com" style={{ opacity: 0.5 }} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -131,7 +131,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Şifre</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="••••••" {...field} />
+                              <Input type="password" placeholder="••••••" style={{ opacity: 0.5 }} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -166,7 +166,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input type="email" placeholder="ornek@email.com" {...field} />
+                              <Input type="email" placeholder="ornek@email.com" style={{ opacity: 0.5 }} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -180,7 +180,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Şifre</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="••••••" {...field} />
+                              <Input type="password" placeholder="••••••" style={{ opacity: 0.5 }} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -194,7 +194,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>İsim</FormLabel>
                             <FormControl>
-                              <Input placeholder="Adınız" {...field} />
+                              <Input placeholder="Adınız" style={{ opacity: 0.5 }} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
