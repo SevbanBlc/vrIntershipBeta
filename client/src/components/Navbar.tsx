@@ -3,14 +3,14 @@ import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Loader2, LogOut } from 'lucide-react';
 
-export  function Navbar() {
+export function Navbar() {
   const { user, logoutMutation } = useAuth();
 
   if (!user) return null;
 
   return (
     <div className="w-full bg-white shadow-sm py-3 px-5 flex justify-between items-center">
-      <div className="font-bold text-lg text-gray-800">VRIntership <sb>Beta<sb/></div>
+      <div className="font-bold text-lg text-gray-800">VRIntership <sub>Beta<sub/></div>
       <div className="flex items-center space-x-4">
         <div className="text-sm text-gray-600">
           {user.name || user.username}
