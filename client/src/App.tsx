@@ -23,6 +23,15 @@ import { StorySection } from "./components/StorySection";
 import { storyData } from "./storyData";
 import { PsychologistStory } from "./components/PsychologistStory";
 
+// Scores türünü güncelliyoruz, 5 alan olacak
+interface Scores {
+  communication: number;
+  analysis: number;
+  technical: number;
+  creativity: number;
+  teamwork: number;
+}
+
 function HomePage() {
   const { user } = useAuth();
   const [selectedPath, setSelectedPath] = useState<string>('frontend');
@@ -32,9 +41,9 @@ function HomePage() {
   const [scores, setScores] = useState<Scores>({
     communication: 0,
     analysis: 0,
-    teamwork: 0,
+    technical: 0,
     creativity: 0,
-    technical: 0
+    teamwork: 0
   });
   const [isCompatible, setIsCompatible] = useState<boolean>(false);
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
@@ -159,23 +168,31 @@ function HomePage() {
       if (!currentQ.hasAbsoluteCorrect) {
         const contribution = answer.contribution || 0;
         answer.focusAreas.forEach((area) => {
-          newScores[area] += contribution * 100;
+          if (area in newScores) {
+            newScores[area as keyof Scores] += contribution * 100;
+          }
         });
       } else {
         if (answer.isCorrect) {
           const contribution = answer.contribution || 0;
           answer.focusAreas.forEach((area) => {
-            newScores[area] += contribution * 100;
+            if (area in newScores) {
+              newScores[area as keyof Scores] += contribution * 100;
+            }
           });
         } else {
           Object.keys(answer.score).forEach((key) => {
-            newScores[key] = (newScores[key] || 0) + answer.score[key];
+            if (key in newScores) {
+              newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + answer.score[key];
+            }
           });
         }
       }
     } else {
       Object.keys(answer.score).forEach((key) => {
-        newScores[key] = (newScores[key] || 0) + answer.score[key];
+        if (key in newScores) {
+          newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + answer.score[key];
+        }
       });
     }
 
@@ -194,7 +211,7 @@ function HomePage() {
   const handleFinalResults = (compatibility: number, success: number) => {
     const compatibilityThreshold = 10;
     const successThreshold = 50; // Hikaye seçimlerinden gelen toplam puana göre başarı eşiği
-    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0); // Tüm skorların toplamı
+    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0); // Beş alanın toplamı
     setIsCompatible(compatibility >= compatibilityThreshold);
     setIsSuccessful(totalScore >= successThreshold); // Toplam puana göre başarı
     setStep('analysis');
@@ -207,9 +224,9 @@ function HomePage() {
     setScores({
       communication: 0,
       analysis: 0,
-      teamwork: 0,
+      technical: 0,
       creativity: 0,
-      technical: 0
+      teamwork: 0
     });
     setSelectedPath('frontend');
     setUserData({ name: '', age: 0 });
@@ -245,16 +262,16 @@ function HomePage() {
     const newScores = { ...scores };
 
     // Seçeneğin analiz alanlarını artırma işlemi
-    if (choice && choice.impact && typeof choice.impact === 'object') {
-      Object.entries(choice.impact).forEach(([key, value]) => {
+    if (choice && choice.score && typeof choice.score === 'object') {
+      Object.entries(choice.score).forEach(([key, value]) => {
         if (key in newScores && typeof value === 'number') {
           newScores[key as keyof Scores] += value; // Analiz alanını güncelle
         } else {
-          console.warn(`Geçersiz impact verisi: ${key} veya değer: ${value}`);
+          console.warn(`Geçersiz score verisi: ${key} veya değer: ${value}`);
         }
       });
     } else {
-      console.warn("Seçenekte impact verisi eksik veya hatalı:", choice);
+      console.warn("Seçenekte score verisi eksik veya hatalı:", choice);
     }
 
     setScores(newScores);
@@ -389,7 +406,7 @@ function HomePage() {
 
             {step === 'results' && (
               <motion.div
-                key="results mined by xAI"
+                key="results"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0, transition: { type: "spring", damping: 25, stiffness: 120 } }}
                 exit={{ opacity: 0, x: -20, transition: { duration: 0.3 } }}
