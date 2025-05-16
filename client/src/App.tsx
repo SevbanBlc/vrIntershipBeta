@@ -46,6 +46,8 @@ function HomePage() {
     frontend: 'frontend',
     backend: 'backend',
     siber: 'siber',
+    'database security': 'siber', // Normalizasyon
+    'cyber security': 'siber',
   };
 
   useEffect(() => {
@@ -55,7 +57,7 @@ function HomePage() {
         try {
           const { data, error } = await supabase
             .from('user_progress')
-            .select('current_step, selected_career')
+            .select('current_step, selected_career, current_story_part')
             .eq('user_id', user.id)
             .single();
 
@@ -63,13 +65,19 @@ function HomePage() {
             if (error.code === 'PGRST116') {
               setStep('intro');
               setSelectedPath('frontend');
+              setCurrentStoryPart(null);
             } else {
               console.error('Veri yükleme hatası:', error);
             }
           } else if (data) {
             console.log('Yüklenen veri:', data);
+            const normalizedPath = pathToStoryMap[data.selected_career] || data.selected_career || 'frontend';
             setStep(data.current_step as Step || 'intro');
-            setSelectedPath(data.selected_career || 'frontend');
+            setSelectedPath(normalizedPath);
+            if (data.current_story_part) {
+              const storyPart = storyData.find(part => part.title === data.current_story_part);
+              setCurrentStoryPart(storyPart || null);
+            }
           }
         } catch (error) {
           console.error('Beklenmeyen hata:', error);
@@ -92,22 +100,24 @@ function HomePage() {
             .upsert({
               user_id: user.id,
               current_step: step,
-              selected_career: selectedPath
+              selected_career: selectedPath,
+              current_story_part: currentStoryPart?.title || null,
             }, {
               onConflict: 'user_id'
             });
-          console.log('User progress updated:', { step, selectedPath });
+          console.log('User progress updated:', { step, selectedPath, currentStoryPart: currentStoryPart?.title });
         } catch (error) {
           console.error('Error updating user progress:', error);
         }
       }
     };
     updateProgress();
-  }, [step, selectedPath, user]);
+  }, [step, selectedPath, currentStoryPart, user]);
 
   useEffect(() => {
-    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath);
-  }, [step, selectedPath]);
+    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath, 'Current Story Part:', currentStoryPart?.title);
+    console.log('Career Questions:', careerQuestions[selectedPath], 'All Questions:', allQuestions);
+  }, [step, selectedPath, currentStoryPart, allQuestions]);
 
   const handleContinue = (newPath?: string) => {
     if (newPath) {
@@ -141,8 +151,10 @@ function HomePage() {
   };
 
   const handlePathSelect = (path: string) => {
-    setSelectedPath(path);
+    const normalizedPath = pathToStoryMap[path] || path;
+    setSelectedPath(normalizedPath);
     setStep('psychologist');
+    console.log('Seçilen ve normalizasyon yapılmış path:', normalizedPath);
   };
 
   const handleUpdateUserData = (newData: UserData) => {
@@ -157,26 +169,26 @@ function HomePage() {
 
     if (isCareerQuestion) {
       if (!currentQ.hasAbsoluteCorrect) {
-        const contribution = answer.contribution || 0;
-        answer.focusAreas.forEach((area) => {
-          newScores[area] += contribution * 100;
+        const contribution = answer.contribution || 1; // Varsayılan 1
+        answer.focusAreas?.forEach((area) => {
+          newScores[area] = (newScores[area] || 0) + contribution * 10; // 10 kat artır
         });
       } else {
         if (answer.isCorrect) {
-          const contribution = answer.contribution || 0;
-          answer.focusAreas.forEach((area) => {
-            newScores[area] += contribution * 100;
+          const contribution = answer.contribution || 1;
+          answer.focusAreas?.forEach((area) => {
+            newScores[area] = (newScores[area] || 0) + contribution * 10;
           });
         } else {
           Object.keys(answer.score).forEach((key) => {
-            newScores[key] = (newScores[key] || 0) + answer.score[key];
+            newScores[key] = (newScores[key] || 0) + (answer.score[key] || 0) * 10;
           });
         }
       }
     } else {
       Object.keys(answer.score).forEach((key) => {
-        newScores[key] = (newScores[key] || 0) + answer.score[key];
-      });
+        newScores[key] = (newScores[key] || 0) + (answer.score[key] || 0) * 10; // 10 kat artır
+    });
     }
 
     setScores(newScores);
@@ -187,13 +199,14 @@ function HomePage() {
     ]);
 
     if (currentQuestion < allQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+      setCurrentQuestion((prev) => prev + 1);
     }
   };
 
   const handleFinalResults = (compatibility: number, success: number) => {
     const compatibilityThreshold = 10;
     const successThreshold = 10;
+    console.log('Final Results - Compatibility:', compatibility, 'Success:', success);
     setIsCompatible(compatibility >= compatibilityThreshold);
     setIsSuccessful(success >= successThreshold);
     setStep('analysis');
@@ -225,8 +238,7 @@ function HomePage() {
     : [];
 
   const startStory = (path: string) => {
-    console.log("startStory fonksiyonu çalışıyor...");
-    console.log("Kullanılan path:", path);
+    console.log("startStory fonksiyonu çalışıyor...", "Kullanılan path:", path);
     const initialStory = storyData.find(part => part.title === path);
     console.log("Bulunan hikaye:", initialStory);
     if (initialStory) {
@@ -334,6 +346,7 @@ function HomePage() {
                   question={allQuestions[currentQuestion]}
                   onAnswerSelect={handleAnswerSelect}
                   onFinalResults={handleFinalResults}
+                  selectedPath={selectedPath}
                 />
               </motion.div>
             )}
@@ -378,6 +391,7 @@ function HomePage() {
                 <ResultSection
                   success={isSuccessful}
                   onRestart={handleRestart}
+                  selectedCareer={selectedPath}
                 />
               </motion.div>
             )}
