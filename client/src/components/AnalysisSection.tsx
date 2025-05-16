@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Scores } from '../types';
 import { commonQuestions, careerQuestions } from '../questions';
@@ -210,7 +210,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false);
   const suggestedMatches = careerPaths
     .filter(path => path.id !== selectedPath)
-    .map(path => ({ path, percentage: calculateMatchPercentage(personalityScores, careerScores, path, true) }))
+    .map(path => {
+      const percentage = calculateMatchPercentage(personalityScores, careerScores, path, true);
+      console.log(`Career: ${path.title}, Percentage: ${percentage}%`); // Debugging log
+      return { path, percentage };
+    })
     .sort((a, b) => b.percentage - a.percentage)
     .slice(0, 3);
 
@@ -393,6 +397,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                                   strokeDashoffset={offset}
                                   strokeLinecap="round"
                                   transform="rotate(-90, 50, 50)"
+                                  style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
                                 >
                                   <defs>
                                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
