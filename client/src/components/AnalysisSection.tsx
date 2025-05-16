@@ -289,6 +289,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                   strokeWidth="10"
                   strokeDasharray="251.2"
                   strokeDashoffset={251.2 - (selectedMatchPercentage * 2.512)}
+                  strokeLinecap="round"
                   transform="rotate(-90, 50, 50)"
                 />
                 <text
@@ -327,92 +328,99 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
               <p className="text-gray-600 text-center">Uyumlu başka bir alan bulunamadı.</p>
             ) : (
               <div className="space-y-6 mt-4">
-                {suggestedMatches.map((match, index) => (
-                  <motion.div
-                    key={match.path.id}
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    whileHover="hover"
-                    className={`bg-white border rounded-xl shadow-sm overflow-hidden cursor-pointer ${
-                      selectedCompany === match.path.title ? 'border-purple-500 border-2 shadow-lg' : 'border-gray-200'
-                    }`}
-                  >
-                    <div className="md:flex">
-                      <div className="p-6 md:flex-1">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-gray-800">{match.path.title}</h3>
-                          <div className="flex items-center">
-                            <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                              <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                            </svg>
-                            <span className="text-sm font-semibold text-gray-600">%{match.percentage} Uyumluluk</span>
+                {suggestedMatches.map((match, index) => {
+                  const percentage = Math.min(Math.max(match.percentage, 0), 100); // Ensure percentage is between 0 and 100
+                  const circumference = 282.6; // 2 * π * 45
+                  const offset = circumference * (1 - percentage / 100);
+
+                  return (
+                    <motion.div
+                      key={match.path.id}
+                      variants={cardVariants}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover="hover"
+                      className={`bg-white border rounded-xl shadow-sm overflow-hidden cursor-pointer ${
+                        selectedCompany === match.path.title ? 'border-purple-500 border-2 shadow-lg' : 'border-gray-200'
+                      }`}
+                    >
+                      <div className="md:flex">
+                        <div className="p-6 md:flex-1">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-lg font-semibold text-gray-800">{match.path.title}</h3>
+                            <div className="flex items-center">
+                              <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                              </svg>
+                              <span className="text-sm font-semibold text-gray-600">%{percentage} Uyumluluk</span>
+                            </div>
+                          </div>
+                          <p className="mt-3 text-gray-600">{match.path.description}</p>
+                          <div className="mt-4">
+                            <h4 className="text-sm font-semibold text-gray-800 mb-2">Gereken Beceriler:</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {match.path.requiredSkills.map((skill, skillIndex) => (
+                                <span key={skillIndex} className={`text-xs px-2 py-1 rounded-full ${getSkillBadgeColor(skillIndex)}`}>
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="mt-4">
+                            <h4 className="text-sm font-semibold text-gray-800 mb-2">Gelişim Alanları:</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {match.path.growthAreas.map((area, areaIndex) => (
+                                <span key={areaIndex} className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
+                                  {area}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
-                        <p className="mt-3 text-gray-600">{match.path.description}</p>
-                        <div className="mt-4">
-                          <h4 className="text-sm font-semibold text-gray-800 mb-2">Gereken Beceriler:</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {match.path.requiredSkills.map((skill, skillIndex) => (
-                              <span key={skillIndex} className={`text-xs px-2 py-1 rounded-full ${getSkillBadgeColor(skillIndex)}`}>
-                                {skill}
-                              </span>
-                            ))}
+                        <div className="px-6 pb-6 md:w-44 flex flex-col items-center justify-end md:border-l md:border-gray-200">
+                          <div className="w-full h-24 flex items-center justify-center">
+                            <div className="relative w-20 h-20">
+                              <svg className="w-20 h-20" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" strokeWidth="10" />
+                                <circle
+                                  cx="50"
+                                  cy="50"
+                                  r="45"
+                                  fill="none"
+                                  stroke="url(#gradient)"
+                                  strokeWidth="10"
+                                  strokeDasharray={circumference}
+                                  strokeDashoffset={offset}
+                                  strokeLinecap="round"
+                                  transform="rotate(-90, 50, 50)"
+                                >
+                                  <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                      <stop offset="0%" stopColor="#e879f9" />
+                                      <stop offset="100%" stopColor="#c026d3" />
+                                    </linearGradient>
+                                  </defs>
+                                </circle>
+                                <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" className="text-gray-800 font-bold">
+                                  %{percentage}
+                                </text>
+                              </svg>
+                            </div>
                           </div>
-                        </div>
-                        <div className="mt-4">
-                          <h4 className="text-sm font-semibold text-gray-800 mb-2">Gelişim Alanları:</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {match.path.growthAreas.map((area, areaIndex) => (
-                              <span key={areaIndex} className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
-                                {area}
-                              </span>
-                            ))}
-                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCareerSelection(match.path.id, match.path.title);
+                            }}
+                            className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-md font-medium hover:opacity-90 transition-opacity"
+                          >
+                            Seç ve Devam Et
+                          </button>
                         </div>
                       </div>
-                      <div className="px-6 pb-6 md:w-44 flex flex-col items-center justify-end md:border-l md:border-gray-200">
-                        <div className="w-full h-24 flex items-center justify-center">
-                          <div className="relative w-20 h-20">
-                            <svg className="w-20 h-20" viewBox="0 0 100 100">
-                              <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" strokeWidth="10" />
-                              <circle
-                                cx="50"
-                                cy="50"
-                                r="45"
-                                fill="none"
-                                stroke="url(#gradient)"
-                                strokeWidth="10"
-                                strokeDasharray="282.6"
-                                strokeDashoffset={282.6 * (1 - match.percentage / 100)}
-                                transform="rotate(-90, 50, 50)"
-                              >
-                                <defs>
-                                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stopColor="#e879f9" />
-                                    <stop offset="100%" stopColor="#c026d3" />
-                                  </linearGradient>
-                                </defs>
-                              </circle>
-                              <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" className="text-gray-800 font-bold">
-                                %{match.percentage}
-                              </text>
-                            </svg>
-                          </div>
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCareerSelection(match.path.id, match.path.title);
-                          }}
-                          className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-md font-medium hover:opacity-90 transition-opacity"
-                        >
-                          Seç ve Devam Et
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
           </div>
