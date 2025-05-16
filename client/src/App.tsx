@@ -106,8 +106,8 @@ function HomePage() {
   }, [step, selectedPath, user]);
 
   useEffect(() => {
-    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath);
-  }, [step, selectedPath]);
+    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath, 'Scores:', scores);
+  }, [step, selectedPath, scores]);
 
   const handleContinue = (newPath?: string) => {
     if (newPath) {
@@ -193,11 +193,12 @@ function HomePage() {
 
   const handleFinalResults = (compatibility: number, success: number) => {
     const compatibilityThreshold = 10;
-    const successThreshold = 10;
+    const successThreshold = 50; // Hikaye seçimlerinden gelen toplam puana göre başarı eşiği
+    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0); // Tüm skorların toplamı
     setIsCompatible(compatibility >= compatibilityThreshold);
-    setIsSuccessful(success >= successThreshold);
+    setIsSuccessful(totalScore >= successThreshold); // Toplam puana göre başarı
     setStep('analysis');
-    console.log('Test tamamlandı! Analiz adımına geçiliyor. Cevaplar:', answers, 'Scores:', scores);
+    console.log('Test tamamlandı! Analiz adımına geçiliyor. Toplam hikaye puanı:', totalScore, 'Cevaplar:', answers, 'Scores:', scores);
   };
 
   const handleRestart = () => {
@@ -241,6 +242,23 @@ function HomePage() {
 
   const handleStoryChoice = (choice: any) => {
     console.log("handleStoryChoice fonksiyonu çalışıyor, seçilen seçenek:", choice);
+    const newScores = { ...scores };
+
+    // Seçeneğin analiz alanlarını artırma işlemi
+    if (choice && choice.impact && typeof choice.impact === 'object') {
+      Object.entries(choice.impact).forEach(([key, value]) => {
+        if (key in newScores && typeof value === 'number') {
+          newScores[key as keyof Scores] += value; // Analiz alanını güncelle
+        } else {
+          console.warn(`Geçersiz impact verisi: ${key} veya değer: ${value}`);
+        }
+      });
+    } else {
+      console.warn("Seçenekte impact verisi eksik veya hatalı:", choice);
+    }
+
+    setScores(newScores);
+
     if (choice.nextDimension) {
       const nextPart = storyData.find(part => part.title === choice.nextDimension);
       console.log("Sonraki hikaye kısmı:", nextPart);
@@ -255,6 +273,7 @@ function HomePage() {
       setStep('results');
       setCurrentStoryPart(null);
     }
+    console.log("Güncellenen skorlar:", newScores);
   };
 
   if (isLoadingProgress) {
@@ -370,7 +389,7 @@ function HomePage() {
 
             {step === 'results' && (
               <motion.div
-                key="results"
+                key="results mined by xAI"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0, transition: { type: "spring", damping: 25, stiffness: 120 } }}
                 exit={{ opacity: 0, x: -20, transition: { duration: 0.3 } }}
