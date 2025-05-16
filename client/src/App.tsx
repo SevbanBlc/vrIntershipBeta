@@ -46,8 +46,6 @@ function HomePage() {
     frontend: 'frontend',
     backend: 'backend',
     siber: 'siber',
-    'database security': 'siber',
-    'cyber security': 'siber',
   };
 
   useEffect(() => {
@@ -57,25 +55,21 @@ function HomePage() {
         try {
           const { data, error } = await supabase
             .from('user_progress')
-            .select('current_step, selected_career, current_story_part')
+            .select('current_step, selected_career')
             .eq('user_id', user.id)
             .single();
-          console.log('Supabase response:', { data, error });
+
           if (error) {
-            console.error('Veri yükleme hatası:', error.message);
             if (error.code === 'PGRST116') {
               setStep('intro');
               setSelectedPath('frontend');
-              setCurrentStoryPart(null);
+            } else {
+              console.error('Veri yükleme hatası:', error);
             }
           } else if (data) {
-            const normalizedPath = pathToStoryMap[data.selected_career] || data.selected_career || 'frontend';
+            console.log('Yüklenen veri:', data);
             setStep(data.current_step as Step || 'intro');
-            setSelectedPath(normalizedPath);
-            if (data.current_story_part) {
-              const storyPart = storyData.find(part => part.title === data.current_story_part);
-              setCurrentStoryPart(storyPart || null);
-            }
+            setSelectedPath(data.selected_career || 'frontend');
           }
         } catch (error) {
           console.error('Beklenmeyen hata:', error);
@@ -98,23 +92,22 @@ function HomePage() {
             .upsert({
               user_id: user.id,
               current_step: step,
-              selected_career: selectedPath,
-              current_story_part: currentStoryPart?.title || null,
+              selected_career: selectedPath
             }, {
               onConflict: 'user_id'
             });
-          console.log('User progress updated:', { step, selectedPath, currentStoryPart: currentStoryPart?.title });
+          console.log('User progress updated:', { step, selectedPath });
         } catch (error) {
           console.error('Error updating user progress:', error);
         }
       }
     };
     updateProgress();
-  }, [step, selectedPath, currentStoryPart, user]);
+  }, [step, selectedPath, user]);
 
   useEffect(() => {
-    console.log('Component mounted, step:', step, 'selectedPath:', selectedPath, 'currentQuestion:', currentQuestion, 'allQuestions:', allQuestions);
-  }, [step, selectedPath, currentQuestion, allQuestions]);
+    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath);
+  }, [step, selectedPath]);
 
   const handleContinue = (newPath?: string) => {
     if (newPath) {
@@ -148,10 +141,8 @@ function HomePage() {
   };
 
   const handlePathSelect = (path: string) => {
-    const normalizedPath = pathToStoryMap[path] || path;
-    setSelectedPath(normalizedPath);
+    setSelectedPath(path);
     setStep('psychologist');
-    console.log('Seçilen ve normalizasyon yapılmış path:', normalizedPath);
   };
 
   const handleUpdateUserData = (newData: UserData) => {
@@ -166,25 +157,25 @@ function HomePage() {
 
     if (isCareerQuestion) {
       if (!currentQ.hasAbsoluteCorrect) {
-        const contribution = answer.contribution || 1;
-        answer.focusAreas?.forEach((area) => {
-          newScores[area] = (newScores[area] || 0) + contribution * 10;
+        const contribution = answer.contribution || 0;
+        answer.focusAreas.forEach((area) => {
+          newScores[area] += contribution * 100;
         });
       } else {
         if (answer.isCorrect) {
-          const contribution = answer.contribution || 1;
-          answer.focusAreas?.forEach((area) => {
-            newScores[area] = (newScores[area] || 0) + contribution * 10;
+          const contribution = answer.contribution || 0;
+          answer.focusAreas.forEach((area) => {
+            newScores[area] += contribution * 100;
           });
         } else {
           Object.keys(answer.score).forEach((key) => {
-            newScores[key] = (newScores[key] || 0) + (answer.score[key] || 0) * 10;
+            newScores[key] = (newScores[key] || 0) + answer.score[key];
           });
         }
       }
     } else {
       Object.keys(answer.score).forEach((key) => {
-        newScores[key] = (newScores[key] || 0) + (answer.score[key] || 0) * 10;
+        newScores[key] = (newScores[key] || 0) + answer.score[key];
       });
     }
 
@@ -196,14 +187,13 @@ function HomePage() {
     ]);
 
     if (currentQuestion < allQuestions.length - 1) {
-      setCurrentQuestion((prev) => prev + 1);
+      setCurrentQuestion(prev => prev + 1);
     }
   };
 
   const handleFinalResults = (compatibility: number, success: number) => {
     const compatibilityThreshold = 10;
     const successThreshold = 10;
-    console.log('Final Results - Compatibility:', compatibility, 'Success:', success);
     setIsCompatible(compatibility >= compatibilityThreshold);
     setIsSuccessful(success >= successThreshold);
     setStep('analysis');
@@ -230,10 +220,13 @@ function HomePage() {
 
   const isUserDataValid = userData.name !== '' && userData.age > 0;
 
-  const allQuestions = selectedPath && careerQuestions[selectedPath] ? [...commonQuestions, ...careerQuestions[selectedPath]] : commonQuestions || [];
+  const allQuestions = selectedPath
+    ? [...commonQuestions, ...(careerQuestions[selectedPath] || [])]
+    : [];
 
   const startStory = (path: string) => {
-    console.log("startStory fonksiyonu çalışıyor...", "Kullanılan path:", path);
+    console.log("startStory fonksiyonu çalışıyor...");
+    console.log("Kullanılan path:", path);
     const initialStory = storyData.find(part => part.title === path);
     console.log("Bulunan hikaye:", initialStory);
     if (initialStory) {
@@ -335,14 +328,12 @@ function HomePage() {
                 animate={{ opacity: 1, x: 0, transition: { type: "spring", damping: 25, stiffness: 120 } }}
                 exit={{ opacity: 0, x: -20, transition: { duration: 0.3 } }}
               >
-                <div>QuestionSection Rendering - Current Question: {currentQuestion}</div>
                 <QuestionSection
                   currentQuestion={currentQuestion}
                   totalQuestions={allQuestions.length}
-                  question={allQuestions[currentQuestion] || allQuestions[0]} // Güvenlik için varsayılan
+                  question={allQuestions[currentQuestion]}
                   onAnswerSelect={handleAnswerSelect}
                   onFinalResults={handleFinalResults}
-                  selectedPath={selectedPath}
                 />
               </motion.div>
             )}
@@ -387,7 +378,6 @@ function HomePage() {
                 <ResultSection
                   success={isSuccessful}
                   onRestart={handleRestart}
-                  selectedCareer={selectedPath}
                 />
               </motion.div>
             )}
