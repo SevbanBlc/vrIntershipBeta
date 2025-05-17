@@ -65,23 +65,28 @@ function HomePage() {
           const { data, error } = await supabase
             .from('user_progress')
             .select('current_step, selected_career')
-            .eq('user_id', user.id)
-            .single();
+            .eq('user_id', user.id);
 
           if (error) {
-            if (error.code === 'PGRST116') {
-              setStep('intro');
-              setSelectedPath('frontend');
-            } else {
-              console.error('Veri yükleme hatası:', error);
+            console.error('Veri yükleme hatası:', error);
+            setStep('intro');
+            setSelectedPath('frontend');
+          } else if (data.length === 0) {
+            // Hiç satır dönmezse varsayılan değerleri ayarla
+            setStep('intro');
+            setSelectedPath('frontend');
+          } else {
+            // Bir veya daha fazla satır dönerse, ilk satırı kullan
+            setStep(data[0].current_step as Step || 'intro');
+            setSelectedPath(data[0].selected_career || 'frontend');
+            if (data.length > 1) {
+              console.warn('Aynı kullanıcı için birden fazla kayıt bulundu, ilk kayıt kullanıldı:', user.id);
             }
-          } else if (data) {
-            console.log('Yüklenen veri:', data);
-            setStep(data.current_step as Step || 'intro');
-            setSelectedPath(data.selected_career || 'frontend');
           }
         } catch (error) {
           console.error('Beklenmeyen hata:', error);
+          setStep('intro');
+          setSelectedPath('frontend');
         } finally {
           setIsLoadingProgress(false);
         }
@@ -105,9 +110,9 @@ function HomePage() {
             }, {
               onConflict: 'user_id'
             });
-          console.log('User progress updated:', { step, selectedPath });
+          console.log('Kullanıcı ilerlemesi güncellendi:', { step, selectedPath });
         } catch (error) {
-          console.error('Error updating user progress:', error);
+          console.error('Kullanıcı ilerlemesini güncellerken hata:', error);
         }
       }
     };
@@ -210,10 +215,10 @@ function HomePage() {
 
   const handleFinalResults = (compatibility: number, success: number) => {
     const compatibilityThreshold = 10;
-    const successThreshold = 50; // Hikaye seçimlerinden gelen toplam puana göre başarı eşiği
-    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0); // Beş alanın toplamı
+    const successThreshold = 50;
+    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
     setIsCompatible(compatibility >= compatibilityThreshold);
-    setIsSuccessful(totalScore >= successThreshold); // Toplam puana göre başarı
+    setIsSuccessful(totalScore >= successThreshold);
     setStep('analysis');
     console.log('Test tamamlandı! Analiz adımına geçiliyor. Toplam hikaye puanı:', totalScore, 'Cevaplar:', answers, 'Scores:', scores);
   };
@@ -261,11 +266,10 @@ function HomePage() {
     console.log("handleStoryChoice fonksiyonu çalışıyor, seçilen seçenek:", choice);
     const newScores = { ...scores };
 
-    // Seçeneğin analiz alanlarını artırma işlemi
     if (choice && choice.score && typeof choice.score === 'object') {
       Object.entries(choice.score).forEach(([key, value]) => {
         if (key in newScores && typeof value === 'number') {
-          newScores[key as keyof Scores] += value; // Analiz alanını güncelle
+          newScores[key as keyof Scores] += value;
         } else {
           console.warn(`Geçersiz score verisi: ${key} veya değer: ${value}`);
         }
