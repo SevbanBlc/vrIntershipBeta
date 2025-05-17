@@ -50,6 +50,7 @@ function HomePage() {
   const [answers, setAnswers] = useState<{ questionId: number; answer: string }[]>([]);
   const [currentStoryPart, setCurrentStoryPart] = useState<any>(null);
   const [isLoadingProgress, setIsLoadingProgress] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const pathToStoryMap: { [key: string]: string } = {
     frontend: 'frontend',
@@ -57,36 +58,53 @@ function HomePage() {
     siber: 'siber',
   };
 
+  // userData state'ini kontrol etmek için log ekleyelim
+  useEffect(() => {
+    console.log('Güncel userData:', userData);
+  }, [userData]);
+
+  // user nesnesini kontrol etmek için log ekleyelim
+  useEffect(() => {
+    console.log('useAuth user:', user);
+  }, [user]);
+
   // Sadece users tablosundan name ve age bilgilerini çekiyoruz
   useEffect(() => {
     const fetchUserData = async () => {
-      if (user) {
-        setIsLoadingProgress(true);
-        console.log('Kullanıcı ID:', user.id);
-        try {
-          const { data, error, status, statusText } = await supabase
-            .from('users')
-            .select('name, age')
-            .eq('id', user.id);
+      if (!user || !user.id) {
+        console.log('Kullanıcı bulunamadı, varsayılan değerler ayarlanıyor.');
+        setUserData({ name: '', age: 0 });
+        setErrorMessage('Oturum açmış bir kullanıcı bulunamadı. Lütfen giriş yapın.');
+        setIsLoadingProgress(false);
+        return;
+      }
 
-          console.log('fetchUserData Sorgu sonucu:', { data, error, status, statusText });
-          if (error || !data) {
-            console.error('fetchUserData Veri yükleme hatası:', error);
-            setUserData({ name: '', age: 0 });
-          } else if (data.length === 0) {
-            console.log('Hiç veri bulunamadı, varsayılan değerler ayarlanıyor');
-            setUserData({ name: '', age: 0 });
-          } else {
-            setUserData({ name: data[0].name || '', age: data[0].age || 0 });
-            console.log('Kullanıcı verileri yüklendi:', { name: data[0].name, age: data[0].age });
-          }
-        } catch (error) {
-          console.error('fetchUserData Beklenmeyen hata:', error);
+      setIsLoadingProgress(true);
+      console.log('Kullanıcı ID:', user.id);
+      try {
+        const { data, error, status, statusText } = await supabase
+          .from('users')
+          .select('name, age')
+          .eq('id', user.id);
+
+        console.log('fetchUserData Sorgu sonucu:', { data, error, status, statusText });
+        if (error) {
+          console.error('fetchUserData Veri yükleme hatası:', error.message);
+          setErrorMessage(`Veri yüklenirken hata oluştu: ${error.message}`);
           setUserData({ name: '', age: 0 });
-        } finally {
-          setIsLoadingProgress(false);
+        } else if (!data || data.length === 0) {
+          console.log('Hiç veri bulunamadı, varsayılan değerler ayarlanıyor');
+          setErrorMessage('Kullanıcı verisi bulunamadı. Lütfen bilgilerinizi ekleyin.');
+          setUserData({ name: '', age: 0 });
+        } else {
+          setUserData({ name: data[0].name || '', age: data[0].age || 0 });
+          console.log('Kullanıcı verileri yüklendi:', { name: data[0].name, age: data[0].age });
         }
-      } else {
+      } catch (error: any) {
+        console.error('fetchUserData Beklenmeyen hata:', error.message || error);
+        setErrorMessage(`Beklenmeyen bir hata oluştu: ${error.message || error}`);
+        setUserData({ name: '', age: 0 });
+      } finally {
         setIsLoadingProgress(false);
       }
     };
@@ -136,6 +154,7 @@ function HomePage() {
 
   const handleUpdateUserData = (newData: UserData) => {
     setUserData(newData);
+    setErrorMessage(null); // Hata mesajını sıfırla
   };
 
   const handleAnswerSelect = (answer: Answer) => {
@@ -214,6 +233,7 @@ function HomePage() {
     setIsSuccessful(false);
     setAnswers([]);
     setCurrentStoryPart(null);
+    setErrorMessage(null);
   };
 
   const isUserDataValid = userData.name !== '' && userData.age > 0;
@@ -280,6 +300,22 @@ function HomePage() {
     );
   }
 
+  if (errorMessage && step !== 'intro') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full">
+          <p className="text-red-500 text-center mb-4">{errorMessage}</p>
+          <button
+            onClick={() => setStep('intro')}
+            className="bg-purple-600 text-white font-medium py-2 px-6 rounded-lg shadow-md w-full"
+          >
+            Başa Dön
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 flex flex-col">
       <Navbar />
@@ -332,6 +368,7 @@ function HomePage() {
               >
                 <PsychologistStory
                   onContinue={() => handleContinue()}
+                  userData={userData}
                 />
               </motion.div>
             )}
