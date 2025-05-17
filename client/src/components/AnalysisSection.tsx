@@ -25,7 +25,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'frontend',
     title: 'Frontend Geliştirici',
     description: 'Kullanıcı arayüzleri ve web uygulamaları geliştirme.',
-    skillWeights: { communication: 0.2, analysis: 0.1, teamwork: 0.1, creativity: 0.3, technical: 0.3 },
+    skillWeights: { communication: 0.2, analysis: 0.1, teamwork: 0.15, creativity: 0.35, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.2, creativityDrive: 0.6 },
     requiredSkills: ['React', 'CSS', 'JavaScript', 'UI/UX'],
     growthAreas: ['TypeScript', 'Performance Optimizasyonu'],
@@ -43,7 +43,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'siber',
     title: 'Siber Güvenlik Uzmanı',
     description: 'Sistem güvenliği ve güvenlik testleri.',
-    skillWeights: { communication: 0.2, analysis: 0.4, teamwork: 0.1, creativity: 0.1, technical: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.4, teamwork: 0.1, creativity: 0.15, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.1, analyticalMind: 0.8, creativityDrive: 0.1 },
     requiredSkills: ['Ağ Güvenliği', 'Penetrasyon Testi', 'Kriptografi'],
     growthAreas: ['Etik Hacking', 'Güvenlik Otomasyonu'],
@@ -79,9 +79,8 @@ const careerPaths: CareerSuggestion[] = [
 
 const MAX_PERSONALITY_SCORE = 100;
 const MAX_CAREER_SCORE = 100;
-const SCORE_MULTIPLIER = 1.5;
 const MINIMUM_PERCENTAGE = 30;
-const MAXIMUM_PERCENTAGE = 95;
+const MAXIMUM_PERCENTAGE = 90;
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -91,33 +90,63 @@ const calculateMatchPercentage = (
 ): number => {
   if (!personalityScores || !careerScores || !career) return MINIMUM_PERCENTAGE;
 
-  let personalityMatch = 0;
-  let careerMatch = 0;
-
+  // Giriş skorlarını doğrula
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'creativityDrive'];
-  personalityMatch = personalityKeys.reduce((sum, key) => {
-    const value = (personalityScores[key as keyof Scores] || 0) * SCORE_MULTIPLIER;
-    const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
-    return sum + (value / MAX_PERSONALITY_SCORE) * weight * 100;
-  }, 0);
-
   const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'creativity', 'technical'];
-  careerMatch = skillKeys.reduce((sum, key) => {
-    const value = (careerScores[key as keyof Scores] || 0) * SCORE_MULTIPLIER;
-    return sum + (value / MAX_CAREER_SCORE) * (career.skillWeights[key] || 0) * 100;
-  }, 0) / 5;
-
-  const pathScore = (personalityScores[career.id as keyof Scores] || 0) * SCORE_MULTIPLIER;
-
-  let finalScore: number;
-  if (isPersonality) {
-    finalScore = (0.7 * personalityMatch) + (0.5 * (pathScore / MAX_PERSONALITY_SCORE) * 100);
-  } else {
-    finalScore = (0.5 * personalityMatch) + (0.6 * careerMatch) + (0.2 * (pathScore / MAX_PERSONALITY_SCORE) * 100);
+  
+  for (const key of [...personalityKeys, ...skillKeys]) {
+    if (personalityScores[key] > MAX_PERSONALITY_SCORE || careerScores[key] > MAX_CAREER_SCORE) {
+      console.warn(`Skor ${key} için maksimumu aşıyor: personality=${personalityScores[key]}, career=${careerScores[key]}`);
+      return MINIMUM_PERCENTAGE;
+    }
   }
 
+  // Kişilik eşleşmesini hesapla
+  let personalityMatch = personalityKeys.reduce((sum, key) => {
+    const score = personalityScores[key as keyof Scores] || 0;
+    const normalizedScore = score / MAX_PERSONALITY_SCORE; // [0,1] aralığına normalize et
+    const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
+    return sum + normalizedScore * weight;
+  }, 0);
+
+  // Kişilik eşleşmesini [0, 100] aralığına normalize et
+  personalityMatch *= 100;
+
+  // Kritik becerilerde düşük skorlar için ceza ile kariyer eşleşmesini hesapla
+  let careerMatch = 0;
+  let criticalSkillPenalty = 0;
+  
+  for (const key of skillKeys) {
+    const score = careerScores[key as keyof Scores] || 0;
+    const normalizedScore = score / MAX_CAREER_SCORE; // [0,1] aralığına normalize et
+    const weight = career.skillWeights[key] || 0;
+    careerMatch += normalizedScore * weight;
+    
+    // Kritik beceride düşük skor varsa ceza uygula
+    if (weight > 0.25 && normalizedScore < 0.3) { // Kritik beceri ve düşük skor
+      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 50;
+    }
+  }
+  
+  // Kariyer eşleşmesini [0, 100] aralığına normalize et
+  careerMatch = (careerMatch / skillKeys.length) * 100;
+  careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
+
+  // Yola özgü skor
+  const pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
+
+  // Skorları birleştir
+  let finalScore: number;
+  if (isPersonality) {
+    finalScore = (0.6 * personalityMatch) + (0.3 * pathScore) + (0.1 * careerMatch);
+  } else {
+    finalScore = (0.4 * personalityMatch) + (0.5 * careerMatch) + (0.1 * pathScore);
+  }
+
+  // Nihai skoru sınırlandır
   finalScore = Math.max(finalScore, MINIMUM_PERCENTAGE);
   finalScore = Math.min(finalScore, MAXIMUM_PERCENTAGE);
+  
   return Math.round(finalScore);
 };
 
@@ -212,7 +241,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     .filter(path => path.id !== selectedPath)
     .map(path => {
       const percentage = calculateMatchPercentage(personalityScores, careerScores, path, true);
-      console.log(`Career: ${path.title}, Percentage: ${percentage}%`); // Debugging log
+      console.log(`Kariyer: ${path.title}, Yüzde: ${percentage}%`); // Hata ayıklama kaydı
       return { path, percentage };
     })
     .sort((a, b) => b.percentage - a.percentage)
@@ -333,8 +362,8 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             ) : (
               <div className="space-y-6 mt-4">
                 {suggestedMatches.map((match, index) => {
-                  const percentage = Math.min(Math.max(match.percentage, 0), 100); // Ensure percentage is between 0 and 100
-                  const circumference = 282.6; // 2 * π * 45
+                  const percentage = Math.min(Math.max(match.percentage, 0), 100);
+                  const circumference = 282.6;
                   const offset = circumference * (1 - percentage / 100);
 
                   return (
