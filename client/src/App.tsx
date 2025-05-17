@@ -61,16 +61,16 @@ function HomePage() {
     const loadProgress = async () => {
       if (user) {
         setIsLoadingProgress(true);
-        console.log('Kullanıcı ID:', user.id); // Kullanıcı ID'sini kontrol et
+        console.log('Kullanıcı ID:', user.id);
         try {
           const { data, error, status, statusText } = await supabase
             .from('user_progress')
             .select('current_step, selected_career')
             .eq('user_id', user.id);
 
-          console.log('Sorgu sonucu:', { data, error, status, statusText }); // Daha fazla bilgi logla
+          console.log('loadProgress Sorgu sonucu:', { data, error, status, statusText });
           if (error || !data) {
-            console.error('Veri yükleme hatası:', error);
+            console.error('loadProgress Veri yükleme hatası:', error);
             setStep('intro');
             setSelectedPath('frontend');
           } else if (data.length === 0) {
@@ -85,7 +85,7 @@ function HomePage() {
             }
           }
         } catch (error) {
-          console.error('Beklenmeyen hata:', error);
+          console.error('loadProgress Beklenmeyen hata:', error);
           setStep('intro');
           setSelectedPath('frontend');
         } finally {
@@ -101,8 +101,9 @@ function HomePage() {
   useEffect(() => {
     const updateProgress = async () => {
       if (user) {
+        console.log('updateProgress çalışıyor, Kullanıcı ID:', user.id, 'Step:', step, 'Selected Path:', selectedPath);
         try {
-          const { error } = await supabase
+          const { error, status, statusText } = await supabase
             .from('user_progress')
             .upsert({
               user_id: user.id,
@@ -112,12 +113,12 @@ function HomePage() {
               onConflict: 'user_id'
             });
           if (error) {
-            console.error('Kullanıcı ilerlemesini güncellerken hata:', error);
+            console.error('updateProgress Veri güncelleme hatası:', error, 'Status:', status, 'StatusText:', statusText);
           } else {
             console.log('Kullanıcı ilerlemesi güncellendi:', { step, selectedPath });
           }
         } catch (error) {
-          console.error('Kullanıcı ilerlemesini güncellerken beklenmeyen hata:', error);
+          console.error('updateProgress Beklenmeyen hata:', error);
         }
       }
     };
@@ -160,6 +161,7 @@ function HomePage() {
   };
 
   const handlePathSelect = (path: string) => {
+    console.log('handlePathSelect çalışıyor, Seçilen path:', path);
     setSelectedPath(path);
     setStep('psychologist');
   };
