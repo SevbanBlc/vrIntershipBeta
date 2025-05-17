@@ -61,26 +61,27 @@ function HomePage() {
     const loadProgress = async () => {
       if (user) {
         setIsLoadingProgress(true);
+        console.log('Kullanıcı ID:', user.id); // Kullanıcı ID'sini kontrol et
         try {
-          const { data, error } = await supabase
+          const { data, error, status, statusText } = await supabase
             .from('user_progress')
             .select('current_step, selected_career')
             .eq('user_id', user.id);
 
-          if (error) {
+          console.log('Sorgu sonucu:', { data, error, status, statusText }); // Daha fazla bilgi logla
+          if (error || !data) {
             console.error('Veri yükleme hatası:', error);
             setStep('intro');
             setSelectedPath('frontend');
           } else if (data.length === 0) {
-            // Hiç satır dönmezse varsayılan değerleri ayarla
+            console.log('Hiç veri bulunamadı, varsayılan değerler ayarlanıyor');
             setStep('intro');
             setSelectedPath('frontend');
           } else {
-            // Bir veya daha fazla satır dönerse, ilk satırı kullan
             setStep(data[0].current_step as Step || 'intro');
             setSelectedPath(data[0].selected_career || 'frontend');
             if (data.length > 1) {
-              console.warn('Aynı kullanıcı için birden fazla kayıt bulundu, ilk kayıt kullanıldı:', user.id);
+              console.warn('Birden fazla kayıt bulundu, ilk kayıt kullanıldı:', user.id);
             }
           }
         } catch (error) {
@@ -101,7 +102,7 @@ function HomePage() {
     const updateProgress = async () => {
       if (user) {
         try {
-          await supabase
+          const { error } = await supabase
             .from('user_progress')
             .upsert({
               user_id: user.id,
@@ -110,9 +111,13 @@ function HomePage() {
             }, {
               onConflict: 'user_id'
             });
-          console.log('Kullanıcı ilerlemesi güncellendi:', { step, selectedPath });
+          if (error) {
+            console.error('Kullanıcı ilerlemesini güncellerken hata:', error);
+          } else {
+            console.log('Kullanıcı ilerlemesi güncellendi:', { step, selectedPath });
+          }
         } catch (error) {
-          console.error('Kullanıcı ilerlemesini güncellerken hata:', error);
+          console.error('Kullanıcı ilerlemesini güncellerken beklenmeyen hata:', error);
         }
       }
     };
