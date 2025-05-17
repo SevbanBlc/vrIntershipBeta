@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Typewriter } from './ui/Typewriter';
-import supabase from '../supabaseClient'; 
 
 interface UserData {
   name: string;
@@ -10,48 +9,15 @@ interface UserData {
 
 interface PsychologistStoryProps {
   onContinue: () => void;
+  userData: UserData;
 }
 
-export const PsychologistStory: React.FC<PsychologistStoryProps> = ({ onContinue }) => {
+export const PsychologistStory: React.FC<PsychologistStoryProps> = ({ onContinue, userData }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Supabase'den kullanıcı verilerini çekme
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('users')
-          .select('name, age')
-          .single();
-
-        if (error) {
-          throw error;
-        }
-
-        if (data) {
-          setUserData({ name: data.name, age: data.age });
-        } else {
-          setError('Kullanıcı verisi bulunamadı.');
-        }
-      } catch (err) {
-        setError('Veri çekilirken bir hata oluştu: ' + (err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   // Adım ilerletme mantığı
   useEffect(() => {
-    if (!userData) return;
-
     if (activeStep === 0) {
       const timer = setTimeout(() => setActiveStep(1), 4000);
       return () => clearTimeout(timer);
@@ -64,7 +30,7 @@ export const PsychologistStory: React.FC<PsychologistStoryProps> = ({ onContinue
       const timer = setTimeout(() => setActiveStep(3), 3000);
       return () => clearTimeout(timer);
     }
-  }, [activeStep, userData]);
+  }, [activeStep]);
 
   const handleTypingComplete = () => {
     setTypingComplete(true);
@@ -107,18 +73,11 @@ export const PsychologistStory: React.FC<PsychologistStoryProps> = ({ onContinue
     tap: { scale: 0.95 }
   };
 
-  if (loading) {
+  // userData yoksa veya name boşsa hata göster
+  if (!userData || !userData.name) {
     return (
       <div className="flex justify-center items-center h-full">
-        <p>Yükleniyor...</p>
-      </div>
-    );
-  }
-
-  if (error || !userData) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-red-500">{error || 'Kullanıcı verisi yüklenemedi.'}</p>
+        <p className="text-red-500">Kullanıcı verisi yüklenemedi.</p>
       </div>
     );
   }
