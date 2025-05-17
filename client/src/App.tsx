@@ -57,37 +57,32 @@ function HomePage() {
     siber: 'siber',
   };
 
+  // Sadece users tablosundan name ve age bilgilerini çekiyoruz
   useEffect(() => {
-    const loadProgress = async () => {
+    const fetchUserData = async () => {
       if (user) {
         setIsLoadingProgress(true);
         console.log('Kullanıcı ID:', user.id);
         try {
           const { data, error, status, statusText } = await supabase
-            .from('user_progress')
-            .select('current_step, selected_career')
-            .eq('user_id', user.id);
+            .from('users')
+            .select('name, age')
+            .eq('id', user.id);
 
-          console.log('loadProgress Sorgu sonucu:', { data, error, status, statusText });
+          console.log('fetchUserData Sorgu sonucu:', { data, error, status, statusText });
           if (error || !data) {
-            console.error('loadProgress Veri yükleme hatası:', error);
-            setStep('intro');
-            setSelectedPath('frontend');
+            console.error('fetchUserData Veri yükleme hatası:', error);
+            setUserData({ name: '', age: 0 });
           } else if (data.length === 0) {
             console.log('Hiç veri bulunamadı, varsayılan değerler ayarlanıyor');
-            setStep('intro');
-            setSelectedPath('frontend');
+            setUserData({ name: '', age: 0 });
           } else {
-            setStep(data[0].current_step as Step || 'intro');
-            setSelectedPath(data[0].selected_career || 'frontend');
-            if (data.length > 1) {
-              console.warn('Birden fazla kayıt bulundu, ilk kayıt kullanıldı:', user.id);
-            }
+            setUserData({ name: data[0].name || '', age: data[0].age || 0 });
+            console.log('Kullanıcı verileri yüklendi:', { name: data[0].name, age: data[0].age });
           }
         } catch (error) {
-          console.error('loadProgress Beklenmeyen hata:', error);
-          setStep('intro');
-          setSelectedPath('frontend');
+          console.error('fetchUserData Beklenmeyen hata:', error);
+          setUserData({ name: '', age: 0 });
         } finally {
           setIsLoadingProgress(false);
         }
@@ -95,35 +90,8 @@ function HomePage() {
         setIsLoadingProgress(false);
       }
     };
-    loadProgress();
+    fetchUserData();
   }, [user]);
-
-  useEffect(() => {
-    const updateProgress = async () => {
-      if (user) {
-        console.log('updateProgress çalışıyor, Kullanıcı ID:', user.id, 'Step:', step, 'Selected Path:', selectedPath);
-        try {
-          const { error, status, statusText } = await supabase
-            .from('user_progress')
-            .upsert({
-              user_id: user.id,
-              current_step: step,
-              selected_career: selectedPath
-            }, {
-              onConflict: 'user_id'
-            });
-          if (error) {
-            console.error('updateProgress Veri güncelleme hatası:', error, 'Status:', status, 'StatusText:', statusText);
-          } else {
-            console.log('Kullanıcı ilerlemesi güncellendi:', { step, selectedPath });
-          }
-        } catch (error) {
-          console.error('updateProgress Beklenmeyen hata:', error);
-        }
-      }
-    };
-    updateProgress();
-  }, [step, selectedPath, user]);
 
   useEffect(() => {
     console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath, 'Scores:', scores);
