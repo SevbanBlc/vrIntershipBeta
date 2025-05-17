@@ -88,52 +88,56 @@ const calculateMatchPercentage = (
   career: CareerSuggestion,
   isPersonality: boolean = false
 ): number => {
-  if (!personalityScores || !careerScores || !career) return MINIMUM_PERCENTAGE;
+  if (!personalityScores || !careerScores || !career) {
+    console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
+    return MINIMUM_PERCENTAGE;
+  }
 
-  // Giriş skorlarını doğrula
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'creativityDrive'];
   const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'creativity', 'technical'];
-  
-  for (const key of [...personalityKeys, ...skillKeys]) {
-    if (personalityScores[key] > MAX_PERSONALITY_SCORE || careerScores[key] > MAX_CAREER_SCORE) {
-      console.warn(`Skor ${key} için maksimumu aşıyor: personality=${personalityScores[key]}, career=${careerScores[key]}`);
-      return MINIMUM_PERCENTAGE;
-    }
+
+  // Skorları logla
+  console.log(`Hesaplanan kariyer: ${career.title}`);
+  console.log('Personality Scores:', personalityScores);
+  console.log('Career Scores:', careerScores);
+
+  // Skorların sıfır olup olmadığını kontrol et
+  const allPersonalityZero = personalityKeys.every(key => personalityScores[key] === 0);
+  const allSkillsZero = skillKeys.every(key => careerScores[key] === 0);
+  if (allPersonalityZero && allSkillsZero) {
+    console.warn(`Tüm skorlar sıfır: ${career.title}`);
+    return MINIMUM_PERCENTAGE;
   }
 
   // Kişilik eşleşmesini hesapla
   let personalityMatch = personalityKeys.reduce((sum, key) => {
     const score = personalityScores[key as keyof Scores] || 0;
-    const normalizedScore = score / MAX_PERSONALITY_SCORE; // [0,1] aralığına normalize et
+    const normalizedScore = score / MAX_PERSONALITY_SCORE;
     const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
     return sum + normalizedScore * weight;
   }, 0);
-
-  // Kişilik eşleşmesini [0, 100] aralığına normalize et
   personalityMatch *= 100;
+  console.log(`Personality Match: ${personalityMatch}`);
 
-  // Kritik becerilerde düşük skorlar için ceza ile kariyer eşleşmesini hesapla
+  // Kariyer eşleşmesini hesapla
   let careerMatch = 0;
   let criticalSkillPenalty = 0;
-  
   for (const key of skillKeys) {
     const score = careerScores[key as keyof Scores] || 0;
-    const normalizedScore = score / MAX_CAREER_SCORE; // [0,1] aralığına normalize et
+    const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
-    
-    // Kritik beceride düşük skor varsa ceza uygula
-    if (weight > 0.25 && normalizedScore < 0.3) { // Kritik beceri ve düşük skor
+    if (weight > 0.25 && normalizedScore < 0.3) {
       criticalSkillPenalty += (0.3 - normalizedScore) * weight * 50;
     }
   }
-  
-  // Kariyer eşleşmesini [0, 100] aralığına normalize et
   careerMatch = (careerMatch / skillKeys.length) * 100;
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
+  console.log(`Career Match: ${careerMatch}, Penalty: ${criticalSkillPenalty}`);
 
   // Yola özgü skor
   const pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
+  console.log(`Path Score: ${pathScore}`);
 
   // Skorları birleştir
   let finalScore: number;
@@ -142,11 +146,13 @@ const calculateMatchPercentage = (
   } else {
     finalScore = (0.4 * personalityMatch) + (0.5 * careerMatch) + (0.1 * pathScore);
   }
+  console.log(`Final Score (before clamp): ${finalScore}`);
 
   // Nihai skoru sınırlandır
   finalScore = Math.max(finalScore, MINIMUM_PERCENTAGE);
   finalScore = Math.min(finalScore, MAXIMUM_PERCENTAGE);
-  
+  console.log(`Final Score (after clamp): ${finalScore}`);
+
   return Math.round(finalScore);
 };
 
@@ -181,6 +187,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  // Giriş verilerini logla
+  console.log('Answers:', answers);
+  console.log('Selected Path:', selectedPath);
+
   if (!scores || !selectedPath || !answers || answers.length === 0) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
@@ -214,7 +224,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
           personalityScores[key as keyof Scores] += value;
         });
+      } else {
+        console.warn(`Kişilik sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
       }
+    } else {
+      console.warn(`Kişilik sorusu ${index + 1} eksik veya geçersiz.`);
     }
   });
 
@@ -224,24 +238,37 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     frontend: 0, backend: 0, database: 0, security: 0, devops: 0, gamedev: 0, datascience: 0,
   };
   careerAnswers.forEach((answer, index) => {
-    const questionIndex = index;
-    const question = careerQuestions[selectedPath]?.[questionIndex];
+    const question = careerQuestions[selectedPath]?.[index];
     if (question && answer.answer) {
       const selectedAnswer = question.answers.find(a => a.text === answer.answer);
       if (selectedAnswer && selectedAnswer.score) {
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
           careerScores[key as keyof Scores] += value;
         });
+      } else {
+        console.warn(`Kariyer sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
       }
+    } else {
+      console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz.`);
     }
   });
+
+  // Skorları sıfır kontrolü
+  const allScoresZero = Object.values(personalityScores).every(val => val === 0) && Object.values(careerScores).every(val => val === 0);
+  if (allScoresZero) {
+    return (
+      <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
+        Hata: Skorlar hesaplanamadı, lütfen testi tekrar yapın veya cevaplarınızı kontrol edin.
+      </div>
+    );
+  }
 
   const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false);
   const suggestedMatches = careerPaths
     .filter(path => path.id !== selectedPath)
     .map(path => {
       const percentage = calculateMatchPercentage(personalityScores, careerScores, path, true);
-      console.log(`Kariyer: ${path.title}, Yüzde: ${percentage}%`); // Hata ayıklama kaydı
+      console.log(`Kariyer: ${path.title}, Yüzde: ${percentage}%`);
       return { path, percentage };
     })
     .sort((a, b) => b.percentage - a.percentage)
