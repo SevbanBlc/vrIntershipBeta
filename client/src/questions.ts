@@ -1,116 +1,368 @@
-export interface Question {
-  id: number;
-  text: string;
-  answers: { text: string; score: { [key in keyof Scores]?: number } }[];
-}
-
-export interface Scores {
-  communication: number;
-  analysis: number;
-  teamwork: number;
-  innovation: number;
-  technical: number;
-  teamOrientation: number;
-  analyticalMind: number;
-  innovationDrive: number;
-  frontend: number;
-  backend: number;
-  siber: number;
-  datascience: number;
-  devops: number;
-  gamedev: number;
-}
+import { Question } from './types';
 
 export const commonQuestions: Question[] = [
   {
     id: 1,
-    text: 'Ekip ile nasıl çalışırsınız?',
+    text: "Bir problemle karşılaştığında genellikle nasıl bir yaklaşım sergilersin?",
     answers: [
-      { text: 'Yalnız çalışırım', score: { teamOrientation: 3, communication: 3 } },
-      { text: 'İletişim kurarım', score: { teamOrientation: 12, communication: 12 } },
-      { text: 'Liderlik ederim', score: { teamOrientation: 25, communication: 25 } },
-    ],
+      { 
+        text: "Teknik ve analiz odaklı derinlemesine çözüm üretirim", 
+        score: { 
+          analysis: 15, 
+          technical: 10, 
+          analyticalMind: 15, 
+          backend: 12, 
+          siber: 10, 
+          devops: 8,
+          dataScience: 5 
+        } 
+      },
+      { 
+        text: "Yenilikçi ve farklı fikirler geliştirerek çözüm ararım", 
+        score: { 
+          creativity: 15, 
+          technical: 5, 
+          creativityDrive: 15, 
+          frontend: 12, 
+          gamedev: 10, 
+          dataScience: 8 
+        } 
+      },
+      { 
+        text: "Ekip arkadaşlarımla işbirliği yaparak karar veririm", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 15, 
+          backend: 8, 
+          devops: 10, 
+          dataScience: 6
+        } 
+      },
+    ]
   },
   {
     id: 2,
-    text: 'Sorunları nasıl çözersiniz?',
+    text: "Zamanını en verimli nasıl kullanmayı tercih edersin?",
     answers: [
-      { text: 'Basit çözüm ararım', score: { analyticalMind: 3, analysis: 3 } },
-      { text: 'Analiz ederim', score: { analyticalMind: 12, analysis: 12 } },
-      { text: 'Yenilikçi çözüm bulurum', score: { analyticalMind: 25, analysis: 25 } },
-    ],
+      { 
+        text: "Planlı ve organize bir şekilde çalışırım", 
+        score: { 
+          analysis: 12, 
+          technical: 10, 
+          analyticalMind: 12, 
+          backend: 10, 
+          siber: 8,
+          devops: 12, 
+          dataScience: 10
+        } 
+      },
+      { 
+        text: "Esnek bir şekilde, ilham geldiğinde çalışırım", 
+        score: { 
+          creativity: 12, 
+          creativityDrive: 12, 
+          frontend: 10, 
+          gamedev: 8, 
+          dataScience: 6 
+        } 
+      },
+      { 
+        text: "Diğer insanlarla birlikte çalışarak zamanı paylaşırım", 
+        score: { 
+          teamwork: 12, 
+          communication: 10, 
+          teamOrientation: 12, 
+          devops: 10,
+          dataScience: 8
+        } 
+      },
+    ]
   },
   {
     id: 3,
-    text: 'Yeni teknolojiyi nasıl öğrenirsiniz?',
+    text: "Bir projede seni motive eden şey nedir?",
     answers: [
-      { text: 'Zorunda kalırsam öğrenirim', score: { technical: 3, analyticalMind: 3 } },
-      { text: 'Kaynakları kullanırım', score: { technical: 12, analyticalMind: 12 } },
-      { text: 'Hızla uygularım', score: { technical: 25, analyticalMind: 25 } },
-    ],
+      { 
+        text: "Teknik zorlukları aşarak motive olurum", 
+        score: { 
+          technical: 15, 
+          analysis: 10, 
+          analyticalMind: 10, 
+          backend: 12, 
+          siber: 10,
+          devops: 15,
+          dataScience: 8 
+        } 
+      },
+      { 
+        text: "Yenilikçi ve özgün fikirler üretmek beni motive eder", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 10, 
+          frontend: 12, 
+          gamedev: 10,
+          dataScience: 5
+        } 
+      },
+      { 
+        text: "Ekip başarısına katkıda bulunmak beni motive eder", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 10, 
+          devops: 12,
+          dataScience: 10
+        } 
+      },
+    ]
   },
   {
     id: 4,
-    text: 'Yenilikçi fikirler ne kadar önemli?',
+    text: "Hata yaptığında nasıl tepki verirsin?",
     answers: [
-      { text: 'Pek önemli değil', score: { innovationDrive: 3, innovation: 3 } },
-      { text: 'Bazen önemli', score: { innovationDrive: 12, innovation: 12 } },
-      { text: 'Çok önemli', score: { innovationDrive: 25, innovation: 25 } },
-    ],
+      { 
+        text: "Sorunun kökünü analiz edip öğrenirim", 
+        score: { 
+          analysis: 15, 
+          technical: 10, 
+          analyticalMind: 15, 
+          siber: 12, 
+          backend: 10,
+          devops: 12,
+          dataScience: 10
+        } 
+      },
+      { 
+        text: "Yeni bir yaklaşım deneyerek hatayı düzeltirim", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 15, 
+          frontend: 10, 
+          gamedev: 12, 
+          devops: 10,
+          dataScience: 8
+        } 
+      },
+      { 
+        text: "Ekip arkadaşlarımdan destek isterim", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 15, 
+          devops: 10,
+          dataScience: 12
+        } 
+      },
+    ]
   },
   {
     id: 5,
-    text: 'Hata yaptığınızda ne yaparsınız?',
+    text: "Bir projede en çok hangi yönünle öne çıkarsın?",
     answers: [
-      { text: 'Düzeltmeye çalışırım', score: { analyticalMind: 3, communication: 3 } },
-      { text: 'Analiz ederim', score: { analyticalMind: 12, communication: 12 } },
-      { text: 'Hızla önlerim', score: { analyticalMind: 25, communication: 25 } },
-    ],
+      { 
+        text: "Teknik bilgim ve problem çözme yeteneğimle öne çıkarım", 
+        score: { 
+          technical: 15, 
+          analysis: 10, 
+          analyticalMind: 12, 
+          backend: 12, 
+          siber: 10,
+          devops: 15,
+          dataScience: 10
+        } 
+      },
+      { 
+        text: "Yenilikçi düşünce ve yenilikçi fikirlerimle öne çıkarım", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 12, 
+          frontend: 12, 
+          gamedev: 10,
+          dataScience: 8
+        } 
+      },
+      { 
+        text: "İletişim yeteneğim ve ekip çalışmam ile öne çıkarım", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 12, 
+          devops: 10,
+          dataScience: 12
+        } 
+      },
+    ]
   },
   {
     id: 6,
-    text: 'Anlaşmazlıkta ne yaparsınız?',
+    text: "Bir görevi tamamlamak için neye odaklanırsın?",
     answers: [
-      { text: 'Müdahale etmem', score: { teamOrientation: 3, communication: 3 } },
-      { text: 'Uzlaştırırım', score: { teamOrientation: 12, communication: 12 } },
-      { text: 'Çözüm yönetirim', score: { teamOrientation: 25, communication: 25 } },
-    ],
+      { 
+        text: "Doğru ve mantıklı sonuçlara ulaşmaya", 
+        score: { 
+          analysis: 15, 
+          technical: 10, 
+          analyticalMind: 15, 
+          dataScience: 12, 
+          siber: 10 
+        } 
+      },
+      { 
+        text: "Eğlenceli ve dikkat çekici bir çıktıya", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 15, 
+          gamedev: 12, 
+          frontend: 10 
+        } 
+      },
+      { 
+        text: "Herkesin katkıda bulunduğu bir sürece", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 15, 
+          devops: 10 
+        } 
+      },
+    ]
   },
   {
     id: 7,
-    text: 'Zaman yönetimi ne kadar önemli?',
+    text: "Bir ekipte rolün ne olurdu?",
     answers: [
-      { text: 'Pek önemli değil', score: { analyticalMind: 3, analysis: 3 } },
-      { text: 'Bazen önemli', score: { analyticalMind: 12, analysis: 12 } },
-      { text: 'Çok önemli', score: { analyticalMind: 25, analysis: 25 } },
-    ],
+      { 
+        text: "Teknik lider veya uzman", 
+        score: { 
+          technical: 15, 
+          analysis: 10, 
+          analyticalMind: 12, 
+          backend: 12, 
+          siber: 10 
+        } 
+      },
+      { 
+        text: "Yenilikçi fikirlerin öncüsü", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 12, 
+          frontend: 12, 
+          gamedev: 10 
+        } 
+      },
+      { 
+        text: "Koordinatör veya destekleyici", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 12, 
+          devops: 10 
+        } 
+      },
+    ]
   },
   {
     id: 8,
-    text: 'Kullanıcı deneyimi önemli mi?',
+    text: "Yeni bir beceri öğrenmek seni nasıl motive eder?",
     answers: [
-      { text: 'Pek önemli değil', score: { innovationDrive: 3, communication: 3, frontend: 3 } },
-      { text: 'Bazen önemli', score: { innovationDrive: 12, communication: 12, frontend: 12 } },
-      { text: 'Çok önemli', score: { innovationDrive: 25, communication: 25, frontend: 25 } },
-    ],
+      { 
+        text: "Derinlemesine anlamak ve uygulamak", 
+        score: { 
+          technical: 15, 
+          analysis: 10, 
+          analyticalMind: 15, 
+          dataScience: 12, 
+          siber: 10 
+        } 
+      },
+      { 
+        text: "Yenilikçi projelerde kullanma şansı", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 15, 
+          gamedev: 12, 
+          frontend: 10 
+        } 
+      },
+      { 
+        text: "Ekiple paylaşarak geliştirmek", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 15, 
+          devops: 10 
+        } 
+      },
+    ]
   },
   {
     id: 9,
-    text: 'Kod yazarken hata ayıklamayı nasıl yaparsınız?',
+    text: "Bir projede seni en çok zorlayan şey nedir?",
     answers: [
-      { text: 'Kaçınırım', score: { technical: 3, analyticalMind: 3 } },
-      { text: 'Sistematik bulurum', score: { technical: 12, analyticalMind: 12 } },
-      { text: 'Hızla düzeltirim', score: { technical: 25, analyticalMind: 25 } },
-    ],
+      { 
+        text: "Karmaşık teknik sorunlar", 
+        score: { 
+          technical: 15, 
+          analysis: 10, 
+          analyticalMind: 12, 
+          backend: 12, 
+          siber: 10 
+        } 
+      },
+      { 
+        text: "Yenilikçi bir fikir bulamamak", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 12, 
+          frontend: 12, 
+          gamedev: 10 
+        } 
+      },
+      { 
+        text: "Ekip içi iletişim kopuklukları", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 12, 
+          devops: 10 
+        } 
+      },
+    ]
   },
   {
     id: 10,
-    text: 'Proje önceliklerini nasıl belirlersiniz?',
+    text: "Bir projeyi bitirdiğinde nasıl bir hisse kapılırsın?",
     answers: [
-      { text: 'Rastgele seçerim', score: { analyticalMind: 3, analysis: 3 } },
-      { text: 'Plan yaparım', score: { analyticalMind: 12, analysis: 12 } },
-      { text: 'Stratejik belirlerim', score: { analyticalMind: 25, analysis: 25 } },
-    ],
+      { 
+        text: "Her şeyin kusursuz işlediğini görmek", 
+        score: { 
+          technical: 15, 
+          analysis: 10, 
+          analyticalMind: 15, 
+          dataScience: 12, 
+          siber: 10 
+        } 
+      },
+      { 
+        text: "Yenilikçi bir eser ortaya koymak", 
+        score: { 
+          creativity: 15, 
+          creativityDrive: 15, 
+          gamedev: 12, 
+          frontend: 10 
+        } 
+      },
+      { 
+        text: "Ekip olarak başarıyı paylaşmak", 
+        score: { 
+          teamwork: 15, 
+          communication: 10, 
+          teamOrientation: 15, 
+          devops: 10 
+        } 
+      },
+    ]
   },
 ];
 
@@ -118,277 +370,835 @@ export const careerQuestions: { [key: string]: Question[] } = {
   frontend: [
     {
       id: 11,
-      text: 'React’ta durum yönetimi için ne kullanılır?',
+      text: 'React Durum Yönetimi: Aşağıdakilerden hangisi React’te bir bileşenin state’ini güncellemek için kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'useState', score: { frontend: 25, technical: 25, innovation: 15 } },
-        { text: 'localStorage', score: { frontend: 5, technical: 5, innovation: 3 } },
-        { text: 'Redux Saga', score: { frontend: 5, technical: 5, innovation: 3 } },
-      ],
+        { 
+          text: 'A) setState()', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis', 'creativity'], 
+          score: { technical: 15, analysis: 10, creativity: 5, teamwork: 0, communication: 0, frontend: 15 } 
+        },
+        { 
+          text: 'B) updateState()', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, analysis: 0, creativity: 0, teamwork: 0, communication: 0, frontend: 2 } 
+        },
+        { 
+          text: 'C) changeState()', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, analysis: 0, creativity: 0, teamwork: 0, communication: 0, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 12,
-      text: 'CSS Flexbox’un amacı nedir?',
+      text: 'CSS Flexbox ile ilgili: Flex container içinde elemanları yatay hizalamak için hangi property kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Esnek düzen', score: { frontend: 25, technical: 25, innovation: 15 } },
-        { text: 'Animasyon', score: { frontend: 5, technical: 5, innovation: 3 } },
-        { text: 'API isteği', score: { frontend: 5, technical: 5, innovation: 3 } },
-      ],
+        { 
+          text: 'A) justify-content', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'creativity'], 
+          score: { technical: 15, creativity: 10, frontend: 15 } 
+        },
+        { 
+          text: 'B) align-items', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, creativity: 0, frontend: 2 } 
+        },
+        { 
+          text: 'C) flex-direction', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, creativity: 0, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 13,
-      text: 'JavaScript’te event bubbling nedir?',
+      text: 'Bir web sayfasında performans optimizasyonu için hangi yöntemi kullanırsın?',
+      hasAbsoluteCorrect: false,
       answers: [
-        { text: 'Olay yayılması', score: { frontend: 25, technical: 25, analysis: 15 } },
-        { text: 'Olay silinmesi', score: { frontend: 5, technical: 5, analysis: 3 } },
-        { text: 'Olay şifreleme', score: { frontend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Gereksiz CSS ve JS dosyalarını temizlemek', 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, frontend: 12 } 
+        },
+        { 
+          text: 'B) Görselleri sıkıştırmak', 
+          contribution: 0.10,
+          focusAreas: ['technical', 'creativity'], 
+          score: { technical: 15, creativity: 10, frontend: 12 } 
+        },
+        { 
+          text: 'C) Her şeyi olduğu gibi bırakmak', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 14,
-      text: 'Web performansını nasıl artırırsınız?',
+      text: 'HTML5 ile ilgili: Hangi etiket, bir web sayfasında ses dosyalarını gömmek için kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Resim optimizasyonu', score: { frontend: 25, technical: 25, analysis: 15 } },
-        { text: 'Fazla animasyon', score: { frontend: 5, technical: 5, analysis: 3 } },
-        { text: 'Tek yükleme', score: { frontend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) <audio>', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'creativity'], 
+          score: { technical: 15, creativity: 5, frontend: 12 } 
+        },
+        { 
+          text: 'B) <video>', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) <sound>', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 15,
-      text: 'Responsive tasarım için ne kullanılır?',
+      text: 'JavaScript’te olay dinleyicisi (event listener) eklemek için hangi metod kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Media queries', score: { frontend: 25, technical: 25, innovation: 15 } },
-        { text: 'Sabit genişlik', score: { frontend: 5, technical: 5, innovation: 3 } },
-        { text: 'Veritabanı sorgusu', score: { frontend: 5, technical: 5, innovation: 3 } },
-      ],
+        { 
+          text: 'A) addEventListener()', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 5, frontend: 12 } 
+        },
+        { 
+          text: 'B) onClick()', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) listenEvent()', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 16,
-      text: 'Web erişilebilirliği neden önemli?',
+      text: 'Responsive tasarımda hangi birim en çok tercih edilir?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Herkes kullanabilsin', score: { frontend: 25, technical: 25, communication: 15 } },
-        { text: 'Hızlı yükleme', score: { frontend: 5, technical: 5, communication: 3 } },
-        { text: 'Veritabanı güvenliği', score: { frontend: 5, technical: 5, communication: 3 } },
-      ],
+        { 
+          text: 'A) rem', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'creativity'], 
+          score: { technical: 15, creativity: 10, frontend: 12 } 
+        },
+        { 
+          text: 'B) px', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) em', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 17,
-      text: 'TypeScript’in avantajı nedir?',
+      text: 'Bir CSS dosyasında hangi özellik, bir elementin yuvarlak köşelerini ayarlar?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Tip kontrolü', score: { frontend: 25, technical: 25, analysis: 15 } },
-        { text: 'Hızlı yürütme', score: { frontend: 5, technical: 5, analysis: 3 } },
-        { text: 'Az kod yazımı', score: { frontend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) border-radius', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'creativity'], 
+          score: { technical: 15, creativity: 5, frontend: 12 } 
+        },
+        { 
+          text: 'B) border-style', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) border-width', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 18,
-      text: 'React’ta veri aktarımı için ne kullanılır?',
+      text: 'React’te bileşenler arası veri paylaşımı için hangi yöntem tercih edilir?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Props ve Context', score: { frontend: 25, technical: 25, teamwork: 15 } },
-        { text: 'SQL sorguları', score: { frontend: 5, technical: 5, teamwork: 3 } },
-        { text: 'CSS sınıfları', score: { frontend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) Props', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 5, frontend: 12 } 
+        },
+        { 
+          text: 'B) State', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) Context', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 19,
-      text: 'UI/UX’te kullanıcı yolculuğu nedir?',
+      text: 'Bir web sayfasında erişilebilirlik (accessibility) için hangi etiketi kullanırsın?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Etkileşim haritası', score: { frontend: 25, technical: 25, innovation: 15 } },
-        { text: 'Şifreleme yöntemi', score: { frontend: 5, technical: 5, innovation: 3 } },
-        { text: 'Veritabanı erişimi', score: { frontend: 5, technical: 5, innovation: 3 } },
-      ],
+        { 
+          text: 'A) <nav>', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'communication'], 
+          score: { technical: 15, communication: 5, frontend: 12 } 
+        },
+        { 
+          text: 'B) <div>', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) <span>', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
     {
       id: 20,
-      text: 'State yönetimi için popüler araç nedir?',
+      text: 'JavaScript’te bir diziyi sıralamak için hangi metod kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Redux veya Zustand', score: { frontend: 25, technical: 25, teamwork: 15 } },
-        { text: 'MySQL', score: { frontend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Docker', score: { frontend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) sort()', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 5, frontend: 12 } 
+        },
+        { 
+          text: 'B) order()', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+        { 
+          text: 'C) arrange()', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, frontend: 2 } 
+        },
+      ]
     },
   ],
   backend: [
     {
       id: 11,
-      text: 'REST API’de GET ne için kullanılır?',
+      text: 'REST API’lerde GET isteği hangi amaçla kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Veri okuma', score: { backend: 25, technical: 25, teamwork: 15 } },
-        { text: 'Veri güncelleme', score: { backend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Veri silme', score: { backend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) Veriyi okumak için', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 15 } 
+        },
+        { 
+          text: 'B) Veriyi silmek için', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) Veriyi güncellemek için', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 12,
-      text: 'Node.js’de Express ne için kullanılır?',
+      text: 'Bir veritabanında ilişkisel tablo bağlantısı için hangi anahtar kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'API oluşturma', score: { backend: 25, technical: 25, teamwork: 15 } },
-        { text: 'Veritabanı yönetimi', score: { backend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Frontend render', score: { backend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) Foreign Key', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 15 } 
+        },
+        { 
+          text: 'B) Primary Key', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) Unique Key', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 13,
-      text: 'SQL’de JOIN ne yapar?',
+      text: 'Node.js’te bir API endpoint’i oluşturmak için hangi kütüphane tercih edilir?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Tablo birleştirme', score: { backend: 25, technical: 25, analysis: 15 } },
-        { text: 'Tablo silme', score: { backend: 5, technical: 5, analysis: 3 } },
-        { text: 'Veri güncelleme', score: { backend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Express', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 5, backend: 12 } 
+        },
+        { 
+          text: 'B) React', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) MongoDB', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 14,
-      text: 'API güvenliği için ne kullanılır?',
+      text: 'SQL’de verileri filtrelemek için hangi komut kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'JWT ve OAuth', score: { backend: 25, technical: 25, analysis: 15 } },
-        { text: 'CSS şifreleme', score: { backend: 5, technical: 5, analysis: 3 } },
-        { text: 'HTML sanitization', score: { backend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) WHERE', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 12 } 
+        },
+        { 
+          text: 'B) SELECT', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) JOIN', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 15,
-      text: 'Mikroservislerin avantajı nedir?',
+      text: 'Bir API’nin güvenliğini artırmak için hangi yöntem kullanılır?',
+      hasAbsoluteCorrect: false,
       answers: [
-        { text: 'Bağımsız dağıtım', score: { backend: 25, technical: 25, teamwork: 15 } },
-        { text: 'Daha az kod', score: { backend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Hızlı frontend', score: { backend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) Token tabanlı kimlik doğrulama (JWT)', 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 12 } 
+        },
+        { 
+          text: 'B) Açık API bırakmak', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) Sadece şifre kullanmak', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 16,
-      text: 'Backend hata yönetimi için ne kullanılır?',
+      text: 'Node.js’te asenkron işlemler için hangi yapı kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Try-catch', score: { backend: 25, technical: 25, teamwork: 15 } },
-        { text: 'CSS hata kodları', score: { backend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Frontend validasyon', score: { backend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) Promises', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 5, backend: 12 } 
+        },
+        { 
+          text: 'B) Sync', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) Await', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 17,
-      text: 'Docker’ın amacı nedir?',
+      text: 'Veritabanı tasarımı yaparken hangi normalizasyon kuralı uygulanır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Konteynerize etme', score: { backend: 25, technical: 25, teamwork: 15 } },
-        { text: 'Veritabanı yedekleme', score: { backend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Frontend animasyon', score: { backend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) 1. Normal Form (1NF)', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 12 } 
+        },
+        { 
+          text: 'B) 2. Normal Form (2NF)', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) 3. Normal Form (3NF)', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 18,
-      text: 'NoSQL’in SQL’den farkı nedir?',
+      text: 'Bir API’de hata yönetimi için hangi HTTP status kodu kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Esnek şema', score: { backend: 25, technical: 25, analysis: 15 } },
-        { text: 'Az veri saklama', score: { backend: 5, technical: 5, analysis: 3 } },
-        { text: 'Yavaş sorgulama', score: { backend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) 404', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 5, backend: 12 } 
+        },
+        { 
+          text: 'B) 200', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) 300', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 19,
-      text: 'API rate limiting ne için kullanılır?',
+      text: 'Bir sunucuda ölçeklenebilirlik sağlamak için hangi yöntem kullanılır?',
+      hasAbsoluteCorrect: false,
       answers: [
-        { text: 'Aşırı istek önleme', score: { backend: 25, technical: 25, analysis: 15 } },
-        { text: 'Veri şifreleme', score: { backend: 5, technical: 5, analysis: 3 } },
-        { text: 'Frontend hızlandırma', score: { backend: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Load Balancer kullanmak', 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 12 } 
+        },
+        { 
+          text: 'B) Tek sunucu kullanmak', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) Daha fazla RAM eklemek', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
     {
       id: 20,
-      text: 'CI/CD’nin rolü nedir?',
+      text: 'SQL’de birden fazla tabloyu birleştirmek için hangi komut kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Otomatik test ve dağıtım', score: { backend: 25, technical: 25, teamwork: 15 } },
-        { text: 'Veri görselleştirme', score: { backend: 5, technical: 5, teamwork: 3 } },
-        { text: 'Arayüz tasarımı', score: { backend: 5, technical: 5, teamwork: 3 } },
-      ],
+        { 
+          text: 'A) JOIN', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, backend: 12 } 
+        },
+        { 
+          text: 'B) SELECT', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+        { 
+          text: 'C) WHERE', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, backend: 2 } 
+        },
+      ]
     },
   ],
   siber: [
     {
       id: 11,
-      text: 'Penetrasyon testi ne için yapılır?',
+      text: 'Bir sistemde güvenlik açığını tespit etmek için hangi yöntem kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Açık tespiti', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Veritabanı yedekleme', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Arayüz testi', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Penetrasyon testi', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 15, siber: 15 } 
+        },
+        { 
+          text: 'B) Rastgele tarama', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) Kullanıcı görüşleri', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['communication'], 
+          score: { communication: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 12,
-      text: 'SQL Injection nedir?',
+      text: 'Bir ağda kimlik avı (phishing) saldırılarını önlemek için hangi yöntem kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Zararlı sorgu', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'CSS enjeksiyonu', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Render hatası', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Kullanıcı eğitimi ve filtreleme', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'communication'], 
+          score: { technical: 15, communication: 10, siber: 15 } 
+        },
+        { 
+          text: 'B) Şifreyi değiştirmek', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) Hiçbir önlem almamak', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 13,
-      text: 'Ağ güvenliği için ne kullanılır?',
+      text: 'Bir sistemde şifreleme için hangi algoritma yaygın olarak kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'SIEM sistemleri', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'CSS framework’leri', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'HTML şablonları', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) AES', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) MD5', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) SHA-1', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 14,
-      text: 'DDoS saldırısının amacı nedir?',
+      text: 'Bir DDoS saldırısını tespit etmek için hangi araç kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Sistem erişilemezliği', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Veri şifreleme', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Sayfa hızlandırma', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Intrusion Detection System (IDS)', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) Firewall', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) VPN', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 15,
-      text: 'Etik hacking’in amacı nedir?',
+      text: 'Bir sistemde yetkisiz erişimi önlemek için hangi protokol kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Açık düzeltme', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Sistem çökertme', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Veri çalma', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) OAuth', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) HTTP', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) FTP', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 16,
-      text: 'Firewall’un görevi nedir?',
+      text: 'Bir ağda güvenlik duvarı (firewall) neyi amaçlar?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Trafik filtreleme', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Sayfa hızlandırma', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Veri şifreleme', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Yetkisiz trafiği engellemek', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) Hızı artırmak', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) Veriyi şifrelemek', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 17,
-      text: 'Kriptografide public key ne için?',
+      text: 'Bir sistemde veri sızıntısını önlemek için hangi yöntem uygulanır?',
+      hasAbsoluteCorrect: false,
       answers: [
-        { text: 'Şifreleme ve doğrulama', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Veritabanı yedekleme', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Arayüz tasarımı', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Veri şifreleme ve erişim kontrolü', 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) Açık bağlantı bırakmak', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) Yedekleme yapmamak', 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 18,
-      text: 'Zero-day açığı nedir?',
+      text: 'Bir ağda kötü amaçlı yazılımı tespit etmek için hangi araç kullanılır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Yamalanmamış açık', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Yedekleme hatası', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Render sorunu', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Antivirus yazılımı', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) Firewall', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) Router', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 19,
-      text: 'Log analizi ne için yapılır?',
+      text: 'Bir sistemde güvenlik güncellemesi ne zaman yapılmalıdır?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Güvenlik olayı tespiti', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Arayüz tasarımı', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Veritabanı şifreleme', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) Yeni bir tehdit tespit edildiğinde', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) Hiç yapılmamalı', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) Yalnızca sistem çöktüğünde', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
     {
       id: 20,
-      text: 'Phishing nedir?',
+      text: 'Bir ağda izinsiz erişimi engellemek için hangi protokol tercih edilir?',
+      hasAbsoluteCorrect: true,
       answers: [
-        { text: 'Sahte mesajla bilgi çalma', score: { siber: 25, technical: 25, analysis: 15 } },
-        { text: 'Veritabanı optimizasyonu', score: { siber: 5, technical: 5, analysis: 3 } },
-        { text: 'Sayfa tasarımı', score: { siber: 5, technical: 5, analysis: 3 } },
-      ],
+        { 
+          text: 'A) HTTPS', 
+          isCorrect: true, 
+          contribution: 0.10,
+          focusAreas: ['technical', 'analysis'], 
+          score: { technical: 15, analysis: 10, siber: 12 } 
+        },
+        { 
+          text: 'B) HTTP', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+        { 
+          text: 'C) FTP', 
+          isCorrect: false, 
+          contribution: 0.05,
+          focusAreas: ['technical'], 
+          score: { technical: 5, siber: 2 } 
+        },
+      ]
     },
   ],
 };
