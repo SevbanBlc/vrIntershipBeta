@@ -8,11 +8,11 @@ export interface Scores {
   communication: number;
   analysis: number;
   teamwork: number;
-  creativity: number;
+  innovation: number;
   technical: number;
   teamOrientation: number;
   analyticalMind: number;
-  creativityDrive: number;
+  innovationDrive: number;
   frontend: number;
   backend: number;
   siber: number;
@@ -41,7 +41,7 @@ export const commonQuestions: Question[] = [
       { text: 'Temel bir çözüm ararım', score: { analyticalMind: 6, analysis: 6 } },
       { text: 'Sorunu parçalara ayırıp analiz ederim', score: { analyticalMind: 12, analysis: 12 } },
       { text: 'Detaylı bir plan yapar, sistematik çözerim', score: { analyticalMind: 18, analysis: 18 } },
-      { text: 'Yaratıcı ve analitik bir çözüm bulurum', score: { analyticalMind: 25, analysis: 25 } },
+      { text: 'Yenilikçi ve analitik bir çözüm bulurum', score: { analyticalMind: 25, analysis: 25 } },
     ],
   },
   {
@@ -57,13 +57,13 @@ export const commonQuestions: Question[] = [
   },
   {
     id: 4,
-    text: 'Bir projede yaratıcı fikirler üretmek sizin için ne kadar önemli?',
+    text: 'Bir projede yenilikçi fikirler üretmek sizin için ne kadar önemli?',
     answers: [
-      { text: 'Hiç önemli değil', score: { creativityDrive: 3, creativity: 3 } },
-      { text: 'Pek önemli değil', score: { creativityDrive: 6, creativity: 6 } },
-      { text: 'Bazen önemlidir', score: { creativityDrive: 12, creativity: 12 } },
-      { text: 'Çok önemlidir', score: { creativityDrive: 18, creativity: 18 } },
-      { text: 'Her zaman önceliklidir', score: { creativityDrive: 25, creativity: 25 } },
+      { text: 'Hiç önemli değil', score: { innovationDrive: 3, innovation: 3 } },
+      { text: 'Pek önemli değil', score: { innovationDrive: 6, innovation: 6 } },
+      { text: 'Bazen önemlidir', score: { innovationDrive: 12, innovation: 12 } },
+      { text: 'Çok önemlidir', score: { innovationDrive: 18, innovation: 18 } },
+      { text: 'Her zaman önceliklidir', score: { innovationDrive: 25, innovation: 25 } },
     ],
   },
   {
@@ -103,11 +103,11 @@ export const commonQuestions: Question[] = [
     id: 8,
     text: 'Bir projede görsel estetik ne kadar önemlidir?',
     answers: [
-      { text: 'Hiç önemli değil', score: { creativityDrive: 3, creativity: 3, frontend: 3 } },
-      { text: 'Pek önemli değil', score: { creativityDrive: 6, creativity: 6, frontend: 6 } },
-      { text: 'Bazen önemlidir', score: { creativityDrive: 12, creativity: 12, frontend: 12 } },
-      { text: 'Çok önemlidir', score: { creativityDrive: 18, creativity: 18, frontend: 18 } },
-      { text: 'Her zaman önceliklidir', score: { creativityDrive: 25, creativity: 25, frontend: 25 } },
+      { text: 'Hiç önemli değil', score: { innovationDrive: 3, innovation: 3, frontend: 3 } },
+      { text: 'Pek önemli değil', score: { innovationDrive: 6, innovation: 6, frontend: 6 } },
+      { text: 'Bazen önemlidir', score: { innovationDrive: 12, innovation: 12, frontend: 12 } },
+      { text: 'Çok önemlidir', score: { innovationDrive: 18, innovation: 18, frontend: 18 } },
+      { text: 'Her zaman önceliklidir', score: { innovationDrive: 25, innovation: 25, frontend: 25 } },
     ],
   },
   {
@@ -125,11 +125,11 @@ export const commonQuestions: Question[] = [
     id: 10,
     text: 'Bir projede kullanıcı deneyimi ne kadar önemlidir?',
     answers: [
-      { text: 'Hiç önemli değil', score: { creativityDrive: 3, communication: 3, frontend: 3 } },
-      { text: 'Pek önemli değil', score: { creativityDrive: 6, communication: 6, frontend: 6 } },
-      { text: 'Bazen önemlidir', score: { creativityDrive: 12, communication: 12, frontend: 12 } },
-      { text: 'Çok önemlidir', score: { creativityDrive: 18, communication: 18, frontend: 18 } },
-      { text: 'Her zaman önceliklidir', score: { creativityDrive: 25, communication: 25, frontend: 25 } },
+      { text: 'Hiç önemli değil', score: { innovationDrive: 3, communication: 3, frontend: 3 } },
+      { text: 'Pek önemli değil', score: { innovationDrive: 6, communication: 6, frontend: 6 } },
+      { text: 'Bazen önemlidir', score: { innovationDrive: 12, communication: 12, frontend: 12 } },
+      { text: 'Çok önemlidir', score: { innovationDrive: 18, communication: 18, frontend: 18 } },
+      { text: 'Her zaman önceliklidir', score: { innovationDrive: 25, communication: 25, frontend: 25 } },
     ],
   },
 ];
@@ -140,20 +140,20 @@ export const careerQuestions: { [key: string]: Question[] } = {
       id: 11,
       text: 'React’ta bir bileşenin durumunu yönetmek için ne kullanılır?',
       answers: [
-        { text: 'useState Hook’u', score: { frontend: 25, technical: 25, creativity: 15 } },
-        { text: 'setInterval', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'localStorage', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'Redux Saga', score: { frontend: 5, technical: 5, creativity: 3 } },
+        { text: 'useState Hook’u', score: { frontend: 25, technical: 25, innovation: 15 } },
+        { text: 'setInterval', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'localStorage', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'Redux Saga', score: { frontend: 5, technical: 5, innovation: 3 } },
       ],
     },
     {
       id: 12,
       text: 'CSS’te Flexbox’un temel amacı nedir?',
       answers: [
-        { text: 'Esnek düzenler oluşturmak', score: { frontend: 25, technical: 25, creativity: 15 } },
-        { text: 'Animasyonlar oluşturmak', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'Veritabanı yönetimi', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'API istekleri yapmak', score: { frontend: 5, technical: 5, creativity: 3 } },
+        { text: 'Esnek düzenler oluşturmak', score: { frontend: 25, technical: 25, innovation: 15 } },
+        { text: 'Animasyonlar oluşturmak', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'Veritabanı yönetimi', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'API istekleri yapmak', score: { frontend: 5, technical: 5, innovation: 3 } },
       ],
     },
     {
@@ -180,10 +180,10 @@ export const careerQuestions: { [key: string]: Question[] } = {
       id: 15,
       text: 'UI/UX tasarımında “kullanıcı yolculuğu” nedir?',
       answers: [
-        { text: 'Kullanıcının ürünle etkileşim haritası', score: { frontend: 25, technical: 25, creativity: 15 } },
-        { text: 'Kullanıcının şifreleme yöntemi', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'Kullanıcının veritabanı erişimi', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'Kullanıcının kod yazma süreci', score: { frontend: 5, technical: 5, creativity: 3 } },
+        { text: 'Kullanıcının ürünle etkileşim haritası', score: { frontend: 25, technical: 25, innovation: 15 } },
+        { text: 'Kullanıcının şifreleme yöntemi', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'Kullanıcının veritabanı erişimi', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'Kullanıcının kod yazma süreci', score: { frontend: 5, technical: 5, innovation: 3 } },
       ],
     },
     {
@@ -200,10 +200,10 @@ export const careerQuestions: { [key: string]: Question[] } = {
       id: 17,
       text: 'Responsive tasarım için ne kullanılır?',
       answers: [
-        { text: 'Media queries ve esnek birimler', score: { frontend: 25, technical: 25, creativity: 15 } },
-        { text: 'Sadece sabit genişlikler', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'Veritabanı sorguları', score: { frontend: 5, technical: 5, creativity: 3 } },
-        { text: 'API endpoint’leri', score: { frontend: 5, technical: 5, creativity: 3 } },
+        { text: 'Media queries ve esnek birimler', score: { frontend: 25, technical: 25, innovation: 15 } },
+        { text: 'Sadece sabit genişlikler', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'Veritabanı sorguları', score: { frontend: 5, technical: 5, innovation: 3 } },
+        { text: 'API endpoint’leri', score: { frontend: 5, technical: 5, innovation: 3 } },
       ],
     },
     {
