@@ -25,7 +25,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'frontend',
     title: 'Frontend Geliştirici',
     description: 'Kullanıcı arayüzleri ve web uygulamaları geliştirme.',
-    skillWeights: { communication: 0.2, analysis: 0.2, teamwork: 0.2, creativity: 0.3, technical: 0.2 },
+    skillWeights: { communication: 0.2, analysis: 0.2, teamwork: 0.2, creativity: 0.35, technical: 0.25 },
     personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.2, creativityDrive: 0.6 },
     requiredSkills: ['React', 'CSS', 'JavaScript', 'UI/UX'],
     growthAreas: ['TypeScript', 'Performance Optimizasyonu'],
@@ -115,8 +115,8 @@ const calculateMatchPercentage = (
     const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
-    if (weight > 0.25 && normalizedScore < 0.3) {
-      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 50; // Cezayı hafifleştirdim
+    if (weight > 0.25 && normalizedScore < 0.25) {
+      criticalSkillPenalty += (0.25 - normalizedScore) * weight * 30; // Daha hafif ceza
     }
   }
   careerMatch *= 100;
@@ -131,9 +131,9 @@ const calculateMatchPercentage = (
   if (careerOnly) {
     finalScore = careerMatch; // Sadece careerScores kullan
   } else if (isPersonality) {
-    finalScore = 0.4 * personalityMatch + 0.3 * pathScore + 0.3 * careerMatch;
+    finalScore = 0.35 * personalityMatch + 0.3 * pathScore + 0.35 * careerMatch;
   } else {
-    finalScore = 0.2 * personalityMatch + 0.7 * careerMatch + 0.1 * pathScore;
+    finalScore = 0.15 * personalityMatch + 0.75 * careerMatch + 0.1 * pathScore;
   }
 
   finalScore = Math.max(finalScore, 20); // Minimum %20
@@ -219,11 +219,12 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   personalityAnswers.forEach((answer, index) => {
     const question = commonQuestions[index];
     if (question && answer.answer) {
-      const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
+      const selectedAnswer = question.answers.find((a) => a.text.toLowerCase() === answer.answer.toLowerCase());
       if (selectedAnswer && selectedAnswer.score) {
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
           personalityScores[key as keyof Scores] += value;
         });
+        console.log(`Kişilik sorusu ${index + 1}: Cevap="${answer.answer}", Puan=`, selectedAnswer.score);
       } else {
         console.warn(`Kişilik sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
       }
@@ -255,7 +256,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     careerAnswers.forEach((answer, index) => {
       const question = careerQuestions[selectedPath]?.[index];
       if (question && answer.answer) {
-        const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
+        const selectedAnswer = question.answers.find((a) => a.text.toLowerCase() === answer.answer.toLowerCase());
         if (selectedAnswer && selectedAnswer.score) {
           Object.entries(selectedAnswer.score).forEach(([key, value]) => {
             careerScores[key as keyof Scores] += value;
