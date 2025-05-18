@@ -51,34 +51,34 @@ const careerPaths: CareerSuggestion[] = [
   {
     id: 'datascience',
     title: 'Veri Bilimci',
-    description: 'Veri analizi, makine öğrenimi modelleri geliştirme ve iş öngörüleri çıkarma.',
-    skillWeights: { communication: 0.2, analysis: 0.4, teamwork: 0.1, creativity: 0.2, technical: 0.1 },
+    description: 'Veri analizi ve makine öğrenimi modelleri geliştirme.',
+    skillWeights: { communication: 0.1, analysis: 0.5, teamwork: 0.1, creativity: 0.1, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.7, creativityDrive: 0.1 },
-    requiredSkills: ['Python', 'R', 'SQL', 'Makine Öğrenimi'],
-    growthAreas: ['Derin Öğrenme', 'Büyük Veri Teknolojileri'],
+    requiredSkills: ['Python', 'Pandas', 'Makine Öğrenimi', 'Veri Görselleştirme'],
+    growthAreas: ['Derin Öğrenme', 'Big Data'],
   },
   {
     id: 'devops',
     title: 'DevOps Mühendisi',
-    description: 'Süreç otomasyonu, altyapı yönetimi ve sürekli entegrasyon/dağıtım sistemleri kurma.',
-    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.25, creativity: 0.05, technical: 0.4 },
-    personalityWeights: { teamOrientation: 0.35, analyticalMind: 0.45, creativityDrive: 0.2 },
+    description: 'Sistem otomasyonu ve altyapı yönetimi.',
+    skillWeights: { communication: 0.15, analysis: 0.2, teamwork: 0.2, creativity: 0.05, technical: 0.4 },
+    personalityWeights: { teamOrientation: 0.4, analyticalMind: 0.4, creativityDrive: 0.2 },
     requiredSkills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'],
-    growthAreas: ['Infrastructure as Code', 'Güvenlik Otomasyonu'],
+    growthAreas: ['Bulut Güvenliği', 'Otomasyon Araçları'],
   },
   {
     id: 'gamedev',
     title: 'Oyun Geliştirici',
-    description: 'Video oyunları tasarlayıp geliştirme, grafik ve oynanış mekanikleri oluşturma.',
+    description: 'Oyun tasarımı ve programlama.',
     skillWeights: { communication: 0.1, analysis: 0.1, teamwork: 0.2, creativity: 0.4, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.2, creativityDrive: 0.5 },
-    requiredSkills: ['Unity', 'C#', '3D Modelleme', 'Oyun Fiziği'],
-    growthAreas: ['Sanal Gerçeklik', 'Çok Oyunculu Sistemler'],
+    requiredSkills: ['Unity', 'C#', 'Oyun Fiziği', '3D Modelleme'],
+    growthAreas: ['Sanal Gerçeklik', 'Oyun Optimizasyonu'],
   },
 ];
 
-const MAX_PERSONALITY_SCORE = 100;
-const MAX_CAREER_SCORE = 100;
+const MAX_PERSONALITY_SCORE = 200;
+const MAX_CAREER_SCORE = 200;
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -249,7 +249,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     gamedev: 0,
   };
 
-  // Kariyer soruları eksikse hata kontrolü
   const hasCareerQuestions = careerQuestions[selectedPath] && careerQuestions[selectedPath].length > 0;
   if (hasCareerQuestions) {
     careerAnswers.forEach((answer, index) => {
@@ -282,10 +281,9 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     );
   }
 
-  // Eksik sorular için uyumluluk puanı hesaplaması
   const selectedMatchPercentage = hasCareerQuestions
     ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
-    : 20; // Sorular yoksa varsayılan düşük puan
+    : 20;
 
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
@@ -297,18 +295,15 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     .slice(0, 3);
 
   const areasForImprovement = [];
-  if (careerScores.communication < 30) areasForImprovement.push('İletişim');
-  if (careerScores.analysis < 30) areasForImprovement.push('Analitik Düşünme');
-  if (careerScores.teamwork < 30) areasForImprovement.push('Ekip Çalışması');
-  if (careerScores.creativity < 30) areasForImprovement.push('Yenilikçilik');
-  if (careerScores.technical < 30) areasForImprovement.push('Teknik Beceriler');
+  if (careerScores.communication < 60) areasForImprovement.push('İletişim');
+  if (careerScores.analysis < 60) areasForImprovement.push('Analitik Düşünme');
+  if (careerScores.teamwork < 60) areasForImprovement.push('Ekip Çalışması');
+  if (careerScores.creativity < 60) areasForImprovement.push('Yenilikçilik');
+  if (careerScores.technical < 60) areasForImprovement.push('Teknik Beceriler');
 
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
-    if (['datascience', 'gamedev'].includes(pathId)) {
-      setModalMessage(`${pathTitle} beta sürümünde mevcut değildir.`);
-      setShowModal(true);
-    } else if (pathId === 'devops') {
-      setModalMessage('DevOps Mühendisi beta sürümünde mevcut değildir.');
+    if (['datascience', 'devops', 'gamedev'].includes(pathId)) {
+      setModalMessage(`${pathTitle} şu anda beta sürümünde desteklenmemektedir. Lütfen başka bir kariyer yolu seçin.`);
       setShowModal(true);
     } else {
       setSelectedCompany(pathTitle);
@@ -336,7 +331,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           <h3 className="text-lg font-semibold mb-2">Seçtiğiniz Dal: {selectedPathData.title}</h3>
           {!hasCareerQuestions && (
             <p className="mb-4 text-red-500">
-              Uyarı: Bu dal için sorular henüz tanımlı değil, uyumluluk puanı sınırlı verilere dayanıyor.
+              Uyarı: Bu dal için sorular beta sürümünde desteklenmiyor, uyumluluk puanı sınırlı verilere dayanıyor.
             </p>
           )}
           {areasForImprovement.length > 0 ? (
