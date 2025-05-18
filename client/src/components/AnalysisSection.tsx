@@ -8,7 +8,7 @@ interface CareerSuggestion {
   title: string;
   description: string;
   skillWeights: { [K in keyof Scores]?: number };
-  personalityWeights: { teamOrientation?: number; analyticalMind?: number; creativityDrive?: number };
+  personalityWeights: { teamOrientation?: number; analyticalMind?: number; innovationDrive?: number };
   requiredSkills: string[];
   growthAreas: string[];
 }
@@ -25,8 +25,8 @@ const careerPaths: CareerSuggestion[] = [
     id: 'frontend',
     title: 'Frontend Geliştirici',
     description: 'Kullanıcı arayüzleri ve web uygulamaları geliştirme.',
-    skillWeights: { communication: 0.2, analysis: 0.2, teamwork: 0.2, creativity: 0.35, technical: 0.25 },
-    personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.2, creativityDrive: 0.6 },
+    skillWeights: { communication: 0.2, analysis: 0.2, teamwork: 0.2, innovation: 0.35, technical: 0.25 },
+    personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.2, innovationDrive: 0.6 },
     requiredSkills: ['React', 'CSS', 'JavaScript', 'UI/UX'],
     growthAreas: ['TypeScript', 'Performance Optimizasyonu'],
   },
@@ -34,8 +34,8 @@ const careerPaths: CareerSuggestion[] = [
     id: 'backend',
     title: 'Backend Geliştirici',
     description: 'Sunucu tarafı sistemler ve API geliştirme.',
-    skillWeights: { communication: 0.15, analysis: 0.3, teamwork: 0.15, creativity: 0.1, technical: 0.3 },
-    personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.5, creativityDrive: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.3, teamwork: 0.15, innovation: 0.1, technical: 0.3 },
+    personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.5, innovationDrive: 0.2 },
     requiredSkills: ['Node.js', 'Express', 'SQL', 'API Tasarımı'],
     growthAreas: ['Microservices', 'Docker'],
   },
@@ -43,8 +43,8 @@ const careerPaths: CareerSuggestion[] = [
     id: 'siber',
     title: 'Siber Güvenlik Uzmanı',
     description: 'Sistem güvenliği ve güvenlik testleri.',
-    skillWeights: { communication: 0.15, analysis: 0.35, teamwork: 0.15, creativity: 0.1, technical: 0.25 },
-    personalityWeights: { teamOrientation: 0.1, analyticalMind: 0.8, creativityDrive: 0.1 },
+    skillWeights: { communication: 0.15, analysis: 0.35, teamwork: 0.15, innovation: 0.1, technical: 0.25 },
+    personalityWeights: { teamOrientation: 0.1, analyticalMind: 0.8, innovationDrive: 0.1 },
     requiredSkills: ['Ağ Güvenliği', 'Penetrasyon Testi', 'Kriptografi'],
     growthAreas: ['Etik Hacking', 'Güvenlik Otomasyonu'],
   },
@@ -52,8 +52,8 @@ const careerPaths: CareerSuggestion[] = [
     id: 'datascience',
     title: 'Veri Bilimci',
     description: 'Veri analizi ve makine öğrenimi modelleri geliştirme.',
-    skillWeights: { communication: 0.15, analysis: 0.4, teamwork: 0.15, creativity: 0.1, technical: 0.2 },
-    personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.7, creativityDrive: 0.1 },
+    skillWeights: { communication: 0.15, analysis: 0.4, teamwork: 0.15, innovation: 0.1, technical: 0.2 },
+    personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.7, innovationDrive: 0.1 },
     requiredSkills: ['Python', 'Pandas', 'Makine Öğrenimi', 'Veri Görselleştirme'],
     growthAreas: ['Derin Öğrenme', 'Big Data'],
   },
@@ -61,8 +61,8 @@ const careerPaths: CareerSuggestion[] = [
     id: 'devops',
     title: 'DevOps Mühendisi',
     description: 'Sistem otomasyonu ve altyapı yönetimi.',
-    skillWeights: { communication: 0.15, analysis: 0.2, teamwork: 0.2, creativity: 0.1, technical: 0.35 },
-    personalityWeights: { teamOrientation: 0.4, analyticalMind: 0.4, creativityDrive: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.2, teamwork: 0.2, innovation: 0.1, technical: 0.35 },
+    personalityWeights: { teamOrientation: 0.4, analyticalMind: 0.4, innovationDrive: 0.2 },
     requiredSkills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'],
     growthAreas: ['Bulut Güvenliği', 'Otomasyon Araçları'],
   },
@@ -70,15 +70,15 @@ const careerPaths: CareerSuggestion[] = [
     id: 'gamedev',
     title: 'Oyun Geliştirici',
     description: 'Oyun tasarımı ve programlama.',
-    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.2, creativity: 0.35, technical: 0.15 },
-    personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.2, creativityDrive: 0.5 },
+    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.2, innovation: 0.35, technical: 0.15 },
+    personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.2, innovationDrive: 0.5 },
     requiredSkills: ['Unity', 'C#', 'Oyun Fiziği', '3D Modelleme'],
     growthAreas: ['Sanal Gerçeklik', 'Oyun Optimizasyonu'],
   },
 ];
 
-const MAX_PERSONALITY_SCORE = 360; // 10 soru x (27+22+27+22+18) * 1.8
-const MAX_CAREER_SCORE = 450; // 10 soru x (54+36+27) * 1.8
+const MAX_PERSONALITY_SCORE = 360; // 10 x (27+22+27+22+18)
+const MAX_CAREER_SCORE = 450; // 10 x (54+36+27)
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -92,8 +92,8 @@ const calculateMatchPercentage = (
     return 19; // Minimum %19
   }
 
-  const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'creativityDrive'];
-  const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'creativity', 'technical'];
+  const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'innovationDrive'];
+  const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'innovation', 'technical'];
 
   console.log(`Hesaplanan kariyer: ${career.title}`, { personalityScores, careerScores });
 
@@ -109,41 +109,50 @@ const calculateMatchPercentage = (
   }
 
   let careerMatch = 0;
+  let criticalSkillPenalty = 0;
   for (const key of skillKeys) {
     const score = careerScores[key] || 0;
     const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
+    if (weight > 0.25 && normalizedScore < 0.25) {
+      criticalSkillPenalty += (0.25 - normalizedScore) * weight * 10; // Hafif ceza
+    }
   }
   careerMatch *= 100;
+  careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
   let pathScore = 0;
   if (!careerOnly && personalityScores) {
-    pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
+    pathScore = (careerScores[career.id as keyof Scores] || 0) / MAX_CAREER_SCORE * 100;
   }
 
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch;
+    rawScore = careerMatch * 1.2; // Seçilen yol için careerMatch’i artır
   } else if (isPersonality) {
-    rawScore = 0.35 * personalityMatch + 0.3 * pathScore + 0.35 * careerMatch;
+    rawScore = 0.3 * personalityMatch + 0.3 * pathScore + 0.4 * careerMatch;
   } else {
-    rawScore = 0.15 * personalityMatch + 0.75 * careerMatch + 0.1 * pathScore;
+    rawScore = 0.1 * personalityMatch + 0.8 * careerMatch + 0.1 * pathScore;
   }
 
   // Yüzdelik ölçeklendirme: %19 (min) - %93 (max)
-  const minScore = 90 + 140; // 10 x 9 + 10 x 14
-  const maxScore = 270 + 540; // 10 x 27 + 10 x 54
+  const minScore = 230; // 10 x 9 + 10 x 14
+  const maxScore = 810; // 10 x 27 + 10 x 54
   const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (93 - 19) + 19;
 
-  // Sınır kontrolü
-  const finalScore = Math.max(19, Math.min(93, scaledScore));
+  // Seçilen yol için minimum %60, diğerleri için çeşitlilik
+  const finalScore = careerOnly
+    ? Math.max(60, Math.min(93, scaledScore)) // Seçilen yol için min %60
+    : Math.max(19, Math.min(50, scaledScore)); // Alternatif yollar %19-50
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
     careerMatch,
     pathScore,
     rawScore,
+    scaledScore,
+    criticalSkillPenalty,
   });
 
   return Math.round(finalScore);
@@ -181,6 +190,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   console.log('Answers:', answers);
   console.log('Selected Path:', selectedPath);
+  console.log('Input Scores:', scores);
 
   if (!scores || !selectedPath || !answers || answers.length === 0) {
     return (
@@ -204,11 +214,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     communication: 0,
     analysis: 0,
     teamwork: 0,
-    creativity: 0,
+    innovation: 0,
     technical: 0,
     teamOrientation: 0,
     analyticalMind: 0,
-    creativityDrive: 0,
+    innovationDrive: 0,
     frontend: 0,
     backend: 0,
     siber: 0,
@@ -222,7 +232,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       const selectedAnswer = question.answers.find((a) => a.text.toLowerCase() === answer.answer.toLowerCase());
       if (selectedAnswer && selectedAnswer.score) {
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-          personalityScores[key as keyof Scores] += value;
+          personalityScores[key as keyof Scores] = (personalityScores[key as keyof Scores] || 0) + value;
         });
         console.log(`Kişilik sorusu ${index + 1}: Cevap="${answer.answer}", Puan=`, selectedAnswer.score);
       } else {
@@ -238,11 +248,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     communication: 0,
     analysis: 0,
     teamwork: 0,
-    creativity: 0,
+    innovation: 0,
     technical: 0,
     teamOrientation: 0,
     analyticalMind: 0,
-    creativityDrive: 0,
+    innovationDrive: 0,
     frontend: 0,
     backend: 0,
     siber: 0,
@@ -259,7 +269,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
         const selectedAnswer = question.answers.find((a) => a.text.toLowerCase() === answer.answer.toLowerCase());
         if (selectedAnswer && selectedAnswer.score) {
           Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-            careerScores[key as keyof Scores] += value;
+            careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + value;
           });
           console.log(`Kariyer sorusu ${index + 1}: Cevap="${answer.answer}", Puan=`, selectedAnswer.score);
         } else {
@@ -291,18 +301,18 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
-    .map((path) => ({
+    .map((path, index) => ({
       path,
-      percentage: calculateMatchPercentage(personalityScores, careerScores, path, true),
+      percentage: calculateMatchPercentage(personalityScores, careerScores, path, true) + index * 5, // Farklılaşma için küçük artış
     }))
     .sort((a, b) => b.percentage - a.percentage)
     .slice(0, 3);
 
   const areasForImprovement = [];
-  if (careerScores.communication < 108) areasForImprovement.push('İletişim'); // 60 * 1.8
+  if (careerScores.communication < 108) areasForImprovement.push('İletişim');
   if (careerScores.analysis < 108) areasForImprovement.push('Analitik Düşünme');
   if (careerScores.teamwork < 108) areasForImprovement.push('Ekip Çalışması');
-  if (careerScores.creativity < 108) areasForImprovement.push('Yenilikçilik');
+  if (careerScores.innovation < 108) areasForImprovement.push('Yenilikçilik');
   if (careerScores.technical < 108) areasForImprovement.push('Teknik Beceriler');
 
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
