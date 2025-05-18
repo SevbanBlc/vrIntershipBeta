@@ -248,26 +248,33 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     devops: 0,
     gamedev: 0,
   };
-  careerAnswers.forEach((answer, index) => {
-    const question = careerQuestions[selectedPath]?.[index];
-    if (question && answer.answer) {
-      const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
-      if (selectedAnswer && selectedAnswer.score) {
-        Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-          careerScores[key as keyof Scores] += value;
-        });
+
+  // Kariyer soruları eksikse hata kontrolü
+  const hasCareerQuestions = careerQuestions[selectedPath] && careerQuestions[selectedPath].length > 0;
+  if (hasCareerQuestions) {
+    careerAnswers.forEach((answer, index) => {
+      const question = careerQuestions[selectedPath]?.[index];
+      if (question && answer.answer) {
+        const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
+        if (selectedAnswer && selectedAnswer.score) {
+          Object.entries(selectedAnswer.score).forEach(([key, value]) => {
+            careerScores[key as keyof Scores] += value;
+          });
+        } else {
+          console.warn(`Kariyer sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
+        }
       } else {
-        console.warn(`Kariyer sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
+        console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz.`);
       }
-    } else {
-      console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz.`);
-    }
-  });
+    });
+  } else {
+    console.warn(`Seçilen dal için kariyer soruları tanımlı değil: ${selectedPath}`);
+  }
 
   const allScoresZero =
     Object.values(personalityScores).every((val) => val === 0) &&
     Object.values(careerScores).every((val) => val === 0);
-  if (allScoresZero) {
+  if (allScoresZero && hasCareerQuestions) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
         Hata: Skorlar hesaplanamadı, lütfen testi tekrar yapın.
@@ -275,7 +282,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     );
   }
 
-  const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true);
+  // Eksik sorular için uyumluluk puanı hesaplaması
+  const selectedMatchPercentage = hasCareerQuestions
+    ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
+    : 20; // Sorular yoksa varsayılan düşük puan
+
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
     .map((path) => ({
@@ -323,6 +334,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       <div className="flex flex-col gap-6">
         <div className="border border-gray-300 rounded-lg p-4">
           <h3 className="text-lg font-semibold mb-2">Seçtiğiniz Dal: {selectedPathData.title}</h3>
+          {!hasCareerQuestions && (
+            <p className="mb-4 text-red-500">
+              Uyarı: Bu dal için sorular henüz tanımlı değil, uyumluluk puanı sınırlı verilere dayanıyor.
+            </p>
+          )}
           {areasForImprovement.length > 0 ? (
             <div className="mb-4">
               <h4 className="font-semibold mb-2">Geliştirilmesi Gereken Alanlar:</h4>
@@ -362,14 +378,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                 </text>
               </svg>
             </div>
-          </div>
-          <div className="mb-4">
-            <h4 className="font-semibold">Skor Detayları</h4>
-            <p>Teknik Beceriler: {careerScores.technical}/100</p>
-            <p>Analitik Düşünme: {careerScores.analysis}/100</p>
-            <p>Ekip Çalışması: {careerScores.teamwork}/100</p>
-            <p>Yaratıcılık: {careerScores.creativity}/100</p>
-            <p>İletişim: {careerScores.communication}/100</p>
           </div>
           <div className="flex gap-4">
             <button
