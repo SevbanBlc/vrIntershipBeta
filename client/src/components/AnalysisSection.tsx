@@ -25,7 +25,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'frontend',
     title: 'Frontend Geliştirici',
     description: 'Kullanıcı arayüzleri ve web uygulamaları geliştirme.',
-    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.15, creativity: 0.35, technical: 0.2 },
+    skillWeights: { communication: 0.2, analysis: 0.2, teamwork: 0.2, creativity: 0.3, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.2, creativityDrive: 0.6 },
     requiredSkills: ['React', 'CSS', 'JavaScript', 'UI/UX'],
     growthAreas: ['TypeScript', 'Performance Optimizasyonu'],
@@ -34,7 +34,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'backend',
     title: 'Backend Geliştirici',
     description: 'Sunucu tarafı sistemler ve API geliştirme.',
-    skillWeights: { communication: 0.1, analysis: 0.3, teamwork: 0.15, creativity: 0.05, technical: 0.4 },
+    skillWeights: { communication: 0.15, analysis: 0.3, teamwork: 0.15, creativity: 0.1, technical: 0.3 },
     personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.5, creativityDrive: 0.2 },
     requiredSkills: ['Node.js', 'Express', 'SQL', 'API Tasarımı'],
     growthAreas: ['Microservices', 'Docker'],
@@ -43,7 +43,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'siber',
     title: 'Siber Güvenlik Uzmanı',
     description: 'Sistem güvenliği ve güvenlik testleri.',
-    skillWeights: { communication: 0.1, analysis: 0.4, teamwork: 0.1, creativity: 0.1, technical: 0.3 },
+    skillWeights: { communication: 0.15, analysis: 0.35, teamwork: 0.15, creativity: 0.1, technical: 0.25 },
     personalityWeights: { teamOrientation: 0.1, analyticalMind: 0.8, creativityDrive: 0.1 },
     requiredSkills: ['Ağ Güvenliği', 'Penetrasyon Testi', 'Kriptografi'],
     growthAreas: ['Etik Hacking', 'Güvenlik Otomasyonu'],
@@ -52,7 +52,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'datascience',
     title: 'Veri Bilimci',
     description: 'Veri analizi ve makine öğrenimi modelleri geliştirme.',
-    skillWeights: { communication: 0.1, analysis: 0.5, teamwork: 0.1, creativity: 0.1, technical: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.4, teamwork: 0.15, creativity: 0.1, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.7, creativityDrive: 0.1 },
     requiredSkills: ['Python', 'Pandas', 'Makine Öğrenimi', 'Veri Görselleştirme'],
     growthAreas: ['Derin Öğrenme', 'Big Data'],
@@ -61,7 +61,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'devops',
     title: 'DevOps Mühendisi',
     description: 'Sistem otomasyonu ve altyapı yönetimi.',
-    skillWeights: { communication: 0.15, analysis: 0.2, teamwork: 0.2, creativity: 0.05, technical: 0.4 },
+    skillWeights: { communication: 0.15, analysis: 0.2, teamwork: 0.2, creativity: 0.1, technical: 0.35 },
     personalityWeights: { teamOrientation: 0.4, analyticalMind: 0.4, creativityDrive: 0.2 },
     requiredSkills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'],
     growthAreas: ['Bulut Güvenliği', 'Otomasyon Araçları'],
@@ -70,7 +70,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'gamedev',
     title: 'Oyun Geliştirici',
     description: 'Oyun tasarımı ve programlama.',
-    skillWeights: { communication: 0.1, analysis: 0.1, teamwork: 0.2, creativity: 0.4, technical: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.2, creativity: 0.35, technical: 0.15 },
     personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.2, creativityDrive: 0.5 },
     requiredSkills: ['Unity', 'C#', 'Oyun Fiziği', '3D Modelleme'],
     growthAreas: ['Sanal Gerçeklik', 'Oyun Optimizasyonu'],
@@ -115,8 +115,8 @@ const calculateMatchPercentage = (
     const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
-    if (weight > 0.2 && normalizedScore < 0.4) {
-      criticalSkillPenalty += (0.4 - normalizedScore) * weight * 100;
+    if (weight > 0.25 && normalizedScore < 0.3) {
+      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 50; // Cezayı hafifleştirdim
     }
   }
   careerMatch *= 100;
@@ -131,9 +131,9 @@ const calculateMatchPercentage = (
   if (careerOnly) {
     finalScore = careerMatch; // Sadece careerScores kullan
   } else if (isPersonality) {
-    finalScore = 0.5 * personalityMatch + 0.3 * pathScore + 0.2 * careerMatch;
+    finalScore = 0.4 * personalityMatch + 0.3 * pathScore + 0.3 * careerMatch;
   } else {
-    finalScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
+    finalScore = 0.2 * personalityMatch + 0.7 * careerMatch + 0.1 * pathScore;
   }
 
   finalScore = Math.max(finalScore, 20); // Minimum %20
@@ -260,6 +260,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           Object.entries(selectedAnswer.score).forEach(([key, value]) => {
             careerScores[key as keyof Scores] += value;
           });
+          console.log(`Kariyer sorusu ${index + 1}: Cevap="${answer.answer}", Puan=`, selectedAnswer.score);
         } else {
           console.warn(`Kariyer sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
         }
@@ -305,7 +306,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
     if (['datascience', 'devops', 'gamedev'].includes(pathId)) {
-      setModalMessage(`${pathTitle} şu anda beta sürümünde desteklenmemektedir. Lütfen başka bir kariyer yolu seçin.`);
+      setModalMessage(`${pathTitle} beta sürümünde henüz aktif değil. Yakında desteklenecek, başka bir dal seçmeyi deneyin!`);
       setShowModal(true);
     } else {
       setSelectedCompany(pathTitle);
