@@ -897,7 +897,7 @@ export const careerQuestions: { [key: string]: Question[] } = {
           score: { backend: 5, technical: 3, analysis: 3 },
         },
       ],
-    ],
+    },
   ],
   siber: [
     {
@@ -1176,6 +1176,6 @@ export const careerQuestions: { [key: string]: Question[] } = {
           score: { siber: 5, technical: 3, analysis: 3 },
         },
       ],
-    ],
+    },
   ],
 };
