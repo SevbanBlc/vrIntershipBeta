@@ -78,7 +78,7 @@ const careerPaths: CareerSuggestion[] = [
 ];
 
 const MAX_PERSONALITY_SCORE = 200;
-const MAX_CAREER_SCORE = 200;
+const MAX_CAREER_SCORE = 250; // 10 soru x maksimum 25 puan
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -119,7 +119,7 @@ const calculateMatchPercentage = (
       criticalSkillPenalty += (0.4 - normalizedScore) * weight * 100;
     }
   }
-  careerMatch = (careerMatch / skillKeys.length) * 100;
+  careerMatch *= 100;
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
   let pathScore = 0;
@@ -129,15 +129,15 @@ const calculateMatchPercentage = (
 
   let finalScore: number;
   if (careerOnly) {
-    finalScore = careerMatch;
+    finalScore = careerMatch; // Sadece careerScores kullan
   } else if (isPersonality) {
     finalScore = 0.5 * personalityMatch + 0.3 * pathScore + 0.2 * careerMatch;
   } else {
     finalScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
   }
 
-  finalScore = Math.max(finalScore, 20);
-  finalScore = Math.min(finalScore, 95);
+  finalScore = Math.max(finalScore, 20); // Minimum %20
+  finalScore = Math.min(finalScore, 95); // Maksimum %95
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
@@ -231,6 +231,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       console.warn(`Kişilik sorusu ${index + 1} eksik veya geçersiz.`);
     }
   });
+  console.log('Personality Scores:', personalityScores);
 
   const careerScores: Scores = {
     communication: 0,
@@ -269,6 +270,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   } else {
     console.warn(`Seçilen dal için kariyer soruları tanımlı değil: ${selectedPath}`);
   }
+  console.log('Career Scores:', careerScores);
 
   const allScoresZero =
     Object.values(personalityScores).every((val) => val === 0) &&
