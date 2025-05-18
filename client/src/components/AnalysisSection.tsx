@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Scores } from '../types';
 import { commonQuestions, careerQuestions } from '../questions';
@@ -25,7 +25,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'frontend',
     title: 'Frontend Geliştirici',
     description: 'Kullanıcı arayüzleri ve web uygulamaları geliştirme.',
-    skillWeights: { communication: 0.2, analysis: 0.1, teamwork: 0.15, creativity: 0.35, technical: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.15, creativity: 0.35, technical: 0.2 },
     personalityWeights: { teamOrientation: 0.2, analyticalMind: 0.2, creativityDrive: 0.6 },
     requiredSkills: ['React', 'CSS', 'JavaScript', 'UI/UX'],
     growthAreas: ['TypeScript', 'Performance Optimizasyonu'],
@@ -34,7 +34,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'backend',
     title: 'Backend Geliştirici',
     description: 'Sunucu tarafı sistemler ve API geliştirme.',
-    skillWeights: { communication: 0.1, analysis: 0.3, teamwork: 0.2, creativity: 0.1, technical: 0.3 },
+    skillWeights: { communication: 0.1, analysis: 0.3, teamwork: 0.15, creativity: 0.05, technical: 0.4 },
     personalityWeights: { teamOrientation: 0.3, analyticalMind: 0.5, creativityDrive: 0.2 },
     requiredSkills: ['Node.js', 'Express', 'SQL', 'API Tasarımı'],
     growthAreas: ['Microservices', 'Docker'],
@@ -43,7 +43,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'siber',
     title: 'Siber Güvenlik Uzmanı',
     description: 'Sistem güvenliği ve güvenlik testleri.',
-    skillWeights: { communication: 0.15, analysis: 0.4, teamwork: 0.1, creativity: 0.15, technical: 0.2 },
+    skillWeights: { communication: 0.1, analysis: 0.4, teamwork: 0.1, creativity: 0.1, technical: 0.3 },
     personalityWeights: { teamOrientation: 0.1, analyticalMind: 0.8, creativityDrive: 0.1 },
     requiredSkills: ['Ağ Güvenliği', 'Penetrasyon Testi', 'Kriptografi'],
     growthAreas: ['Etik Hacking', 'Güvenlik Otomasyonu'],
@@ -61,8 +61,8 @@ const careerPaths: CareerSuggestion[] = [
     id: 'devops',
     title: 'DevOps Mühendisi',
     description: 'Süreç otomasyonu, altyapı yönetimi ve sürekli entegrasyon/dağıtım sistemleri kurma.',
-    skillWeights: { communication: 0.2, analysis: 0.2, teamwork: 0.3, creativity: 0.1, technical: 0.2 },
-    personalityWeights: { teamOrientation: 0.4, analyticalMind: 0.4, creativityDrive: 0.2 },
+    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.25, creativity: 0.05, technical: 0.4 },
+    personalityWeights: { teamOrientation: 0.35, analyticalMind: 0.45, creativityDrive: 0.2 },
     requiredSkills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'],
     growthAreas: ['Infrastructure as Code', 'Güvenlik Otomasyonu'],
   },
@@ -79,8 +79,6 @@ const careerPaths: CareerSuggestion[] = [
 
 const MAX_PERSONALITY_SCORE = 100;
 const MAX_CAREER_SCORE = 100;
-const MINIMUM_PERCENTAGE = 30;
-const MAXIMUM_PERCENTAGE = 90;
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -90,68 +88,54 @@ const calculateMatchPercentage = (
 ): number => {
   if (!personalityScores || !careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
-    return MINIMUM_PERCENTAGE;
+    return 20;
   }
 
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'creativityDrive'];
   const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'creativity', 'technical'];
 
-  // Skorları logla
-  console.log(Hesaplanan kariyer: ${career.title});
-  console.log('Personality Scores:', personalityScores);
-  console.log('Career Scores:', careerScores);
+  console.log(`Hesaplanan kariyer: ${career.title}`, { personalityScores, careerScores });
 
-  // Skorların sıfır olup olmadığını kontrol et
-  const allPersonalityZero = personalityKeys.every(key => personalityScores[key] === 0);
-  const allSkillsZero = skillKeys.every(key => careerScores[key] === 0);
-  if (allPersonalityZero && allSkillsZero) {
-    console.warn(Tüm skorlar sıfır: ${career.title});
-    return MINIMUM_PERCENTAGE;
-  }
-
-  // Kişilik eşleşmesini hesapla
   let personalityMatch = personalityKeys.reduce((sum, key) => {
-    const score = personalityScores[key as keyof Scores] || 0;
+    const score = personalityScores[key] || 0;
     const normalizedScore = score / MAX_PERSONALITY_SCORE;
     const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
     return sum + normalizedScore * weight;
   }, 0);
   personalityMatch *= 100;
-  console.log(Personality Match: ${personalityMatch});
 
-  // Kariyer eşleşmesini hesapla
   let careerMatch = 0;
   let criticalSkillPenalty = 0;
   for (const key of skillKeys) {
-    const score = careerScores[key as keyof Scores] || 0;
+    const score = careerScores[key] || 0;
     const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
-    if (weight > 0.25 && normalizedScore < 0.3) {
-      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 50;
+    if (weight > 0.2 && normalizedScore < 0.4) {
+      criticalSkillPenalty += (0.4 - normalizedScore) * weight * 100;
     }
   }
   careerMatch = (careerMatch / skillKeys.length) * 100;
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
-  console.log(Career Match: ${careerMatch}, Penalty: ${criticalSkillPenalty});
 
-  // Yola özgü skor
   const pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
-  console.log(Path Score: ${pathScore});
 
-  // Skorları birleştir
   let finalScore: number;
   if (isPersonality) {
-    finalScore = (0.6 * personalityMatch) + (0.3 * pathScore) + (0.1 * careerMatch);
+    finalScore = (0.5 * personalityMatch) + (0.3 * pathScore) + (0.2 * careerMatch);
   } else {
-    finalScore = (0.4 * personalityMatch) + (0.5 * careerMatch) + (0.1 * pathScore);
+    finalScore = (0.3 * personalityMatch) + (0.6 * careerMatch) + (0.1 * pathScore);
   }
-  console.log(Final Score (before clamp): ${finalScore});
 
-  // Nihai skoru sınırlandır
-  finalScore = Math.max(finalScore, MINIMUM_PERCENTAGE);
-  finalScore = Math.min(finalScore, MAXIMUM_PERCENTAGE);
-  console.log(Final Score (after clamp): ${finalScore});
+  finalScore = Math.max(finalScore, 20);
+  finalScore = Math.min(finalScore, 95);
+
+  console.log(`Final Score for ${career.title}: ${finalScore}%`, {
+    personalityMatch,
+    careerMatch,
+    pathScore,
+    criticalSkillPenalty,
+  });
 
   return Math.round(finalScore);
 };
@@ -164,7 +148,6 @@ function getSkillBadgeColor(index: number): string {
     'bg-yellow-100 text-yellow-800',
     'bg-red-100 text-red-800',
     'bg-indigo-100 text-indigo-800',
-    'bg-pink-100 text-pink-800',
   ];
   return colors[index % colors.length];
 }
@@ -172,7 +155,7 @@ function getSkillBadgeColor(index: number): string {
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  hover: { y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)", transition: { duration: 0.2 } },
+  hover: { y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", transition: { duration: 0.2 } },
 };
 
 const modalVariants = {
@@ -187,14 +170,13 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  // Giriş verilerini logla
   console.log('Answers:', answers);
   console.log('Selected Path:', selectedPath);
 
   if (!scores || !selectedPath || !answers || answers.length === 0) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
-        {answers.length === 0 ? "Hata: Test yanıtları eksik. Lütfen testi tamamlayın." : "Hata: Gerekli veriler eksik. Skorlar, seçilen dal veya cevaplar eksik olabilir."}
+        {answers.length === 0 ? "Hata: Test yanıtları eksik." : "Hata: Gerekli veriler eksik."}
       </div>
     );
   }
@@ -203,7 +185,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   if (!selectedPathData) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
-        Hata: Seçilen dal bulunamadı. Lütfen geçerli bir dal seçin.
+        Hata: Seçilen dal bulunamadı.
       </div>
     );
   }
@@ -214,7 +196,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const personalityScores: Scores = {
     communication: 0, analysis: 0, teamwork: 0, creativity: 0, technical: 0,
     teamOrientation: 0, analyticalMind: 0, creativityDrive: 0,
-    frontend: 0, backend: 0, database: 0, security: 0, devops: 0, gamedev: 0, datascience: 0,
+    frontend: 0, backend: 0, siber: 0, datascience: 0, devops: 0, gamedev: 0,
   };
   personalityAnswers.forEach((answer, index) => {
     const question = commonQuestions[index];
@@ -225,17 +207,17 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           personalityScores[key as keyof Scores] += value;
         });
       } else {
-        console.warn(Kişilik sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer});
+        console.warn(`Kişilik sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
       }
     } else {
-      console.warn(Kişilik sorusu ${index + 1} eksik veya geçersiz.);
+      console.warn(`Kişilik sorusu ${index + 1} eksik veya geçersiz.`);
     }
   });
 
   const careerScores: Scores = {
     communication: 0, analysis: 0, teamwork: 0, creativity: 0, technical: 0,
     teamOrientation: 0, analyticalMind: 0, creativityDrive: 0,
-    frontend: 0, backend: 0, database: 0, security: 0, devops: 0, gamedev: 0, datascience: 0,
+    frontend: 0, backend: 0, siber: 0, datascience: 0, devops: 0, gamedev: 0,
   };
   careerAnswers.forEach((answer, index) => {
     const question = careerQuestions[selectedPath]?.[index];
@@ -246,19 +228,18 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           careerScores[key as keyof Scores] += value;
         });
       } else {
-        console.warn(Kariyer sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer});
+        console.warn(`Kariyer sorusu ${index + 1} için cevap eşleşmedi: ${answer.answer}`);
       }
     } else {
-      console.warn(Kariyer sorusu ${index + 1} eksik veya geçersiz.);
+      console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz.`);
     }
   });
 
-  // Skorları sıfır kontrolü
   const allScoresZero = Object.values(personalityScores).every(val => val === 0) && Object.values(careerScores).every(val => val === 0);
   if (allScoresZero) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
-        Hata: Skorlar hesaplanamadı, lütfen testi tekrar yapın veya cevaplarınızı kontrol edin.
+        Hata: Skorlar hesaplanamadı, lütfen testi tekrar yapın.
       </div>
     );
   }
@@ -266,25 +247,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false);
   const suggestedMatches = careerPaths
     .filter(path => path.id !== selectedPath)
-    .map(path => {
-      const percentage = calculateMatchPercentage(personalityScores, careerScores, path, true);
-      console.log(Kariyer: ${path.title}, Yüzde: ${percentage}%);
-      return { path, percentage };
-    })
-    .sort((a, b) => b.percentage - a.percentage)
-    .slice(0, 3);
-
-  const altDalPuan = (['communication', 'analysis', 'teamwork', 'creativity', 'technical'] as const)
-    .reduce((sum, key) => sum + (careerScores[key] || 0) * (selectedPathData.skillWeights[key] || 0), 0) / 10;
-
-  let classification = '';
-  if (selectedMatchPercentage >= 70 && altDalPuan >= 7) {
-    classification = 'Uyumlu & Başarılı';
-  } else if (selectedMatchPercentage >= 70 && altDalPuan < 7) {
-    classification = 'Uyumlu & Başarısız';
-  } else {
-    classification = 'Uyumsuz & Başarısız';
-  }
+    .map(path => ({
+      path,
+      percentage: calculateMatchPercentage(personalityScores, careerScores, path, true),
+    }))
+    .sort((a, b) => b.percentage - a.percentage);
 
   const areasForImprovement = [];
   if (careerScores.communication < 30) areasForImprovement.push('İletişim');
@@ -295,7 +262,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
     if (['datascience', 'gamedev'].includes(pathId)) {
-      setModalMessage(${pathTitle} beta sürümünde mevcut değildir.);
+      setModalMessage(`${pathTitle} beta sürümünde mevcut değildir.`);
       setShowModal(true);
     } else if (pathId === 'devops') {
       setModalMessage('DevOps Mühendisi beta sürümünde mevcut değildir.');
@@ -334,7 +301,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
               </ul>
             </div>
           ) : (
-            <p className="mb-4 text-gray-600">Tebrikler! Geliştirilmesi gereken bir alan bulunmamaktadır.</p>
+            <p className="mb-4 text-gray-600">Tebrikler! Geliştirilmesi gereken alan yok.</p>
           )}
           <div className="flex justify-between items-center mb-4">
             <div className="relative w-24 h-24">
@@ -364,7 +331,50 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
               </svg>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mb-4">Hey, yorulmadın mı? Uygulamışsın, şimdi tamam!</p>
+          <div className="mb-4">
+            <h4 className="font-semibold">Skor Detayları</h4>
+            <p>Teknik Beceriler: {careerScores.technical}/100</p>
+            <p>Analitik Düşünme: {careerScores.analysis}/100</p>
+            <p>Ekip Çalışması: {careerScores.teamwork}/100</p>
+            <p>Yaratıcılık: {careerScores.creativity}/100</p>
+            <p>İletişim: {careerScores.communication}/100</p>
+          </div>
+          <div>
+            {
+              type: 'chartjs',
+              data: {
+                type: 'bar',
+                data: {
+                  labels: ['İletişim', 'Analiz', 'Ekip Çalışması', 'Yaratıcılık', 'Teknik'],
+                  datasets: [{
+                    label: 'Skorlarınız',
+                    data: [
+                      careerScores.communication,
+                      careerScores.analysis,
+                      careerScores.teamwork,
+                      careerScores.creativity,
+                      careerScores.technical
+                    ],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
+                    borderColor: ['#1d4ed8', '#059669', '#d97706', '#6d28d9', '#b91c1c'],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      max: 100
+                    }
+                  },
+                  plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Becerilerinize Göre Skorlar' }
+                  }
+                }
+              }
+            }
+          </div>
           <div className="flex gap-4">
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex-1"
@@ -383,9 +393,9 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
         {showAlternatives && (
           <div className="border border-gray-300 rounded-lg p-4">
-            <h4 className="font-semibold mb-2 text-center text-gray-800">Sana En Uygun Kariyer Yolları</h4>
+            <h4 className="font-semibold mb-2 text-center">Sana En Uygun Kariyer Yolları</h4>
             {suggestedMatches.length === 0 ? (
-              <p className="text-gray-600 text-center">Uyumlu başka bir alan bulunamadı.</p>
+              <p className="text-gray-600 text-center">Uyumlu başka alan bulunamadı.</p>
             ) : (
               <div className="space-y-6 mt-4">
                 {suggestedMatches.map((match, index) => {
@@ -400,9 +410,9 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                       initial="hidden"
                       animate="visible"
                       whileHover="hover"
-                      className={bg-white border rounded-xl shadow-sm overflow-hidden cursor-pointer ${
+                      className={`bg-white border rounded-xl shadow-sm cursor-pointer ${
                         selectedCompany === match.path.title ? 'border-purple-500 border-2 shadow-lg' : 'border-gray-200'
-                      }}
+                      }`}
                     >
                       <div className="md:flex">
                         <div className="p-6 md:flex-1">
@@ -420,7 +430,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                             <h4 className="text-sm font-semibold text-gray-800 mb-2">Gereken Beceriler:</h4>
                             <div className="flex flex-wrap gap-2">
                               {match.path.requiredSkills.map((skill, skillIndex) => (
-                                <span key={skillIndex} className={text-xs px-2 py-1 rounded-full ${getSkillBadgeColor(skillIndex)}}>
+                                <span key={skillIndex} className={`text-xs px-2 py-1 rounded-full ${getSkillBadgeColor(skillIndex)}`}>
                                   {skill}
                                 </span>
                               ))}
@@ -469,10 +479,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                             </div>
                           </div>
                           <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleCareerSelection(match.path.id, match.path.title);
-                            }}
+                            onClick={() => handleCareerSelection(match.path.id, match.path.title)}
                             className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-md font-medium hover:opacity-90 transition-opacity"
                           >
                             Seç ve Devam Et
@@ -517,4 +524,4 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       </AnimatePresence>
     </motion.div>
   );
-};  
+};
