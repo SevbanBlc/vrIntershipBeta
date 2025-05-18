@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Bar } from 'react-chartjs-2'; // Chart bileşeni
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'; // Chart.js modülleri
 import { Scores } from '../types';
 import { commonQuestions, careerQuestions } from '../questions';
+
+// Chart.js modüllerini kaydet
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface CareerSuggestion {
   id: string;
@@ -61,7 +66,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'devops',
     title: 'DevOps Mühendisi',
     description: 'Süreç otomasyonu, altyapı yönetimi ve sürekli entegrasyon/dağıtım sistemleri kurma.',
-    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.25, creativity: 0.05, technical: 0.4 },
+    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.25, creativity: 0. j, technical: 0.4 },
     personalityWeights: { teamOrientation: 0.35, analyticalMind: 0.45, creativityDrive: 0.2 },
     requiredSkills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'],
     growthAreas: ['Infrastructure as Code', 'Güvenlik Otomasyonu'],
@@ -122,9 +127,9 @@ const calculateMatchPercentage = (
 
   let finalScore: number;
   if (isPersonality) {
-    finalScore = (0.5 * personalityMatch) + (0.3 * pathScore) + (0.2 * careerMatch);
+    finalScore = 0.5 * personalityMatch + 0.3 * pathScore + 0.2 * careerMatch;
   } else {
-    finalScore = (0.3 * personalityMatch) + (0.6 * careerMatch) + (0.1 * pathScore);
+    finalScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
   }
 
   finalScore = Math.max(finalScore, 20);
@@ -155,7 +160,7 @@ function getSkillBadgeColor(index: number): string {
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  hover: { y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", transition: { duration: 0.2 } },
+  hover: { y: -5, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', transition: { duration: 0.2 } },
 };
 
 const modalVariants = {
@@ -176,17 +181,15 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   if (!scores || !selectedPath || !answers || answers.length === 0) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
-        {answers.length === 0 ? "Hata: Test yanıtları eksik." : "Hata: Gerekli veriler eksik."}
+        {answers.length === 0 ? 'Hata: Test yanıtları eksik.' : 'Hata: Gerekli veriler eksik.'}
       </div>
     );
   }
 
-  const selectedPathData = careerPaths.find(path => path.id === selectedPath);
+  const selectedPathData = careerPaths.find((path) => path.id === selectedPath);
   if (!selectedPathData) {
     return (
-      <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
-        Hata: Seçilen dal bulunamadı.
-      </div>
+      <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">Hata: Seçilen dal bulunamadı.</div>
     );
   }
 
@@ -194,14 +197,25 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const careerAnswers = answers.slice(10, 20);
 
   const personalityScores: Scores = {
-    communication: 0, analysis: 0, teamwork: 0, creativity: 0, technical: 0,
-    teamOrientation: 0, analyticalMind: 0, creativityDrive: 0,
-    frontend: 0, backend: 0, siber: 0, datascience: 0, devops: 0, gamedev: 0,
+    communication: 0,
+    analysis: 0,
+    teamwork: 0,
+    creativity: 0,
+    technical: 0,
+    teamOrientation: 0,
+    analyticalMind: 0,
+    creativityDrive: 0,
+    frontend: 0,
+    backend: 0,
+    siber: 0,
+    datascience: 0,
+    devops: 0,
+    gamedev: 0,
   };
   personalityAnswers.forEach((answer, index) => {
     const question = commonQuestions[index];
     if (question && answer.answer) {
-      const selectedAnswer = question.answers.find(a => a.text === answer.answer);
+      const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
       if (selectedAnswer && selectedAnswer.score) {
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
           personalityScores[key as keyof Scores] += value;
@@ -215,16 +229,27 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   });
 
   const careerScores: Scores = {
-    communication: 0, analysis: 0, teamwork: 0, creativity: 0, technical: 0,
-    teamOrientation: 0, analyticalMind: 0, creativityDrive: 0,
-    frontend: 0, backend: 0, siber: 0, datascience: 0, devops: 0, gamedev: 0,
+    communication: 0,
+    analysis: 0,
+    teamwork: 0,
+    creativity: 0,
+    technical: 0,
+    teamOrientation: 0,
+    analyticalMind: 0,
+    creativityDrive: 0,
+    frontend: 0,
+    backend: 0,
+    siber: 0,
+    datascience: 0,
+    devops: 0,
+    gamedev: 0,
   };
   careerAnswers.forEach((answer, index) => {
     const question = careerQuestions[selectedPath]?.[index];
     if (question && answer.answer) {
-      const selectedAnswer = question.answers.find(a => a.text === answer.answer);
+      const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
       if (selectedAnswer && selectedAnswer.score) {
-        Object.entries(selectedAnswer.score).forEach(([key, value]) => {
+        Object.entries(selectedAnswer.score).for.each(([key, value]) => {
           careerScores[key as keyof Scores] += value;
         });
       } else {
@@ -235,7 +260,9 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     }
   });
 
-  const allScoresZero = Object.values(personalityScores).every(val => val === 0) && Object.values(careerScores).every(val => val === 0);
+  const allScoresZero =
+    Object.values(personalityScores).every((val) => val === 0) &&
+    Object.values(careerScores).every((val) => val === 0);
   if (allScoresZero) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
@@ -246,8 +273,8 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false);
   const suggestedMatches = careerPaths
-    .filter(path => path.id !== selectedPath)
-    .map(path => ({
+    .filter((path) => path.id !== selectedPath)
+    .map((path) => ({
       path,
       percentage: calculateMatchPercentage(personalityScores, careerScores, path, true),
     }))
@@ -271,6 +298,39 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       setSelectedCompany(pathTitle);
       onContinue(pathId);
     }
+  };
+
+  // Chart.js config
+  const chartData = {
+    labels: ['İletişim', 'Analiz', 'Ekip Çalışması', 'Yaratıcılık', 'Teknik'],
+    datasets: [
+      {
+        label: 'Skorlarınız',
+        data: [
+          careerScores.communication,
+          careerScores.analysis,
+          careerScores.teamwork,
+          careerScores.creativity,
+          careerScores.technical,
+        ],
+        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
+        borderColor: ['#1d4ed8', '#059669', '#d97706', '#6d28d9', '#b91c1c'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+      },
+    },
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Becerilerinize Göre Skorlar' },
+    },
   };
 
   return (
@@ -315,7 +375,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                   stroke="#a855f7"
                   strokeWidth="10"
                   strokeDasharray="251.2"
-                  strokeDashoffset={251.2 - (selectedMatchPercentage * 2.512)}
+                  strokeDashoffset={251.2 - selectedMatchPercentage * 2.512}
                   strokeLinecap="round"
                   transform="rotate(-90, 50, 50)"
                 />
@@ -339,42 +399,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             <p>Yaratıcılık: {careerScores.creativity}/100</p>
             <p>İletişim: {careerScores.communication}/100</p>
           </div>
-          <div>
-            {
-              type: 'chartjs',
-              data: {
-                type: 'bar',
-                data: {
-                  labels: ['İletişim', 'Analiz', 'Ekip Çalışması', 'Yaratıcılık', 'Teknik'],
-                  datasets: [{
-                    label: 'Skorlarınız',
-                    data: [
-                      careerScores.communication,
-                      careerScores.analysis,
-                      careerScores.teamwork,
-                      careerScores.creativity,
-                      careerScores.technical
-                    ],
-                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
-                    borderColor: ['#1d4ed8', '#059669', '#d97706', '#6d28d9', '#b91c1c'],
-                    borderWidth: 1
-                  }]
-                },
-                options: {
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      max: 100
-                    }
-                  },
-                  plugins: {
-                    legend: { display: false },
-                    title: { display: true, text: 'Becerilerinize Göre Skorlar' }
-                  }
-                }
-              }
-            }
-          </div>
+          <div className="mb-4">
+            <h4 className="font-semibold">Grafik: Skorlarınız</h4>
+            <Bar data={chartData} options={chartOptions} />
+          </ynb>
           <div className="flex gap-4">
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex-1"
@@ -410,7 +438,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                       initial="hidden"
                       animate="visible"
                       whileHover="hover"
-                      className={`bg-white border rounded-xl shadow-sm cursor-pointer ${
+                      className={`bg-white border rounded-xl shadow-sm cursor.pointer ${
                         selectedCompany === match.path.title ? 'border-purple-500 border-2 shadow-lg' : 'border-gray-200'
                       }`}
                     >
@@ -420,7 +448,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                             <h3 className="text-lg font-semibold text-gray-800">{match.path.title}</h3>
                             <div className="flex items-center">
                               <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                  clipRule="evenodd"
+                                />
                               </svg>
                               <span className="text-sm font-semibold text-gray-600">%{percentage} Uyumluluk</span>
                             </div>
@@ -430,7 +462,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                             <h4 className="text-sm font-semibold text-gray-800 mb-2">Gereken Beceriler:</h4>
                             <div className="flex flex-wrap gap-2">
                               {match.path.requiredSkills.map((skill, skillIndex) => (
-                                <span key={skillIndex} className={`text-xs px-2 py-1 rounded-full ${getSkillBadgeColor(skillIndex)}`}>
+                                <span
+                                  key={skillIndex}
+                                  className={`text-xs px-2 py-1 rounded-full ${getSkillBadgeColor(skillIndex)}`}
+                                >
                                   {skill}
                                 </span>
                               ))}
@@ -440,7 +475,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                             <h4 className="text-sm font-semibold text-gray-800 mb-2">Gelişim Alanları:</h4>
                             <div className="flex flex-wrap gap-2">
                               {match.path.growthAreas.map((area, areaIndex) => (
-                                <span key={areaIndex} className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
+                                <span
+                                  key={areaIndex}
+                                  className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800"
+                                >
                                   {area}
                                 </span>
                               ))}
@@ -472,7 +510,13 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                                     </linearGradient>
                                   </defs>
                                 </circle>
-                                <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" className="text-gray-800 font-bold">
+                                <text
+                                  x="50%"
+                                  y="50%"
+                                  dominantBaseline="middle"
+                                  textAnchor="middle"
+                                  className="text-gray-800 font-bold"
+                                >
                                   %{percentage}
                                 </text>
                               </svg>
