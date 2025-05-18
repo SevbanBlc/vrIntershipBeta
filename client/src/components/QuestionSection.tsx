@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-
-// Tür tanımlamaları
-interface Scores {
-  communication: number;
-  analysis: number;
-}
 
 interface Question {
   id: number;
@@ -18,16 +12,32 @@ interface Answer {
   score: Partial<Scores>;
 }
 
+interface Scores {
+  communication: number;
+  analysis: number;
+  teamwork: number;
+  innovation: number;
+  technical: number;
+  teamOrientation: number;
+  analyticalMind: number;
+  innovationDrive: number;
+  frontend: number;
+  backend: number;
+  siber: number;
+  datascience: number;
+  devops: number;
+  gamedev: number;
+}
+
 interface QuestionSectionProps {
   currentQuestion: number;
   totalQuestions: number;
   question: Question;
   onAnswerSelect: (answer: Answer) => void;
-  onFinalResults: (compatibility: number, success: number) => void;
+  onFinalResults: (scores: Scores) => void;
   selectedPath: string;
 }
 
-// Bileşen tanımı
 export const QuestionSection: React.FC<QuestionSectionProps> = ({
   currentQuestion,
   totalQuestions,
@@ -38,28 +48,45 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [compatibility, setCompatibility] = useState(0);
-  const [success, setSuccess] = useState(0);
-  const [shapeIndex, setShapeIndex] = useState<number | null>(null);
+  const [scores, setScores] = useState<Scores>({
+    communication: 0,
+    analysis: 0,
+    teamwork: 0,
+    innovation: 0,
+    technical: 0,
+    teamOrientation: 0,
+    analyticalMind: 0,
+    innovationDrive: 0,
+    frontend: 0,
+    backend: 0,
+    siber: 0,
+    datascience: 0,
+    devops: 0,
+    gamedev: 0,
+  });
 
-  // Şekil kontrolü için useEffect
-  useEffect(() => {
-    if (currentQuestion >= 2) {
-      setShapeIndex(currentQuestion - 2);
-    } else {
-      setShapeIndex(null);
-    }
+  const shapeIndex = useMemo(() => {
+    return currentQuestion >= 2 ? currentQuestion - 2 : null;
   }, [currentQuestion]);
 
-  // Cevap seçildiğinde çalışacak fonksiyon
   const handleAnswerClick = (answer: Answer, index: number) => {
-    if (isAnimating || selectedAnswer !== null) return;
+    if (isAnimating || selectedAnswer !== null) {
+      console.warn('Tıklama engellendi: Animasyon veya seçim aktif');
+      return;
+    }
+
+    console.log(`Soru ${question.id} için cevap seçildi: ${answer.text}`, answer.score);
 
     setSelectedAnswer(index);
     setIsAnimating(true);
 
-    setCompatibility((prev) => prev + (answer.score.communication || 0));
-    setSuccess((prev) => prev + (answer.score.analysis || 0));
+    setScores((prev) => {
+      const newScores = { ...prev };
+      Object.entries(answer.score).forEach(([key, value]) => {
+        newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + (value || 0);
+      });
+      return newScores;
+    });
 
     setTimeout(() => {
       onAnswerSelect(answer);
@@ -67,12 +94,12 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
       setIsAnimating(false);
 
       if (currentQuestion === totalQuestions - 1) {
-        onFinalResults(compatibility, success);
+        console.log('Sonuçlar hesaplandı:', scores);
+        onFinalResults(scores);
       }
-    }, 600); // Animasyon süresi
+    }, 600);
   };
 
-  // Animasyon varyantları
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -110,21 +137,21 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
   const progressVariants = {
     initial: { width: '0%' },
     animate: {
-      width: `${(currentQuestion / totalQuestions) * 100}%`,
+      width: `${((currentQuestion + 1) / totalQuestions) * 100}%`,
       transition: { type: 'spring', damping: 30, stiffness: 60 },
     },
   };
 
-  // Şekil render fonksiyonu
   const renderShape = () => {
-    if (shapeIndex === currentQuestion - 2 && question.id === 12 && selectedPath === 'frontend') {
+    if (shapeIndex === currentQuestion - 2 && question.id >= 11 && question.id <= 20) {
+      const shapeContent = selectedPath.charAt(0).toUpperCase();
       return (
         <div className="mb-4 flex justify-center">
           <div
             className="w-20 h-20 rounded-full bg-orange-500 flex items-center justify-center text-white"
             style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
           >
-            {/* Şekil içeriği buraya eklenebilir */}
+            {shapeContent}
           </div>
         </div>
       );
@@ -134,7 +161,6 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
 
   return (
     <motion.div initial="hidden" animate="visible" exit="exit" variants={containerVariants}>
-      {/* Başlık Alanı */}
       <div className="relative h-40 overflow-hidden rounded-t-xl">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
         <div className="absolute inset-0 flex items-center justify-center">
@@ -147,7 +173,6 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
         </div>
       </div>
 
-      {/* İlerleme Çubuğu */}
       <div className="px-6 pt-4">
         <div className="flex justify-between items-center mb-2 text-sm text-gray-500">
           <span>İlerleme</span>
@@ -163,7 +188,6 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
         </div>
       </div>
 
-      {/* Soru ve Cevaplar */}
       <div className="p-6">
         {renderShape()}
         <motion.h2 className="text-xl font-semibold text-gray-800 mb-6" variants={questionVariants}>
@@ -173,7 +197,7 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
         <motion.div className="space-y-4" exit={{ opacity: 0, transition: { duration: 0.2 } }}>
           {question.answers.map((answer, index) => (
             <motion.div
-              key={index}
+              key={`${question.id}-${index}`}
               className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
                 selectedAnswer === index
                   ? 'border-purple-500 bg-purple-50'
