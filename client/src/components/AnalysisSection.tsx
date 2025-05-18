@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Scores } from '../types';
 import { commonQuestions, careerQuestions } from '../questions';
-
-// Chart.js modüllerini kaydet
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface CareerSuggestion {
   id: string;
@@ -89,9 +84,10 @@ const calculateMatchPercentage = (
   personalityScores: Scores,
   careerScores: Scores,
   career: CareerSuggestion,
-  isPersonality: boolean = false
+  isPersonality: boolean = false,
+  careerOnly: boolean = false
 ): number => {
-  if (!personalityScores || !careerScores || !career) {
+  if (!careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
     return 20;
   }
@@ -101,13 +97,16 @@ const calculateMatchPercentage = (
 
   console.log(`Hesaplanan kariyer: ${career.title}`, { personalityScores, careerScores });
 
-  let personalityMatch = personalityKeys.reduce((sum, key) => {
-    const score = personalityScores[key] || 0;
-    const normalizedScore = score / MAX_PERSONALITY_SCORE;
-    const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
-    return sum + normalizedScore * weight;
-  }, 0);
-  personalityMatch *= 100;
+  let personalityMatch = 0;
+  if (!careerOnly && personalityScores) {
+    personalityMatch = personalityKeys.reduce((sum, key) => {
+      const score = personalityScores[key] || 0;
+      const normalizedScore = score / MAX_PERSONALITY_SCORE;
+      const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
+      return sum + normalizedScore * weight;
+    }, 0);
+    personalityMatch *= 100;
+  }
 
   let careerMatch = 0;
   let criticalSkillPenalty = 0;
@@ -123,10 +122,15 @@ const calculateMatchPercentage = (
   careerMatch = (careerMatch / skillKeys.length) * 100;
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
-  const pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
+  let pathScore = 0;
+  if (!careerOnly && personalityScores) {
+    pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
+  }
 
   let finalScore: number;
-  if (isPersonality) {
+  if (careerOnly) {
+    finalScore = careerMatch;
+  } else if (isPersonality) {
     finalScore = 0.5 * personalityMatch + 0.3 * pathScore + 0.2 * careerMatch;
   } else {
     finalScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
@@ -271,14 +275,15 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     );
   }
 
-  const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false);
+  const selectedMatchPercentage = calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true);
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
     .map((path) => ({
       path,
       percentage: calculateMatchPercentage(personalityScores, careerScores, path, true),
     }))
-    .sort((a, b) => b.percentage - a.percentage);
+    .sort((a, b) => b.percentage - a.percentage)
+    .slice(0, 3);
 
   const areasForImprovement = [];
   if (careerScores.communication < 30) areasForImprovement.push('İletişim');
@@ -298,39 +303,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       setSelectedCompany(pathTitle);
       onContinue(pathId);
     }
-  };
-
-  // Chart.js config
-  const chartData = {
-    labels: ['İletişim', 'Analiz', 'Ekip Çalışması', 'Yaratıcılık', 'Teknik'],
-    datasets: [
-      {
-        label: 'Skorlarınız',
-        data: [
-          careerScores.communication,
-          careerScores.analysis,
-          careerScores.teamwork,
-          careerScores.creativity,
-          careerScores.technical,
-        ],
-        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
-        borderColor: ['#1d4ed8', '#059669', '#d97706', '#6d28d9', '#b91c1c'],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
-      },
-    },
-    plugins: {
-      legend: { display: false },
-      title: { display: true, text: 'Becerilerinize Göre Skorlar' },
-    },
   };
 
   return (
@@ -398,10 +370,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             <p>Ekip Çalışması: {careerScores.teamwork}/100</p>
             <p>Yaratıcılık: {careerScores.creativity}/100</p>
             <p>İletişim: {careerScores.communication}/100</p>
-          </div>
-          <div className="mb-4">
-            <h4 className="font-semibold">Grafik: Skorlarınız</h4>
-            <Bar data={chartData} options={chartOptions} />
           </div>
           <div className="flex gap-4">
             <button
