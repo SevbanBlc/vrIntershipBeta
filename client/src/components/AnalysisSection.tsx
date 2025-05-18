@@ -173,7 +173,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [showModal, setModalMessage] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
 
   console.log('Answers:', answers);
   console.log('Selected Path:', selectedPath);
