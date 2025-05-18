@@ -77,8 +77,8 @@ const careerPaths: CareerSuggestion[] = [
   },
 ];
 
-const MAX_PERSONALITY_SCORE = 200;
-const MAX_CAREER_SCORE = 250; // 10 soru x maksimum 25 puan
+const MAX_PERSONALITY_SCORE = 360; // 10 soru x (27+22+27+22+18) * 1.8
+const MAX_CAREER_SCORE = 450; // 10 soru x (54+36+27) * 1.8
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -89,7 +89,7 @@ const calculateMatchPercentage = (
 ): number => {
   if (!careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
-    return 20;
+    return 19; // Minimum %19
   }
 
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'creativityDrive'];
@@ -109,41 +109,41 @@ const calculateMatchPercentage = (
   }
 
   let careerMatch = 0;
-  let criticalSkillPenalty = 0;
   for (const key of skillKeys) {
     const score = careerScores[key] || 0;
     const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
-    if (weight > 0.25 && normalizedScore < 0.25) {
-      criticalSkillPenalty += (0.25 - normalizedScore) * weight * 30; // Daha hafif ceza
-    }
   }
   careerMatch *= 100;
-  careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
   let pathScore = 0;
   if (!careerOnly && personalityScores) {
     pathScore = (personalityScores[career.id as keyof Scores] || 0) / MAX_PERSONALITY_SCORE * 100;
   }
 
-  let finalScore: number;
+  let rawScore: number;
   if (careerOnly) {
-    finalScore = careerMatch; // Sadece careerScores kullan
+    rawScore = careerMatch;
   } else if (isPersonality) {
-    finalScore = 0.35 * personalityMatch + 0.3 * pathScore + 0.35 * careerMatch;
+    rawScore = 0.35 * personalityMatch + 0.3 * pathScore + 0.35 * careerMatch;
   } else {
-    finalScore = 0.15 * personalityMatch + 0.75 * careerMatch + 0.1 * pathScore;
+    rawScore = 0.15 * personalityMatch + 0.75 * careerMatch + 0.1 * pathScore;
   }
 
-  finalScore = Math.max(finalScore, 20); // Minimum %20
-  finalScore = Math.min(finalScore, 95); // Maksimum %95
+  // Yüzdelik ölçeklendirme: %19 (min) - %93 (max)
+  const minScore = 90 + 140; // 10 x 9 + 10 x 14
+  const maxScore = 270 + 540; // 10 x 27 + 10 x 54
+  const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (93 - 19) + 19;
+
+  // Sınır kontrolü
+  const finalScore = Math.max(19, Math.min(93, scaledScore));
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
     careerMatch,
     pathScore,
-    criticalSkillPenalty,
+    rawScore,
   });
 
   return Math.round(finalScore);
@@ -287,7 +287,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const selectedMatchPercentage = hasCareerQuestions
     ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
-    : 20;
+    : 19;
 
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
@@ -299,11 +299,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     .slice(0, 3);
 
   const areasForImprovement = [];
-  if (careerScores.communication < 60) areasForImprovement.push('İletişim');
-  if (careerScores.analysis < 60) areasForImprovement.push('Analitik Düşünme');
-  if (careerScores.teamwork < 60) areasForImprovement.push('Ekip Çalışması');
-  if (careerScores.creativity < 60) areasForImprovement.push('Yenilikçilik');
-  if (careerScores.technical < 60) areasForImprovement.push('Teknik Beceriler');
+  if (careerScores.communication < 108) areasForImprovement.push('İletişim'); // 60 * 1.8
+  if (careerScores.analysis < 108) areasForImprovement.push('Analitik Düşünme');
+  if (careerScores.teamwork < 108) areasForImprovement.push('Ekip Çalışması');
+  if (careerScores.creativity < 108) areasForImprovement.push('Yenilikçilik');
+  if (careerScores.technical < 108) areasForImprovement.push('Teknik Beceriler');
 
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
     if (['datascience', 'devops', 'gamedev'].includes(pathId)) {
@@ -402,7 +402,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             ) : (
               <div className="space-y-6 mt-4">
                 {suggestedMatches.map((match, index) => {
-                  const percentage = Math.min(Math.max(match.percentage, 0), 100);
+                  const percentage = Math.min(Math.max(match.percentage, 19), 93);
                   const circumference = 282.6;
                   const offset = circumference * (1 - percentage / 100);
 
