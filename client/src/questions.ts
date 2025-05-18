@@ -8,35 +8,31 @@ export const commonQuestions: Question[] = [
       { 
         text: "Teknik ve analiz odaklı derinlemesine çözüm üretirim", 
         score: { 
-          analysis: 15, 
-          technical: 10, 
-          analyticalMind: 15, 
-          backend: 12, 
-          siber: 10, 
-          devops: 8,
-          dataScience: 5 
+          analysis: 20, 
+          technical: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi ve farklı fikirler geliştirerek çözüm ararım", 
         score: { 
-          creativity: 15, 
-          technical: 5, 
-          creativityDrive: 15, 
-          frontend: 12, 
-          gamedev: 10, 
-          dataScience: 8 
+          creativity: 20, 
+          technical: 10, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Ekip arkadaşlarımla işbirliği yaparak karar veririm", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 15, 
-          backend: 8, 
-          devops: 10, 
-          dataScience: 6
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -48,33 +44,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Planlı ve organize bir şekilde çalışırım", 
         score: { 
-          analysis: 12, 
-          technical: 10, 
-          analyticalMind: 12, 
-          backend: 10, 
-          siber: 8,
-          devops: 12, 
-          dataScience: 10
+          analysis: 20, 
+          technical: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Esnek bir şekilde, ilham geldiğinde çalışırım", 
         score: { 
-          creativity: 12, 
-          creativityDrive: 12, 
-          frontend: 10, 
-          gamedev: 8, 
-          dataScience: 6 
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Diğer insanlarla birlikte çalışarak zamanı paylaşırım", 
         score: { 
-          teamwork: 12, 
-          communication: 10, 
-          teamOrientation: 12, 
-          devops: 10,
-          dataScience: 8
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -86,33 +79,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Teknik zorlukları aşarak motive olurum", 
         score: { 
-          technical: 15, 
-          analysis: 10, 
-          analyticalMind: 10, 
-          backend: 12, 
-          siber: 10,
-          devops: 15,
-          dataScience: 8 
+          technical: 20, 
+          analysis: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi ve özgün fikirler üretmek beni motive eder", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 10, 
-          frontend: 12, 
-          gamedev: 10,
-          dataScience: 5
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Ekip başarısına katkıda bulunmak beni motive eder", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 10, 
-          devops: 12,
-          dataScience: 10
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -124,34 +114,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Sorunun kökünü analiz edip öğrenirim", 
         score: { 
-          analysis: 15, 
-          technical: 10, 
-          analyticalMind: 15, 
-          siber: 12, 
-          backend: 10,
-          devops: 12,
-          dataScience: 10
+          analysis: 20, 
+          technical: 15, 
+          analyticalMind: 20, 
+          siber: 15, 
+          backend: 12 
         } 
       },
       { 
         text: "Yeni bir yaklaşım deneyerek hatayı düzeltirim", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 15, 
-          frontend: 10, 
-          gamedev: 12, 
-          devops: 10,
-          dataScience: 8
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Ekip arkadaşlarımdan destek isterim", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 15, 
-          devops: 10,
-          dataScience: 12
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -163,33 +149,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Teknik bilgim ve problem çözme yeteneğimle öne çıkarım", 
         score: { 
-          technical: 15, 
-          analysis: 10, 
-          analyticalMind: 12, 
-          backend: 12, 
-          siber: 10,
-          devops: 15,
-          dataScience: 10
+          technical: 20, 
+          analysis: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi düşünce ve yenilikçi fikirlerimle öne çıkarım", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 12, 
-          frontend: 12, 
-          gamedev: 10,
-          dataScience: 8
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "İletişim yeteneğim ve ekip çalışmam ile öne çıkarım", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 12, 
-          devops: 10,
-          dataScience: 12
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -201,29 +184,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Doğru ve mantıklı sonuçlara ulaşmaya", 
         score: { 
-          analysis: 15, 
-          technical: 10, 
-          analyticalMind: 15, 
-          dataScience: 12, 
-          siber: 10 
+          analysis: 20, 
+          technical: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Eğlenceli ve dikkat çekici bir çıktıya", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 15, 
-          gamedev: 12, 
-          frontend: 10 
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Herkesin katkıda bulunduğu bir sürece", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 15, 
-          devops: 10 
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -235,29 +219,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Teknik lider veya uzman", 
         score: { 
-          technical: 15, 
-          analysis: 10, 
-          analyticalMind: 12, 
-          backend: 12, 
-          siber: 10 
+          technical: 20, 
+          analysis: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi fikirlerin öncüsü", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 12, 
-          frontend: 12, 
-          gamedev: 10 
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Koordinatör veya destekleyici", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 12, 
-          devops: 10 
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -269,29 +254,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Derinlemesine anlamak ve uygulamak", 
         score: { 
-          technical: 15, 
-          analysis: 10, 
-          analyticalMind: 15, 
-          dataScience: 12, 
-          siber: 10 
+          technical: 20, 
+          analysis: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi projelerde kullanma şansı", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 15, 
-          gamedev: 12, 
-          frontend: 10 
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Ekiple paylaşarak geliştirmek", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 15, 
-          devops: 10 
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -303,29 +289,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Karmaşık teknik sorunlar", 
         score: { 
-          technical: 15, 
-          analysis: 10, 
-          analyticalMind: 12, 
-          backend: 12, 
-          siber: 10 
+          technical: 20, 
+          analysis: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi bir fikir bulamamak", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 12, 
-          frontend: 12, 
-          gamedev: 10 
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Ekip içi iletişim kopuklukları", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 12, 
-          devops: 10 
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -337,29 +324,30 @@ export const commonQuestions: Question[] = [
       { 
         text: "Her şeyin kusursuz işlediğini görmek", 
         score: { 
-          technical: 15, 
-          analysis: 10, 
-          analyticalMind: 15, 
-          dataScience: 12, 
-          siber: 10 
+          technical: 20, 
+          analysis: 15, 
+          analyticalMind: 20, 
+          backend: 15, 
+          siber: 12 
         } 
       },
       { 
         text: "Yenilikçi bir eser ortaya koymak", 
         score: { 
-          creativity: 15, 
-          creativityDrive: 15, 
-          gamedev: 12, 
-          frontend: 10 
+          creativity: 20, 
+          creativityDrive: 20, 
+          frontend: 15 
         } 
       },
       { 
         text: "Ekip olarak başarıyı paylaşmak", 
         score: { 
-          teamwork: 15, 
-          communication: 10, 
-          teamOrientation: 15, 
-          devops: 10 
+          teamwork: 20, 
+          communication: 15, 
+          teamOrientation: 20, 
+          frontend: 10, 
+          backend: 10, 
+          siber: 10 
         } 
       },
     ]
@@ -376,23 +364,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) setState()', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis', 'creativity'], 
-          score: { technical: 15, analysis: 10, creativity: 5, teamwork: 0, communication: 0, frontend: 15 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'creativity', 'teamwork'], 
+          score: { technical: 25, analysis: 15, creativity: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) updateState()', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, analysis: 0, creativity: 0, teamwork: 0, communication: 0, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) changeState()', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, analysis: 0, creativity: 0, teamwork: 0, communication: 0, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -404,23 +392,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) justify-content', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'creativity'], 
-          score: { technical: 15, creativity: 10, frontend: 15 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'creativity', 'teamwork'], 
+          score: { technical: 25, creativity: 15, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) align-items', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, creativity: 0, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) flex-direction', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, creativity: 0, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -431,21 +419,21 @@ export const careerQuestions: { [key: string]: Question[] } = {
       answers: [
         { 
           text: 'A) Gereksiz CSS ve JS dosyalarını temizlemek', 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, frontend: 20 } 
         },
         { 
           text: 'B) Görselleri sıkıştırmak', 
-          contribution: 0.10,
-          focusAreas: ['technical', 'creativity'], 
-          score: { technical: 15, creativity: 10, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'creativity', 'teamwork'], 
+          score: { technical: 25, creativity: 15, teamwork: 15, frontend: 20 } 
         },
         { 
           text: 'C) Her şeyi olduğu gibi bırakmak', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -457,23 +445,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) <audio>', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'creativity'], 
-          score: { technical: 15, creativity: 5, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'creativity', 'teamwork'], 
+          score: { technical: 25, creativity: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) <video>', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) <sound>', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -485,23 +473,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) addEventListener()', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 5, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) onClick()', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) listenEvent()', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -513,23 +501,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) rem', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'creativity'], 
-          score: { technical: 15, creativity: 10, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'creativity', 'teamwork'], 
+          score: { technical: 25, creativity: 15, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) px', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) em', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -541,23 +529,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) border-radius', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'creativity'], 
-          score: { technical: 15, creativity: 5, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'creativity', 'teamwork'], 
+          score: { technical: 25, creativity: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) border-style', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) border-width', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -569,23 +557,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Props', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 5, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) State', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) Context', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -597,23 +585,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) <nav>', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'communication'], 
-          score: { technical: 15, communication: 5, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'communication', 'teamwork'], 
+          score: { technical: 25, communication: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) <div>', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) <span>', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -625,23 +613,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) sort()', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 5, frontend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 10, teamwork: 15, frontend: 25 } 
         },
         { 
           text: 'B) order()', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
         { 
           text: 'C) arrange()', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, frontend: 2 } 
+          score: { technical: 5, frontend: 5 } 
         },
       ]
     },
@@ -655,23 +643,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Veriyi okumak için', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 15 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) Veriyi silmek için', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) Veriyi güncellemek için', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -683,23 +671,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Foreign Key', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 15 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) Primary Key', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) Unique Key', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -711,23 +699,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Express', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 5, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 10, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) React', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) MongoDB', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -739,23 +727,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) WHERE', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) SELECT', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) JOIN', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -766,21 +754,21 @@ export const careerQuestions: { [key: string]: Question[] } = {
       answers: [
         { 
           text: 'A) Token tabanlı kimlik doğrulama (JWT)', 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 20 } 
         },
         { 
           text: 'B) Açık API bırakmak', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) Sadece şifre kullanmak', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -792,23 +780,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Promises', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 5, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 10, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) Sync', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) Await', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -820,23 +808,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) 1. Normal Form (1NF)', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) 2. Normal Form (2NF)', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) 3. Normal Form (3NF)', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -848,23 +836,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) 404', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 5, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 10, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) 200', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) 300', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -875,21 +863,21 @@ export const careerQuestions: { [key: string]: Question[] } = {
       answers: [
         { 
           text: 'A) Load Balancer kullanmak', 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 20 } 
         },
         { 
           text: 'B) Tek sunucu kullanmak', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) Daha fazla RAM eklemek', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -901,23 +889,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) JOIN', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, backend: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, backend: 25 } 
         },
         { 
           text: 'B) SELECT', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
         { 
           text: 'C) WHERE', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, backend: 2 } 
+          score: { technical: 5, backend: 5 } 
         },
       ]
     },
@@ -931,23 +919,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Penetrasyon testi', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 15, siber: 15 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 20, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) Rastgele tarama', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) Kullanıcı görüşleri', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['communication'], 
-          score: { communication: 5, siber: 2 } 
+          score: { communication: 5, siber: 5 } 
         },
       ]
     },
@@ -959,23 +947,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Kullanıcı eğitimi ve filtreleme', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'communication'], 
-          score: { technical: 15, communication: 10, siber: 15 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'communication', 'teamwork'], 
+          score: { technical: 25, communication: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) Şifreyi değiştirmek', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) Hiçbir önlem almamak', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -987,23 +975,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) AES', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) MD5', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) SHA-1', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1015,23 +1003,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Intrusion Detection System (IDS)', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) Firewall', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) VPN', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1043,23 +1031,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) OAuth', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) HTTP', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) FTP', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1071,23 +1059,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Yetkisiz trafiği engellemek', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) Hızı artırmak', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) Veriyi şifrelemek', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1098,21 +1086,21 @@ export const careerQuestions: { [key: string]: Question[] } = {
       answers: [
         { 
           text: 'A) Veri şifreleme ve erişim kontrolü', 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 20 } 
         },
         { 
           text: 'B) Açık bağlantı bırakmak', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) Yedekleme yapmamak', 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1124,23 +1112,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Antivirus yazılımı', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) Firewall', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) Router', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1152,23 +1140,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) Yeni bir tehdit tespit edildiğinde', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) Hiç yapılmamalı', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) Yalnızca sistem çöktüğünde', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
@@ -1180,23 +1168,23 @@ export const careerQuestions: { [key: string]: Question[] } = {
         { 
           text: 'A) HTTPS', 
           isCorrect: true, 
-          contribution: 0.10,
-          focusAreas: ['technical', 'analysis'], 
-          score: { technical: 15, analysis: 10, siber: 12 } 
+          contribution: 0.15,
+          focusAreas: ['technical', 'analysis', 'teamwork'], 
+          score: { technical: 25, analysis: 15, teamwork: 15, siber: 25 } 
         },
         { 
           text: 'B) HTTP', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
         { 
           text: 'C) FTP', 
           isCorrect: false, 
           contribution: 0.05,
           focusAreas: ['technical'], 
-          score: { technical: 5, siber: 2 } 
+          score: { technical: 5, siber: 5 } 
         },
       ]
     },
