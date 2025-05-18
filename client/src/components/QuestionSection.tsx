@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Scores } from '../types';
 
 interface Question {
   id: number;
@@ -12,30 +13,13 @@ interface Answer {
   score: Partial<Scores>;
 }
 
-interface Scores {
-  communication: number;
-  analysis: number;
-  teamwork: number;
-  innovation: number;
-  technical: number;
-  teamOrientation: number;
-  analyticalMind: number;
-  innovationDrive: number;
-  frontend: number;
-  backend: number;
-  siber: number;
-  datascience: number;
-  devops: number;
-  gamedev: number;
-}
-
 interface QuestionSectionProps {
   currentQuestion: number;
   totalQuestions: number;
   question: Question;
   onAnswerSelect: (answer: Answer) => void;
-  onFinalResults: (scores: Scores) => void;
-  selectedPath: string;
+  onFinalResults: (compatibility: number, success: number) => void;
+  selectedPath: string; // Yeni prop
 }
 
 export const QuestionSection: React.FC<QuestionSectionProps> = ({
@@ -44,49 +28,30 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
   question,
   onAnswerSelect,
   onFinalResults,
-  selectedPath,
+  selectedPath
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [scores, setScores] = useState<Scores>({
-    communication: 0,
-    analysis: 0,
-    teamwork: 0,
-    innovation: 0,
-    technical: 0,
-    teamOrientation: 0,
-    analyticalMind: 0,
-    innovationDrive: 0,
-    frontend: 0,
-    backend: 0,
-    siber: 0,
-    datascience: 0,
-    devops: 0,
-    gamedev: 0,
-  });
+  const [compatibility, setCompatibility] = useState(0);
+  const [success, setSuccess] = useState(0);
+  const [shapeIndex, setShapeIndex] = useState<number | null>(null);
 
-  const shapeIndex = useMemo(() => {
-    return currentQuestion >= 2 ? currentQuestion - 2 : null;
+  useEffect(() => {
+    if (currentQuestion >= 2) {
+      setShapeIndex(currentQuestion - 2);
+    } else {
+      setShapeIndex(null);
+    }
   }, [currentQuestion]);
 
   const handleAnswerClick = (answer: Answer, index: number) => {
-    if (isAnimating || selectedAnswer !== null) {
-      console.warn('Tıklama engellendi: Animasyon veya seçim aktif');
-      return;
-    }
-
-    console.log(`Soru ${question.id} için cevap seçildi: ${answer.text}`, answer.score);
+    if (isAnimating || selectedAnswer !== null) return;
 
     setSelectedAnswer(index);
     setIsAnimating(true);
 
-    setScores((prev) => {
-      const newScores = { ...prev };
-      Object.entries(answer.score).forEach(([key, value]) => {
-        newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + (value || 0);
-      });
-      return newScores;
-    });
+    setCompatibility(prev => prev + (answer.score.communication || 0));
+    setSuccess(prev => prev + (answer.score.analysis || 0));
 
     setTimeout(() => {
       onAnswerSelect(answer);
@@ -94,8 +59,7 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
       setIsAnimating(false);
 
       if (currentQuestion === totalQuestions - 1) {
-        console.log('Sonuçlar hesaplandı:', scores);
-        onFinalResults(scores);
+        onFinalResults(compatibility, success);
       }
     }, 600);
   };
@@ -104,9 +68,16 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { when: 'beforeChildren', staggerChildren: 0.1 },
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
     },
-    exit: { opacity: 0, x: -20, transition: { duration: 0.3 } },
+    exit: {
+      opacity: 0,
+      x: -20,
+      transition: { duration: 0.3 }
+    }
   };
 
   const questionVariants = {
@@ -114,8 +85,12 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'spring', damping: 15, stiffness: 200 },
-    },
+      transition: {
+        type: "spring",
+        damping: 15,
+        stiffness: 200
+      }
+    }
   };
 
   const answerVariants = {
@@ -123,35 +98,41 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'spring', damping: 15 },
+      transition: {
+        type: "spring",
+        damping: 15
+      }
     },
     selected: {
       scale: 1.02,
-      backgroundColor: 'rgba(147, 51, 234, 0.1)',
-      borderColor: 'rgba(147, 51, 234, 0.5)',
-      boxShadow: '0 4px 14px rgba(147, 51, 234, 0.15)',
-      transition: { duration: 0.3 },
-    },
+      backgroundColor: "rgba(147, 51, 234, 0.1)",
+      borderColor: "rgba(147, 51, 234, 0.5)",
+      boxShadow: "0 4px 14px rgba(147, 51, 234, 0.15)",
+      transition: { duration: 0.3 }
+    }
   };
 
   const progressVariants = {
     initial: { width: '0%' },
     animate: {
-      width: `${((currentQuestion + 1) / totalQuestions) * 100}%`,
-      transition: { type: 'spring', damping: 30, stiffness: 60 },
-    },
+      width: `${((currentQuestion) / totalQuestions) * 100}%`,
+      transition: {
+        type: "spring",
+        damping: 30,
+        stiffness: 60
+      }
+    }
   };
 
   const renderShape = () => {
-    if (shapeIndex === currentQuestion - 2 && question.id >= 11 && question.id <= 20) {
-      const shapeContent = selectedPath.charAt(0).toUpperCase();
+    if (shapeIndex === currentQuestion - 2 && question.id === 12 && selectedPath === 'frontend') { // Yalnızca frontend için
       return (
         <div className="mb-4 flex justify-center">
           <div
             className="w-20 h-20 rounded-full bg-orange-500 flex items-center justify-center text-white"
             style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
           >
-            {shapeContent}
+            
           </div>
         </div>
       );
@@ -160,7 +141,12 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
   };
 
   return (
-    <motion.div initial="hidden" animate="visible" exit="exit" variants={containerVariants}>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={containerVariants}
+    >
       <div className="relative h-40 overflow-hidden rounded-t-xl">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
         <div className="absolute inset-0 flex items-center justify-center">
@@ -184,20 +170,26 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
             initial="initial"
             animate="animate"
             variants={progressVariants}
-          />
+          ></motion.div>
         </div>
       </div>
 
       <div className="p-6">
-        {renderShape()}
-        <motion.h2 className="text-xl font-semibold text-gray-800 mb-6" variants={questionVariants}>
+        {renderShape()} {/* Şekil yalnızca frontend'de render edilecek */}
+        <motion.h2
+          className="text-xl font-semibold text-gray-800 mb-6"
+          variants={questionVariants}
+        >
           {question.text}
         </motion.h2>
 
-        <motion.div className="space-y-4" exit={{ opacity: 0, transition: { duration: 0.2 } }}>
+        <motion.div
+          className="space-y-4"
+          exit={{ opacity: 0, transition: { duration: 0.2 } }}
+        >
           {question.answers.map((answer, index) => (
             <motion.div
-              key={`${question.id}-${index}`}
+              key={index}
               className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
                 selectedAnswer === index
                   ? 'border-purple-500 bg-purple-50'
@@ -206,13 +198,9 @@ export const QuestionSection: React.FC<QuestionSectionProps> = ({
               onClick={() => handleAnswerClick(answer, index)}
               variants={answerVariants}
               animate={selectedAnswer === index ? 'selected' : 'visible'}
-              whileHover={
-                selectedAnswer === null
-                  ? { scale: 1.02, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.05)' }
-                  : {}
-              }
+              whileHover={selectedAnswer === null ? { scale: 1.02, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.05)' } : {}}
               whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
-              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               {answer.text}
             </motion.div>
