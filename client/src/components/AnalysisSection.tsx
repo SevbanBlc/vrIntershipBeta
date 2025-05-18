@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bar } from 'react-chartjs-2'; // Chart bileşeni
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'; // Chart.js modülleri
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Scores } from '../types';
 import { commonQuestions, careerQuestions } from '../questions';
 
@@ -66,7 +66,7 @@ const careerPaths: CareerSuggestion[] = [
     id: 'devops',
     title: 'DevOps Mühendisi',
     description: 'Süreç otomasyonu, altyapı yönetimi ve sürekli entegrasyon/dağıtım sistemleri kurma.',
-    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.25, creativity: 0. j, technical: 0.4 },
+    skillWeights: { communication: 0.15, analysis: 0.15, teamwork: 0.25, creativity: 0.05, technical: 0.4 },
     personalityWeights: { teamOrientation: 0.35, analyticalMind: 0.45, creativityDrive: 0.2 },
     requiredSkills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'],
     growthAreas: ['Infrastructure as Code', 'Güvenlik Otomasyonu'],
@@ -173,7 +173,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
+  const [showModal, setModalMessage] = useState('');
 
   console.log('Answers:', answers);
   console.log('Selected Path:', selectedPath);
@@ -249,7 +249,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     if (question && answer.answer) {
       const selectedAnswer = question.answers.find((a) => a.text === answer.answer);
       if (selectedAnswer && selectedAnswer.score) {
-        Object.entries(selectedAnswer.score).for.each(([key, value]) => {
+        Object.entries(selectedAnswer.score).forEach(([key, value]) => {
           careerScores[key as keyof Scores] += value;
         });
       } else {
@@ -402,7 +402,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           <div className="mb-4">
             <h4 className="font-semibold">Grafik: Skorlarınız</h4>
             <Bar data={chartData} options={chartOptions} />
-          </ynb>
+          </div>
           <div className="flex gap-4">
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex-1"
@@ -438,7 +438,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
                       initial="hidden"
                       animate="visible"
                       whileHover="hover"
-                      className={`bg-white border rounded-xl shadow-sm cursor.pointer ${
+                      className={`bg-white border rounded-xl shadow-sm cursor-pointer ${
                         selectedCompany === match.path.title ? 'border-purple-500 border-2 shadow-lg' : 'border-gray-200'
                       }`}
                     >
