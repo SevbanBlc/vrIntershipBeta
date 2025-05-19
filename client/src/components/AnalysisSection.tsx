@@ -101,7 +101,7 @@ const calculateMatchPercentage = (
 
   // Kişilik skoru hesaplama
   let personalityMatch = 0;
-  if (!careerOnly && personalityScores) {
+  if (personalityScores) {
     personalityMatch = personalityKeys.reduce((sum, key) => {
       const score = personalityScores[key] || 0;
       const normalizedScore = (score / MAX_PERSONALITY_SCORE) * 100;
@@ -110,7 +110,7 @@ const calculateMatchPercentage = (
     }, 0);
   }
 
-  // Kariyer skoru hesaplama
+  // Kariyer skoru hesaplama (sadece seçilen dal için gerekli)
   let careerMatch = 0;
   let criticalSkillPenalty = 0;
   for (const key of skillKeys) {
@@ -118,8 +118,8 @@ const calculateMatchPercentage = (
     const normalizedScore = (score / MAX_CAREER_SCORE) * 100;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight * 2;
-    if (weight > 0.25 && normalizedScore < 60) { // Eşik %60'a yükseltildi
-      criticalSkillPenalty += (60 - normalizedScore) * weight * 2.5; // Penalty artırıldı
+    if (weight > 0.25 && normalizedScore < 60) {
+      criticalSkillPenalty += (60 - normalizedScore) * weight * 2.5;
     }
   }
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
@@ -130,9 +130,9 @@ const calculateMatchPercentage = (
   // Nihai skoru hesapla
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.1;
+    rawScore = careerMatch * 1.5; // Seçilen dal için yalnızca kariyer skoru
   } else if (isPersonality) {
-    rawScore = 0.4 * personalityMatch + 0.5 * careerMatch + 0.1 * pathScore;
+    rawScore = personalityMatch; // Alt dal önerileri için yalnızca kişilik skoru
   } else {
     rawScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
   }
@@ -247,7 +247,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   });
   console.log('Personality Scores:', personalityScores);
 
-  // Kariyer skorlarını hesapla
+  // Kariyer skorlarını hesapla (seçilen dal için gerekli)
   const careerScores: Scores = {
     communication: 0,
     analysis: 0,
@@ -312,12 +312,12 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     );
   }
 
-  // Seçilen yol için uyumluluk yüzdesi
+  // Seçilen yol için uyumluluk yüzdesi (kariyer sorularına göre)
   const selectedMatchPercentage = hasCareerQuestions
     ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
     : 20;
 
-  // Önerilen kariyer yolları (Alt dal önerme)
+  // Önerilen kariyer yolları (Alt dal önerme, yalnızca kişilik sorularına göre)
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
     .map((path) => ({
