@@ -130,7 +130,7 @@ const calculateMatchPercentage = (
   // Nihai skoru hesapla
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.1; // Seçilen dal için yalnızca kariyer skoru
+    rawScore = careerMatch * 1.0; // Seçilen dal için yalnızca kariyer skoru
   } else if (isPersonality) {
     rawScore = personalityMatch; // Alt dal önerileri için yalnızca kişilik skoru
   } else {
