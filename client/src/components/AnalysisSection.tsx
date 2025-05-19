@@ -87,10 +87,9 @@ const calculateMatchPercentage = (
   isPersonality: boolean = false,
   careerOnly: boolean = false
 ): number => {
-  console.log('calculateMatchPercentage Inputs:', { personalityScores, careerScores, career, isPersonality, careerOnly });
   if (!careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
-    return 19;
+    return 30;
   }
 
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'innovationDrive'];
@@ -132,13 +131,13 @@ const calculateMatchPercentage = (
     rawScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
   }
 
-  const minScore = 100;
-  const maxScore = 700;
-  const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (95 - 19) + 19;
+  const minScore = 0;
+  const maxScore = 1000;
+  const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (90 - 30) + 30;
 
   const finalScore = careerOnly
-    ? Math.max(45, Math.min(95, scaledScore))
-    : Math.max(19, Math.min(65, scaledScore));
+    ? Math.max(50, Math.min(90, scaledScore))
+    : Math.max(30, Math.min(80, scaledScore));
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
@@ -211,17 +210,8 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     if (question && answer.answer) {
       console.log(`Kişilik sorusu ${index + 1} - Gelen cevap: "${answer.answer}"`);
       const selectedAnswer = question.answers.find((a) => {
-        const answerText = a.text.charAt(0).toUpperCase();
         const userAnswer = answer.answer.trim().toUpperCase();
-        const cleanAnswerText = a.text.replace(/^[A-C]\)\s*/, '').toUpperCase();
-        const fullAnswerText = a.text.toUpperCase();
-        return (
-          userAnswer === answerText ||
-          userAnswer.startsWith(answerText + ')') ||
-          userAnswer === cleanAnswerText ||
-          userAnswer === fullAnswerText ||
-          userAnswer.includes(answerText)
-        );
+        return userAnswer === a.text.charAt(0).toUpperCase();
       });
       if (selectedAnswer && selectedAnswer.score) {
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
@@ -233,6 +223,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           `Kişilik sorusu ${index + 1} için cevap eşleşmedi: "${answer.answer}", Şıklar:`,
           question.answers.map((a) => a.text)
         );
+        // Varsayılan düşük skor ekle
+        Object.keys(personalityScores).forEach((key) => {
+          personalityScores[key as keyof Scores] = (personalityScores[key as keyof Scores] || 0) + 5;
+        });
       }
     } else {
       console.warn(`Kişilik sorusu ${index + 1} eksik veya geçersiz. Soru:`, question, `Cevap:`, answer);
@@ -248,17 +242,8 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       if (question && answer.answer) {
         console.log(`Kariyer sorusu ${index + 1} - Gelen cevap: "${answer.answer}"`);
         const selectedAnswer = question.answers.find((a) => {
-          const answerText = a.text.charAt(0).toUpperCase();
           const userAnswer = answer.answer.trim().toUpperCase();
-          const cleanAnswerText = a.text.replace(/^[A-C]\)\s*/, '').toUpperCase();
-          const fullAnswerText = a.text.toUpperCase();
-          return (
-            userAnswer === answerText ||
-            userAnswer.startsWith(answerText + ')') ||
-            userAnswer === cleanAnswerText ||
-            userAnswer === fullAnswerText ||
-            userAnswer.includes(answerText)
-          );
+          return userAnswer === a.text.charAt(0).toUpperCase();
         });
         if (selectedAnswer && selectedAnswer.score) {
           Object.entries(selectedAnswer.score).forEach(([key, value]) => {
@@ -270,6 +255,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             `Kariyer sorusu ${index + 1} için cevap eşleşmedi: "${answer.answer}", Şıklar:`,
             question.answers.map((a) => a.text)
           );
+          // Varsayılan düşük skor ekle
+          Object.keys(careerScores).forEach((key) => {
+            careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + 5;
+          });
         }
       } else {
         console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz. Soru:`, question, `Cevap:`, answer);
@@ -278,14 +267,12 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
     Object.keys(careerQuestions).forEach((path) => {
       if (path !== selectedPath) {
-        careerQuestions[path].forEach((question, index) => {
-          const randomIndex = Math.floor(Math.random() * question.answers.length);
-          const selectedAnswer = question.answers[randomIndex];
+        careerQuestions[path].forEach((question) => {
+          const selectedAnswer = question.answers.find((a) => !a.isCorrect) || question.answers[0];
           if (selectedAnswer && selectedAnswer.score) {
             Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-              careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + value * 0.85;
+              careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + value * 0.5;
             });
-            console.log(`Alternatif yol ${path}, Soru ${index + 1}: Seçilen cevap=${randomIndex}, Puan=`, selectedAnswer.score);
           }
         });
       }
@@ -311,7 +298,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const selectedMatchPercentage = hasCareerQuestions
     ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
-    : 19;
+    : 30;
 
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
@@ -427,7 +414,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             ) : (
               <div className="space-y-6 mt-4">
                 {suggestedMatches.map((match, index) => {
-                  const percentage = Math.min(Math.max(match.percentage, 19), 95);
+                  const percentage = Math.min(Math.max(match.percentage, 30), 90);
                   const circumference = 282.6;
                   const offset = circumference * (1 - percentage / 100);
 
