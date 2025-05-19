@@ -101,9 +101,8 @@ const calculateMatchPercentage = (
       const score = personalityScores[key] || 0;
       const normalizedScore = score / MAX_PERSONALITY_SCORE;
       const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
-      return sum + normalizedScore * weight;
+      return sum + (normalizedScore * weight * 100); // Ağırlıkların etkisini artır
     }, 0);
-    personalityMatch *= 100;
   }
 
   let careerMatch = 0;
@@ -112,32 +111,31 @@ const calculateMatchPercentage = (
     const score = careerScores[key] || 0;
     const normalizedScore = score / MAX_CAREER_SCORE;
     const weight = career.skillWeights[key] || 0;
-    careerMatch += normalizedScore * weight;
+    careerMatch += normalizedScore * weight * 100; // Ağırlıkların etkisini artır
     if (weight > 0.25 && normalizedScore < 0.3) {
-      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 8;
+      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 5; // Penalty'yi yumuşat
     }
   }
-  careerMatch *= 100;
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
   let pathScore = (careerScores[career.id as keyof Scores] || 0) / MAX_CAREER_SCORE * 100;
 
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.8;
+    rawScore = careerMatch * 1.5; // Çarpanı biraz düşür
   } else if (isPersonality) {
-    rawScore = 0.5 * personalityMatch + 0.3 * pathScore + 0.2 * careerMatch;
+    rawScore = 0.4 * personalityMatch + 0.3 * pathScore + 0.3 * careerMatch; // Ağırlıkları ayarla
   } else {
-    rawScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
+    rawScore = 0.2 * personalityMatch + 0.7 * careerMatch + 0.1 * pathScore; // Ağırlıkları ayarla
   }
 
   const minScore = 0;
-  const maxScore = 1000;
-  const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (90 - 30) + 30;
+  const maxScore = 1500; // Maksimum skoru artır
+  const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (95 - 20) + 20; // Aralığı genişlet
 
   const finalScore = careerOnly
-    ? Math.max(50, Math.min(90, scaledScore))
-    : Math.max(30, Math.min(80, scaledScore));
+    ? Math.max(50, Math.min(95, scaledScore))
+    : Math.max(20, Math.min(95, scaledScore)); // Maksimumu 95'e çıkar
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
@@ -183,8 +181,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   console.log('AnalysisSection Props:', { scores, selectedPath, answers });
   console.log('Raw Answers:', answers.map((a) => ({ id: a.questionId, answer: a.answer })));
-  console.log('Selected Path:', selectedPath);
-  console.log('Input Scores:', scores);
 
   if (!scores || !selectedPath || !answers || answers.length === 0) {
     return (
@@ -223,10 +219,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
           `Kişilik sorusu ${index + 1} için cevap eşleşmedi: "${answer.answer}", Şıklar:`,
           question.answers.map((a) => a.text)
         );
-        // Varsayılan düşük skor ekle
-        Object.keys(personalityScores).forEach((key) => {
-          personalityScores[key as keyof Scores] = (personalityScores[key as keyof Scores] || 0) + 5;
-        });
       }
     } else {
       console.warn(`Kişilik sorusu ${index + 1} eksik veya geçersiz. Soru:`, question, `Cevap:`, answer);
@@ -255,10 +247,6 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             `Kariyer sorusu ${index + 1} için cevap eşleşmedi: "${answer.answer}", Şıklar:`,
             question.answers.map((a) => a.text)
           );
-          // Varsayılan düşük skor ekle
-          Object.keys(careerScores).forEach((key) => {
-            careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + 5;
-          });
         }
       } else {
         console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz. Soru:`, question, `Cevap:`, answer);
@@ -414,7 +402,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             ) : (
               <div className="space-y-6 mt-4">
                 {suggestedMatches.map((match, index) => {
-                  const percentage = Math.min(Math.max(match.percentage, 30), 90);
+                  const percentage = Math.min(Math.max(match.percentage, 20), 95);
                   const circumference = 282.6;
                   const offset = circumference * (1 - percentage / 100);
 
