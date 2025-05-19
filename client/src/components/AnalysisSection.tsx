@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Scores } from '../types';
 import { commonQuestions, careerQuestions } from '../questions';
 
+// Tür tanımlamaları
 interface CareerSuggestion {
   id: string;
   title: string;
@@ -20,6 +21,7 @@ interface AnalysisSectionProps {
   onContinue: (newPath?: string) => void;
 }
 
+// Kariyer yolları
 const careerPaths: CareerSuggestion[] = [
   {
     id: 'frontend',
@@ -77,9 +79,11 @@ const careerPaths: CareerSuggestion[] = [
   },
 ];
 
+// Maksimum skorlar
 const MAX_PERSONALITY_SCORE = 270; // 10 x (20+16+20+16+14)
 const MAX_CAREER_SCORE = 345; // 10 x (41+27+20)
 
+// Yüzdelik hesaplama fonksiyonu
 const calculateMatchPercentage = (
   personalityScores: Scores,
   careerScores: Scores,
@@ -89,53 +93,53 @@ const calculateMatchPercentage = (
 ): number => {
   if (!careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
-    return 30;
+    return 20;
   }
 
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'innovationDrive'];
   const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'innovation', 'technical'];
 
+  // Kişilik skoru hesaplama
   let personalityMatch = 0;
   if (!careerOnly && personalityScores) {
     personalityMatch = personalityKeys.reduce((sum, key) => {
       const score = personalityScores[key] || 0;
-      const normalizedScore = score / MAX_PERSONALITY_SCORE;
+      const normalizedScore = (score / MAX_PERSONALITY_SCORE) * 100; // Yüzdeye çevir
       const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
-      return sum + (normalizedScore * weight * 100); // Ağırlıkların etkisini artır
+      return sum + (normalizedScore * weight);
     }, 0);
   }
 
+  // Kariyer skoru hesaplama
   let careerMatch = 0;
   let criticalSkillPenalty = 0;
   for (const key of skillKeys) {
     const score = careerScores[key] || 0;
-    const normalizedScore = score / MAX_CAREER_SCORE;
+    const normalizedScore = (score / MAX_CAREER_SCORE) * 100; // Yüzdeye çevir
     const weight = career.skillWeights[key] || 0;
-    careerMatch += normalizedScore * weight * 100; // Ağırlıkların etkisini artır
-    if (weight > 0.25 && normalizedScore < 0.3) {
-      criticalSkillPenalty += (0.3 - normalizedScore) * weight * 5; // Penalty'yi yumuşat
+    careerMatch += normalizedScore * weight;
+    if (weight > 0.25 && normalizedScore < 30) {
+      criticalSkillPenalty += (30 - normalizedScore) * weight * 3; // Daha az cezalandırıcı
     }
   }
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
-  let pathScore = (careerScores[career.id as keyof Scores] || 0) / MAX_CAREER_SCORE * 100;
+  // Path skoru (şimdilik sıfır, gerekirse eklenebilir)
+  const pathScore = 0;
 
+  // Nihai skoru hesapla
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.5; // Çarpanı biraz düşür
+    rawScore = careerMatch * 1.2; // Kariyer odaklı hesaplama
   } else if (isPersonality) {
-    rawScore = 0.4 * personalityMatch + 0.3 * pathScore + 0.3 * careerMatch; // Ağırlıkları ayarla
+    rawScore = 0.5 * personalityMatch + 0.3 * careerMatch + 0.2 * pathScore;
   } else {
-    rawScore = 0.2 * personalityMatch + 0.7 * careerMatch + 0.1 * pathScore; // Ağırlıkları ayarla
+    rawScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
   }
 
-  const minScore = 0;
-  const maxScore = 1500; // Maksimum skoru artır
-  const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (95 - 20) + 20; // Aralığı genişlet
-
-  const finalScore = careerOnly
-    ? Math.max(50, Math.min(95, scaledScore))
-    : Math.max(20, Math.min(95, scaledScore)); // Maksimumu 95'e çıkar
+  // Skoru 20-95 aralığına ölçeklendirme
+  const scaledScore = (rawScore / 100) * (95 - 20) + 20;
+  const finalScore = Math.max(20, Math.min(95, scaledScore));
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
@@ -149,6 +153,7 @@ const calculateMatchPercentage = (
   return Math.round(finalScore);
 };
 
+// Beceriler için renk fonksiyonu
 function getSkillBadgeColor(index: number): string {
   const colors = [
     'bg-blue-100 text-blue-800',
@@ -161,6 +166,7 @@ function getSkillBadgeColor(index: number): string {
   return colors[index % colors.length];
 }
 
+// Animasyon varyantları
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -173,12 +179,14 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.8, transition: { duration: 0.2 } },
 };
 
+// Ana bileşen
 export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, selectedPath, answers, onContinue }) => {
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  // Giriş verilerini kontrol et
   console.log('AnalysisSection Props:', { scores, selectedPath, answers });
   console.log('Raw Answers:', answers.map((a) => ({ id: a.questionId, answer: a.answer })));
 
@@ -193,14 +201,27 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const selectedPathData = careerPaths.find((path) => path.id === selectedPath);
   if (!selectedPathData) {
     return (
-      <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">Hata: Seçilen dal bulunamadı.</div>
+      <div className="p-6 bg-white rounded-lg shadow-lg text-gray-800 font-sans">
+        Hata: Seçilen dal bulunamadı.
+      </div>
     );
   }
 
+  // Cevapları ayır: İlk 10 kişilik, sonraki 10 kariyer
   const personalityAnswers = answers.slice(0, 10);
   const careerAnswers = answers.slice(10, 20);
 
-  const personalityScores: Scores = { ...scores };
+  // Kişilik skorlarını hesapla
+  const personalityScores: Scores = {
+    communication: 0,
+    analysis: 0,
+    teamwork: 0,
+    innovation: 0,
+    technical: 0,
+    teamOrientation: 0,
+    analyticalMind: 0,
+    innovationDrive: 0,
+  };
   personalityAnswers.forEach((answer, index) => {
     const question = commonQuestions[index];
     if (question && answer.answer) {
@@ -226,7 +247,17 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   });
   console.log('Personality Scores:', personalityScores);
 
-  const careerScores: Scores = { ...scores };
+  // Kariyer skorlarını hesapla
+  const careerScores: Scores = {
+    communication: 0,
+    analysis: 0,
+    teamwork: 0,
+    innovation: 0,
+    technical: 0,
+    teamOrientation: 0,
+    analyticalMind: 0,
+    innovationDrive: 0,
+  };
   const hasCareerQuestions = careerQuestions[selectedPath] && careerQuestions[selectedPath].length > 0;
   if (hasCareerQuestions) {
     careerAnswers.forEach((answer, index) => {
@@ -253,13 +284,14 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
       }
     });
 
+    // Diğer kariyer yollarından düşük katkı
     Object.keys(careerQuestions).forEach((path) => {
       if (path !== selectedPath) {
         careerQuestions[path].forEach((question) => {
           const selectedAnswer = question.answers.find((a) => !a.isCorrect) || question.answers[0];
           if (selectedAnswer && selectedAnswer.score) {
             Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-              careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + value * 0.5;
+              careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + value * 0.3;
             });
           }
         });
@@ -268,11 +300,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   }
   console.log('Career Scores:', careerScores);
 
-  const hasValidScores = Object.values(careerScores).some((val) => val > 0);
-  if (!hasValidScores && hasCareerQuestions) {
-    console.error('Hata: careerScores sıfır, cevap eşleşmesi başarısız.', { careerScores, careerAnswers });
-  }
-
+  // Skorların sıfır olup olmadığını kontrol et
   const allScoresZero =
     Object.values(personalityScores).every((val) => val === 0) &&
     Object.values(careerScores).every((val) => val === 0);
@@ -284,10 +312,12 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     );
   }
 
+  // Seçilen yol için uyumluluk yüzdesi
   const selectedMatchPercentage = hasCareerQuestions
     ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
-    : 30;
+    : 20;
 
+  // Önerilen kariyer yolları
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
     .map((path) => ({
@@ -297,7 +327,8 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     .sort((a, b) => b.percentage - a.percentage)
     .slice(0, 3);
 
-  const areasForImprovement = [];
+  // Gelişim alanları
+  const areasForImprovement: string[] = [];
   const skillThreshold = MAX_CAREER_SCORE * 0.3;
   if (careerScores.communication < skillThreshold) areasForImprovement.push('İletişim');
   if (careerScores.analysis < skillThreshold) areasForImprovement.push('Analitik Düşünme');
@@ -305,6 +336,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   if (careerScores.innovation < skillThreshold) areasForImprovement.push('Yenilikçilik');
   if (careerScores.technical < skillThreshold) areasForImprovement.push('Teknik Beceriler');
 
+  // Kariyer seçimi işlevi
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
     if (['datascience', 'devops', 'gamedev'].includes(pathId)) {
       setModalMessage(`${pathTitle} beta sürümünde henüz aktif değil. Yakında desteklenecek, başka bir dal seçmeyi deneyin!`);
