@@ -89,13 +89,11 @@ const calculateMatchPercentage = (
 ): number => {
   if (!careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
-    return 19; // Minimum %19
+    return 19;
   }
 
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'innovationDrive'];
   const skillKeys: (keyof Scores)[] = ['communication', 'analysis', 'teamwork', 'innovation', 'technical'];
-
-  console.log(`Hesaplanan kariyer: ${career.title}`, { personalityScores, careerScores });
 
   let personalityMatch = 0;
   if (!careerOnly && personalityScores) {
@@ -116,35 +114,30 @@ const calculateMatchPercentage = (
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight;
     if (weight > 0.25 && normalizedScore < 0.25) {
-      criticalSkillPenalty += (0.25 - normalizedScore) * weight * 10; // Hafif ceza
+      criticalSkillPenalty += (0.25 - normalizedScore) * weight * 10;
     }
   }
   careerMatch *= 100;
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
-  let pathScore = 0;
-  if (!careerOnly && careerScores) {
-    pathScore = (careerScores[career.id as keyof Scores] || 0) / MAX_CAREER_SCORE * 100;
-  }
+  let pathScore = (careerScores[career.id as keyof Scores] || 0) / MAX_CAREER_SCORE * 100;
 
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.3; // Seçilen yol için careerMatch’i artır
+    rawScore = careerMatch * 1.3;
   } else if (isPersonality) {
     rawScore = 0.3 * personalityMatch + 0.3 * pathScore + 0.4 * careerMatch;
   } else {
     rawScore = 0.1 * personalityMatch + 0.8 * careerMatch + 0.1 * pathScore;
   }
 
-  // Yüzdelik ölçeklendirme: %19 (min) - %93 (max)
-  const minScore = 180; // 10 x 7 + 10 x 11
-  const maxScore = 615; // 10 x 20 + 10 x 41
+  const minScore = 180;
+  const maxScore = 615;
   const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (93 - 19) + 19;
 
-  // Seçilen yol için minimum %60, diğerleri için çeşitlilik
   const finalScore = careerOnly
-    ? Math.max(60, Math.min(93, scaledScore)) // Seçilen yol için min %60
-    : Math.max(19, Math.min(50, scaledScore)); // Alternatif yollar %19-50
+    ? Math.max(40, Math.min(93, scaledScore)) // Seçilen yol: %40-93
+    : Math.max(19, Math.min(60, scaledScore)); // Alternatifler: %19-60
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
@@ -211,28 +204,17 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   const careerAnswers = answers.slice(10, 20);
 
   const personalityScores: Scores = {
-    communication: 0,
-    analysis: 0,
-    teamwork: 0,
-    innovation: 0,
-    technical: 0,
-    teamOrientation: 0,
-    analyticalMind: 0,
-    innovationDrive: 0,
-    frontend: 0,
-    backend: 0,
-    siber: 0,
-    datascience: 0,
-    devops: 0,
-    gamedev: 0,
+    communication: 0, analysis: 0, teamwork: 0, innovation: 0, technical: 0,
+    teamOrientation: 0, analyticalMind: 0, innovationDrive: 0,
+    frontend: 0, backend: 0, siber: 0, datascience: 0, devops: 0, gamedev: 0,
   };
   personalityAnswers.forEach((answer, index) => {
     const question = commonQuestions[index];
     if (question && answer.answer) {
-      const selectedAnswer = question.answers.find((a) => a.text.toLowerCase() === answer.answer.toLowerCase());
+      const selectedAnswer = question.answers.find((a) => a.text.charAt(0).toUpperCase() === answer.answer.charAt(0).toUpperCase());
       if (selectedAnswer && selectedAnswer.score) {
         Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-          personalityScores[key as keyof Scores] = (personalityScores[key as keyof Scores] || 0) + value;
+          personalityScores[key as keyof Scores] += value;
         });
         console.log(`Kişilik sorusu ${index + 1}: Cevap="${answer.answer}", Puan=`, selectedAnswer.score);
       } else {
@@ -245,20 +227,9 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   console.log('Personality Scores:', personalityScores);
 
   const careerScores: Scores = {
-    communication: 0,
-    analysis: 0,
-    teamwork: 0,
-    innovation: 0,
-    technical: 0,
-    teamOrientation: 0,
-    analyticalMind: 0,
-    innovationDrive: 0,
-    frontend: 0,
-    backend: 0,
-    siber: 0,
-    datascience: 0,
-    devops: 0,
-    gamedev: 0,
+    communication: 0, analysis: 0, teamwork: 0, innovation: 0, technical: 0,
+    teamOrientation: 0, analyticalMind: 0, innovationDrive: 0,
+    frontend: 0, backend: 0, siber: 0, datascience: 0, devops: 0, gamedev: 0,
   };
 
   const hasCareerQuestions = careerQuestions[selectedPath] && careerQuestions[selectedPath].length > 0;
@@ -266,10 +237,10 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     careerAnswers.forEach((answer, index) => {
       const question = careerQuestions[selectedPath]?.[index];
       if (question && answer.answer) {
-        const selectedAnswer = question.answers.find((a) => a.text.toLowerCase() === answer.answer.toLowerCase());
+        const selectedAnswer = question.answers.find((a) => a.text.charAt(0).toUpperCase() === answer.answer.charAt(0).toUpperCase());
         if (selectedAnswer && selectedAnswer.score) {
           Object.entries(selectedAnswer.score).forEach(([key, value]) => {
-            careerScores[key as keyof Scores] = (careerScores[key as keyof Scores] || 0) + value;
+            careerScores[key as keyof Scores] += value;
           });
           console.log(`Kariyer sorusu ${index + 1}: Cevap="${answer.answer}", Puan=`, selectedAnswer.score);
         } else {
@@ -279,8 +250,20 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
         console.warn(`Kariyer sorusu ${index + 1} eksik veya geçersiz.`);
       }
     });
-  } else {
-    console.warn(`Seçilen dal için kariyer soruları tanımlı değil: ${selectedPath}`);
+
+    // Diğer dallar için skorları simüle et
+    Object.keys(careerQuestions).forEach((path) => {
+      if (path !== selectedPath) {
+        careerQuestions[path].forEach((question, index) => {
+          const selectedAnswer = question.answers[1]; // Nötr cevap
+          if (selectedAnswer && selectedAnswer.score) {
+            Object.entries(selectedAnswer.score).forEach(([key, value]) => {
+              careerScores[key as keyof Scores] += value * 0.5;
+            });
+          }
+        });
+      }
+    });
   }
   console.log('Career Scores:', careerScores);
 
@@ -301,15 +284,15 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
 
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
-    .map((path, index) => ({
+    .map((path) => ({
       path,
-      percentage: calculateMatchPercentage(personalityScores, careerScores, path, true) + index * 5, // Farklılaşma için küçük artış
+      percentage: calculateMatchPercentage(personalityScores, careerScores, path, true),
     }))
     .sort((a, b) => b.percentage - a.percentage)
     .slice(0, 3);
 
   const areasForImprovement = [];
-  if (careerScores.communication < 81) areasForImprovement.push('İletişim'); // 60 * 1.35
+  if (careerScores.communication < 81) areasForImprovement.push('İletişim');
   if (careerScores.analysis < 81) areasForImprovement.push('Analitik Düşünme');
   if (careerScores.teamwork < 81) areasForImprovement.push('Ekip Çalışması');
   if (careerScores.innovation < 81) areasForImprovement.push('Yenilikçilik');
