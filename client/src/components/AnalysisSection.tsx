@@ -118,8 +118,8 @@ const calculateMatchPercentage = (
     const normalizedScore = (score / MAX_CAREER_SCORE) * 100;
     const weight = career.skillWeights[key] || 0;
     careerMatch += normalizedScore * weight * 2; // Kariyer ağırlığını artır
-    if (weight > 0.25 && normalizedScore < 40) { // Eşik %40'a yükseltildi
-      criticalSkillPenalty += (40 - normalizedScore) * weight * 1.5; // Penalty artırıldı
+    if (weight > 0.25 && normalizedScore < 50) { // Eşik %50'ye yükseltildi
+      criticalSkillPenalty += (50 - normalizedScore) * weight * 2; // Penalty artırıldı
     }
   }
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
