@@ -83,7 +83,7 @@ const careerPaths: CareerSuggestion[] = [
 const MAX_PERSONALITY_SCORE = 270; // 10 x (20+16+20+16+14)
 const MAX_CAREER_SCORE = 345; // 10 x (41+27+20)
 
-// Yüzdelik hesaplama fonksiyonu
+// Yüzdelik hesaplama fonksiyonu (Alt dal önerme için güncellendi)
 const calculateMatchPercentage = (
   personalityScores: Scores,
   careerScores: Scores,
@@ -93,7 +93,7 @@ const calculateMatchPercentage = (
 ): number => {
   if (!careerScores || !career) {
     console.error('Eksik giriş verileri:', { personalityScores, careerScores, career });
-    return 20;
+    return 10;
   }
 
   const personalityKeys: (keyof Scores)[] = ['teamOrientation', 'analyticalMind', 'innovationDrive'];
@@ -104,9 +104,9 @@ const calculateMatchPercentage = (
   if (!careerOnly && personalityScores) {
     personalityMatch = personalityKeys.reduce((sum, key) => {
       const score = personalityScores[key] || 0;
-      const normalizedScore = (score / MAX_PERSONALITY_SCORE) * 100; // Yüzdeye çevir
+      const normalizedScore = (score / MAX_PERSONALITY_SCORE) * 100;
       const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
-      return sum + (normalizedScore * weight);
+      return sum + (normalizedScore * weight * 2); // Kişilik ağırlığını artır
     }, 0);
   }
 
@@ -115,11 +115,11 @@ const calculateMatchPercentage = (
   let criticalSkillPenalty = 0;
   for (const key of skillKeys) {
     const score = careerScores[key] || 0;
-    const normalizedScore = (score / MAX_CAREER_SCORE) * 100; // Yüzdeye çevir
+    const normalizedScore = (score / MAX_CAREER_SCORE) * 100;
     const weight = career.skillWeights[key] || 0;
-    careerMatch += normalizedScore * weight;
+    careerMatch += normalizedScore * weight * 1.5; // Kariyer ağırlığını artır
     if (weight > 0.25 && normalizedScore < 30) {
-      criticalSkillPenalty += (30 - normalizedScore) * weight * 3; // Daha az cezalandırıcı
+      criticalSkillPenalty += (30 - normalizedScore) * weight * 1.5; // Penalty'yi yumuşat
     }
   }
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
@@ -130,16 +130,16 @@ const calculateMatchPercentage = (
   // Nihai skoru hesapla
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.2; // Kariyer odaklı hesaplama
+    rawScore = careerMatch * 1.8; // Kariyer odaklı hesaplama
   } else if (isPersonality) {
-    rawScore = 0.5 * personalityMatch + 0.3 * careerMatch + 0.2 * pathScore;
+    rawScore = 0.4 * personalityMatch + 0.5 * careerMatch + 0.1 * pathScore;
   } else {
     rawScore = 0.3 * personalityMatch + 0.6 * careerMatch + 0.1 * pathScore;
   }
 
-  // Skoru 20-95 aralığına ölçeklendirme
-  const scaledScore = (rawScore / 100) * (95 - 20) + 20;
-  const finalScore = Math.max(20, Math.min(95, scaledScore));
+  // Skoru 10-90 aralığına ölçeklendirme
+  const scaledScore = (rawScore / 100) * (90 - 10) + 10;
+  const finalScore = Math.max(10, Math.min(90, scaledScore));
 
   console.log(`Final Score for ${career.title}: ${finalScore}%`, {
     personalityMatch,
@@ -315,9 +315,9 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
   // Seçilen yol için uyumluluk yüzdesi
   const selectedMatchPercentage = hasCareerQuestions
     ? calculateMatchPercentage(personalityScores, careerScores, selectedPathData, false, true)
-    : 20;
+    : 10;
 
-  // Önerilen kariyer yolları
+  // Önerilen kariyer yolları (Alt dal önerme)
   const suggestedMatches = careerPaths
     .filter((path) => path.id !== selectedPath)
     .map((path) => ({
@@ -434,7 +434,7 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
             ) : (
               <div className="space-y-6 mt-4">
                 {suggestedMatches.map((match, index) => {
-                  const percentage = Math.min(Math.max(match.percentage, 20), 95);
+                  const percentage = Math.min(Math.max(match.percentage, 10), 90);
                   const circumference = 282.6;
                   const offset = circumference * (1 - percentage / 100);
 
