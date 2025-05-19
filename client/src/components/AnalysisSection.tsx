@@ -106,7 +106,7 @@ const calculateMatchPercentage = (
       const score = personalityScores[key] || 0;
       const normalizedScore = (score / MAX_PERSONALITY_SCORE) * 100;
       const weight = career.personalityWeights[key as keyof typeof career.personalityWeights] || 0;
-      return sum + (normalizedScore * weight * 2); // Ağırlık etkisini artır
+      return sum + (normalizedScore * weight * 2);
     }, 0);
   }
 
@@ -117,9 +117,9 @@ const calculateMatchPercentage = (
     const score = careerScores[key] || 0;
     const normalizedScore = (score / MAX_CAREER_SCORE) * 100;
     const weight = career.skillWeights[key] || 0;
-    careerMatch += normalizedScore * weight * 2; // Kariyer ağırlığını artır
-    if (weight > 0.25 && normalizedScore < 50) { // Eşik %50'ye yükseltildi
-      criticalSkillPenalty += (50 - normalizedScore) * weight * 2; // Penalty artırıldı
+    careerMatch += normalizedScore * weight * 2;
+    if (weight > 0.25 && normalizedScore < 60) { // Eşik %60'a yükseltildi
+      criticalSkillPenalty += (60 - normalizedScore) * weight * 2.5; // Penalty artırıldı
     }
   }
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
@@ -130,7 +130,7 @@ const calculateMatchPercentage = (
   // Nihai skoru hesapla
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.5; // Kariyer odaklı hesaplama
+    rawScore = careerMatch * 1.5;
   } else if (isPersonality) {
     rawScore = 0.4 * personalityMatch + 0.5 * careerMatch + 0.1 * pathScore;
   } else {
