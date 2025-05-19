@@ -58,12 +58,12 @@ function HomePage() {
     siber: 'siber',
   };
 
-  // userData state'ini kontrol etmek için log ekleyelim
+  // userData state'ini kontrol etmek için log
   useEffect(() => {
     console.log('Güncel userData:', userData);
   }, [userData]);
 
-  // user nesnesini kontrol etmek için log ekleyelim
+  // user nesnesini kontrol etmek için log
   useEffect(() => {
     console.log('useAuth user:', user);
   }, [user]);
@@ -112,8 +112,8 @@ function HomePage() {
   }, [user]);
 
   useEffect(() => {
-    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath, 'Scores:', scores);
-  }, [step, selectedPath, scores]);
+    console.log('Güncel step:', step, 'Güncel selectedPath:', selectedPath, 'Scores:', scores, 'Answers:', answers);
+  }, [step, selectedPath, scores, answers]);
 
   const handleContinue = (newPath?: string) => {
     if (newPath) {
@@ -154,7 +154,7 @@ function HomePage() {
 
   const handleUpdateUserData = (newData: UserData) => {
     setUserData(newData);
-    setErrorMessage(null); // Hata mesajını sıfırla
+    setErrorMessage(null);
   };
 
   const handleAnswerSelect = (answer: Answer) => {
@@ -163,23 +163,27 @@ function HomePage() {
 
     const isCareerQuestion = currentQ.id >= 11 && currentQ.id <= 20;
 
-    if (isCareerQuestion) {
-      if (!currentQ.hasAbsoluteCorrect) {
-        const contribution = answer.contribution || 0;
-        answer.focusAreas.forEach((area) => {
-          if (area in newScores) {
-            newScores[area as keyof Scores] += contribution * 100;
-          }
-        });
-      } else {
-        if (answer.isCorrect) {
+    if (currentQ && answer) {
+      if (isCareerQuestion) {
+        // Kariyer sorularında score objesini doğrudan kullan
+        if (answer.score) {
+          Object.keys(answer.score).forEach((key) => {
+            if (key in newScores) {
+              newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + answer.score[key];
+            }
+          });
+        } else if (answer.isCorrect && currentQ.hasAbsoluteCorrect) {
+          // Doğru cevap için contribution ve focusAreas kullan
           const contribution = answer.contribution || 0;
           answer.focusAreas.forEach((area) => {
             if (area in newScores) {
               newScores[area as keyof Scores] += contribution * 100;
             }
           });
-        } else {
+        }
+      } else {
+        // Ortak sorular için score objesini kullan
+        if (answer.score) {
           Object.keys(answer.score).forEach((key) => {
             if (key in newScores) {
               newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + answer.score[key];
@@ -188,33 +192,29 @@ function HomePage() {
         }
       }
     } else {
-      Object.keys(answer.score).forEach((key) => {
-        if (key in newScores) {
-          newScores[key as keyof Scores] = (newScores[key as keyof Scores] || 0) + answer.score[key];
-        }
-      });
+      console.warn('Soru veya cevap verisi eksik:', { currentQ, answer });
     }
 
     setScores(newScores);
-
     setAnswers((prev) => [
       ...prev,
-      { questionId: currentQuestion + 1, answer: answer.text }
+      { questionId: currentQuestion + 1, answer: answer.text.charAt(0).toUpperCase() } // Sadece "A", "B", "C" formatı
     ]);
 
     if (currentQuestion < allQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+      setCurrentQuestion((prev) => prev + 1);
+    } else {
+      handleFinalResults(0, 0); // Test tamamlandı, analize geç
     }
+    console.log('Cevap seçildi, güncel skorlar:', newScores, 'Güncel cevaplar:', answers);
   };
 
   const handleFinalResults = (compatibility: number, success: number) => {
-    const compatibilityThreshold = 10;
-    const successThreshold = 50;
     const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
-    setIsCompatible(compatibility >= compatibilityThreshold);
-    setIsSuccessful(totalScore >= successThreshold);
+    setIsCompatible(compatibility >= 10);
+    setIsSuccessful(totalScore >= 50);
     setStep('analysis');
-    console.log('Test tamamlandı! Analiz adımına geçiliyor. Toplam hikaye puanı:', totalScore, 'Cevaplar:', answers, 'Scores:', scores);
+    console.log('Test tamamlandı! Analiz adımına geçiliyor. Toplam skor:', totalScore, 'Cevaplar:', answers, 'Scores:', scores);
   };
 
   const handleRestart = () => {
@@ -245,7 +245,7 @@ function HomePage() {
   const startStory = (path: string) => {
     console.log("startStory fonksiyonu çalışıyor...");
     console.log("Kullanılan path:", path);
-    const initialStory = storyData.find(part => part.title === path);
+    const initialStory = storyData.find((part) => part.title === path);
     console.log("Bulunan hikaye:", initialStory);
     if (initialStory) {
       setCurrentStoryPart(initialStory);
@@ -276,7 +276,7 @@ function HomePage() {
     setScores(newScores);
 
     if (choice.nextDimension) {
-      const nextPart = storyData.find(part => part.title === choice.nextDimension);
+      const nextPart = storyData.find((part) => part.title === choice.nextDimension);
       console.log("Sonraki hikaye kısmı:", nextPart);
       if (nextPart) {
         setCurrentStoryPart(nextPart);
