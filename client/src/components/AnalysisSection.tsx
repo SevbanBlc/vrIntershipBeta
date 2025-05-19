@@ -77,8 +77,8 @@ const careerPaths: CareerSuggestion[] = [
   },
 ];
 
-const MAX_PERSONALITY_SCORE = 360; // 10 x (27+22+27+22+18)
-const MAX_CAREER_SCORE = 450; // 10 x (54+36+27)
+const MAX_PERSONALITY_SCORE = 270; // 10 x (20+16+20+16+14)
+const MAX_CAREER_SCORE = 345; // 10 x (41+27+20)
 
 const calculateMatchPercentage = (
   personalityScores: Scores,
@@ -123,13 +123,13 @@ const calculateMatchPercentage = (
   careerMatch = Math.max(careerMatch - criticalSkillPenalty, 0);
 
   let pathScore = 0;
-  if (!careerOnly && personalityScores) {
+  if (!careerOnly && careerScores) {
     pathScore = (careerScores[career.id as keyof Scores] || 0) / MAX_CAREER_SCORE * 100;
   }
 
   let rawScore: number;
   if (careerOnly) {
-    rawScore = careerMatch * 1.2; // Seçilen yol için careerMatch’i artır
+    rawScore = careerMatch * 1.3; // Seçilen yol için careerMatch’i artır
   } else if (isPersonality) {
     rawScore = 0.3 * personalityMatch + 0.3 * pathScore + 0.4 * careerMatch;
   } else {
@@ -137,8 +137,8 @@ const calculateMatchPercentage = (
   }
 
   // Yüzdelik ölçeklendirme: %19 (min) - %93 (max)
-  const minScore = 230; // 10 x 9 + 10 x 14
-  const maxScore = 810; // 10 x 27 + 10 x 54
+  const minScore = 180; // 10 x 7 + 10 x 11
+  const maxScore = 615; // 10 x 20 + 10 x 41
   const scaledScore = ((rawScore - minScore) / (maxScore - minScore)) * (93 - 19) + 19;
 
   // Seçilen yol için minimum %60, diğerleri için çeşitlilik
@@ -309,11 +309,11 @@ export const AnalysisSection: React.FC<AnalysisSectionProps> = ({ scores, select
     .slice(0, 3);
 
   const areasForImprovement = [];
-  if (careerScores.communication < 108) areasForImprovement.push('İletişim');
-  if (careerScores.analysis < 108) areasForImprovement.push('Analitik Düşünme');
-  if (careerScores.teamwork < 108) areasForImprovement.push('Ekip Çalışması');
-  if (careerScores.innovation < 108) areasForImprovement.push('Yenilikçilik');
-  if (careerScores.technical < 108) areasForImprovement.push('Teknik Beceriler');
+  if (careerScores.communication < 81) areasForImprovement.push('İletişim'); // 60 * 1.35
+  if (careerScores.analysis < 81) areasForImprovement.push('Analitik Düşünme');
+  if (careerScores.teamwork < 81) areasForImprovement.push('Ekip Çalışması');
+  if (careerScores.innovation < 81) areasForImprovement.push('Yenilikçilik');
+  if (careerScores.technical < 81) areasForImprovement.push('Teknik Beceriler');
 
   const handleCareerSelection = (pathId: string, pathTitle: string) => {
     if (['datascience', 'devops', 'gamedev'].includes(pathId)) {
